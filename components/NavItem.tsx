@@ -1,11 +1,21 @@
 import { type ComponentChildren } from "preact";
 
-import IconOrganization from "./icons/Organization.tsx";
+import IconDocs from "./icons/Docs.tsx";
+import IconHome from "./icons/Home.tsx";
+import IconLocal from "./icons/Local.tsx";
+import IconLogin from "./icons/Login.tsx";
 import IconLogout from "./icons/Logout.tsx";
+import IconOrganization from "./icons/Organization.tsx";
+import IconUser from "./icons/User.tsx";
 
 const ICONS = {
-  "logout": <IconLogout size={6} />,
-  "org": <IconOrganization size={6} />,
+  "docs": <IconDocs />,
+  "home": <IconHome />,
+  "local": <IconLocal />,
+  "login": <IconLogin />,
+  "logout": <IconLogout />,
+  "org": <IconOrganization />,
+  "user": <IconUser />,
 } as const;
 
 export function NavItem(
@@ -20,7 +30,7 @@ export function NavItem(
     <li>
       <a
         href={href}
-        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:dark:bg-gray-700 hover:bg-gray-100 group"
       >
         <span class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
           {ICONS[icon]}

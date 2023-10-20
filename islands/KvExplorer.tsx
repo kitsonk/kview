@@ -3,25 +3,20 @@ import { KvKeyList } from "$components/KvKeyList.tsx";
 import { KvEntry } from "$components/KvEntry.tsx";
 import { Loader } from "$components/Loader.tsx";
 import { useSignal, useSignalEffect } from "@preact/signals";
-import { DashDb, DashProject } from "$utils/dash.ts";
-import {
-  keyPartJsonToPath,
-  type KvEntryJSON,
-  type KvKeyJSON,
-} from "$utils/kv.ts";
+import { DashDb } from "$utils/dash.ts";
+import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
 
-export default function KeyExplorer(
-  { db: { databaseId } }: { db: DashDb; project: DashProject },
+export default function KvExplorer(
+  { db, id }: { db?: DashDb; id?: string },
 ) {
   const currentKey = useSignal<KvKeyJSON>([]);
   const loadingKeys = useSignal(false);
   const list = useSignal<{ key: KvKeyJSON; count: number }[]>([]);
   let keyController: AbortController | undefined;
+  const databaseId = db?.databaseId ?? id;
 
   useSignalEffect(() => {
-    const target = `/api/kv/${databaseId}/${
-      keyPartJsonToPath(currentKey.value)
-    }`;
+    const target = `/api/kv/${databaseId}/${keyJsonToPath(currentKey.value)}`;
     loadingKeys.value = true;
     if (keyController) {
       keyController.abort();
@@ -56,7 +51,7 @@ export default function KeyExplorer(
       return;
     }
     const target = `/api/kv/${databaseId}/${
-      keyPartJsonToPath(currentEntryKey.value)
+      keyJsonToPath(currentEntryKey.value)
     }?entry`;
     loadingEntry.value = true;
     if (entryController) {

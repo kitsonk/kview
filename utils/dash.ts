@@ -156,6 +156,7 @@ export function setAccessToken(token: string) {
 
 export function clearAccessToken() {
   Deno.env.delete(DENO_KV_ACCESS_TOKEN);
+  state.accessToken.value = undefined;
 }
 
 /** For the set access token, retrieve the root data, which includes information

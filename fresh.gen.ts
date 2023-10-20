@@ -8,13 +8,20 @@ import * as $2 from "./routes/_app.tsx";
 import * as $3 from "./routes/_middleware.ts";
 import * as $4 from "./routes/api/kv/[id]/[...path].ts";
 import * as $5 from "./routes/api/kv/[id]/index.ts";
-import * as $6 from "./routes/index.tsx";
-import * as $7 from "./routes/login.tsx";
-import * as $8 from "./routes/logout.tsx";
-import * as $9 from "./routes/orgs/[id].tsx";
-import * as $10 from "./routes/projects/[name]/index.tsx";
-import * as $11 from "./routes/projects/[name]/kv/[branch].tsx";
-import * as $$0 from "./islands/KeyExplorer.tsx";
+import * as $6 from "./routes/api/local/index.ts";
+import * as $7 from "./routes/docs/index.tsx";
+import * as $8 from "./routes/index.tsx";
+import * as $9 from "./routes/local/[id].tsx";
+import * as $10 from "./routes/local/index.tsx";
+import * as $11 from "./routes/login.tsx";
+import * as $12 from "./routes/logout.tsx";
+import * as $13 from "./routes/orgs/[id].tsx";
+import * as $14 from "./routes/orgs/index.tsx";
+import * as $15 from "./routes/projects/[name]/index.tsx";
+import * as $16 from "./routes/projects/[name]/kv/[branch].tsx";
+import * as $17 from "./routes/user.ts";
+import * as $$0 from "./islands/KvExplorer.tsx";
+import * as $$1 from "./islands/LocalKvList.tsx";
 
 const manifest = {
   routes: {
@@ -24,15 +31,22 @@ const manifest = {
     "./routes/_middleware.ts": $3,
     "./routes/api/kv/[id]/[...path].ts": $4,
     "./routes/api/kv/[id]/index.ts": $5,
-    "./routes/index.tsx": $6,
-    "./routes/login.tsx": $7,
-    "./routes/logout.tsx": $8,
-    "./routes/orgs/[id].tsx": $9,
-    "./routes/projects/[name]/index.tsx": $10,
-    "./routes/projects/[name]/kv/[branch].tsx": $11,
+    "./routes/api/local/index.ts": $6,
+    "./routes/docs/index.tsx": $7,
+    "./routes/index.tsx": $8,
+    "./routes/local/[id].tsx": $9,
+    "./routes/local/index.tsx": $10,
+    "./routes/login.tsx": $11,
+    "./routes/logout.tsx": $12,
+    "./routes/orgs/[id].tsx": $13,
+    "./routes/orgs/index.tsx": $14,
+    "./routes/projects/[name]/index.tsx": $15,
+    "./routes/projects/[name]/kv/[branch].tsx": $16,
+    "./routes/user.ts": $17,
   },
   islands: {
-    "./islands/KeyExplorer.tsx": $$0,
+    "./islands/KvExplorer.tsx": $$0,
+    "./islands/LocalKvList.tsx": $$1,
   },
   baseUrl: import.meta.url,
 };

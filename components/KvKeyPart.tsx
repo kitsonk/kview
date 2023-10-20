@@ -41,7 +41,7 @@ export function KvKeyPart(
   }
   return (
     <li
-      class={`bg-${color}-100 text-${color}-800 font-medium w-fit inline-block mx-1 px-2.5 py-0.5 rounded dark:(bg-${color}-900 text-${color}-300)`}
+      class={`bg-${color}-100 dark:bg-${color}-900 text-${color}-800 dark:text-${color}-300 font-medium w-fit inline-block mx-1 px-2.5 py-0.5 rounded`}
     >
       {onClick ? <a href="#" onClick={onClick}>{children}</a> : children}
     </li>

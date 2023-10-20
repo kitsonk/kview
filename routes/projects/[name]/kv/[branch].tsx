@@ -1,13 +1,13 @@
+import { Head } from "$fresh/runtime.ts";
 import { type RouteContext } from "$fresh/server.ts";
 import { AppFrame } from "$components/AppFrame.tsx";
-import KeyExplorer from "$islands/KeyExplorer.tsx";
-import { getProjectDbs, getProjectDetails } from "$utils/dash.ts";
+import KvExplorer from "$islands/KvExplorer.tsx";
+import { getProjectDbs } from "$utils/dash.ts";
 
-export default async function OrganizationDetails(
+export default async function OrgKvBranch(
   _req: Request,
   { params: { name, branch }, renderNotFound }: RouteContext,
 ) {
-  const project = await getProjectDetails(name);
   const dbs = await getProjectDbs(name);
   const db = dbs
     .find(({ branch: b }) => b === (branch === "preview" ? "*" : branch));
@@ -16,7 +16,12 @@ export default async function OrganizationDetails(
   }
   return (
     <AppFrame>
-      <KeyExplorer db={db} project={project} />
+      <Head>
+        <title>
+          {name}:{branch === "preview" ? "*" : branch} &mdash; kview
+        </title>
+      </Head>
+      <KvExplorer db={db} />
     </AppFrame>
   );
 }

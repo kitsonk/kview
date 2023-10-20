@@ -1,4 +1,7 @@
-import { encodeBase64 } from "$std/encoding/base64.ts";
+import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
+import { join } from "$std/path/mod.ts";
+
+import { state } from "./state.ts";
 
 interface KvStringJSON {
   type: "string";
@@ -96,7 +99,7 @@ function toValueJSON(value: unknown): KvValueJSON {
         return { type: "null", value };
       }
       if (value instanceof Uint8Array) {
-        return { type: "Uint8Array", value: encodeBase64(value) };
+        return { type: "Uint8Array", value: encodeBase64Url(value) };
       }
       if (value instanceof Map) {
         return { type: "Map", value: [...value.entries()] };
@@ -121,13 +124,27 @@ function toValueJSON(value: unknown): KvValueJSON {
 let currentId = "";
 let p: Promise<Deno.Kv> | undefined;
 
+const GUID_RE =
+  /[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/;
+
 export function getKv(id: string): Promise<Deno.Kv> {
-  if (!p || currentId !== id) {
-    currentId = id;
-    p?.then((kv) => kv.close());
-    p = Deno.openKv(`https://api.deno.com/databases/${id}/connect`);
+  if (p && currentId === id) {
+    return p;
   }
-  return p;
+  currentId = id;
+  p?.then((kv) => kv.close());
+  if (GUID_RE.test(id)) {
+    return p = Deno.openKv(`https://api.deno.com/databases/${id}/connect`);
+  } else {
+    if (state.localStores.value) {
+      const store = state.localStores.value.find(({ id: i }) => id === i);
+      if (store) {
+        return p = Deno.openKv(store.path);
+      }
+      throw new Error(`Store ID "${id}" not found.`);
+    }
+  }
+  throw new Error("unreachable");
 }
 
 export function pathToKey(path: string): Deno.KvKey {
@@ -137,6 +154,10 @@ export function pathToKey(path: string): Deno.KvKey {
       key.push(true);
     } else if (part === "false") {
       key.push(false);
+    } else if (part.startsWith("__u8__")) {
+      key.push(decodeBase64Url(part.slice(6)));
+    } else if (part.startsWith("__n__")) {
+      key.push(parseInt(part.slice(5), 10));
     } else if (/[0-9]+n/.test(part)) {
       key.push(BigInt(part.slice(0, -1)));
     } else {
@@ -151,21 +172,25 @@ export function pathToKey(path: string): Deno.KvKey {
   return key;
 }
 
-export function keyPartJsonToPath(key: KvKeyJSON): string {
+export function keyJsonToPath(key: KvKeyJSON): string {
   return key.map((keyPart) => {
     switch (keyPart.type) {
       case "Uint8Array":
-        throw new TypeError("Uint8Array not currently supported.");
+        return `__u8__${keyPart.value}`;
       case "bigint":
         return `${keyPart.value}n`;
       case "boolean":
         return String(keyPart.value);
       case "number":
-        return String(keyPart.value);
+        return `__n__${keyPart.value}`;
       case "string":
         return keyPart.value;
     }
   }).join("/");
+}
+
+export function keyToJson(key: Deno.KvKey): KvKeyJSON {
+  return key.map(toValueJSON) as KvKeyJSON;
 }
 
 export function keyCountToResponse(
@@ -194,4 +219,72 @@ export function entryToResponse(
     status: 200,
     statusText: "OK",
   });
+}
+
+export interface KvLocalInfo {
+  id: string;
+  name?: string;
+  path: string;
+  size: number;
+}
+
+export async function localStores() {
+  const stores: KvLocalInfo[] = [];
+  const cache = cacheDir();
+  if (cache) {
+    const locationData = join(cache, "deno", "location_data");
+    try {
+      for await (
+        const { name: id, isDirectory } of Deno.readDir(locationData)
+      ) {
+        if (isDirectory) {
+          try {
+            const path = join(locationData, id, "kv.sqlite3");
+            const { isFile, size } = await Deno.stat(
+              join(locationData, id, "kv.sqlite3"),
+            );
+            if (isFile) {
+              stores.push({ id, path, size });
+            }
+          } catch {
+            // just swallow here
+          }
+        }
+      }
+    } catch {
+      // just swallow here
+    }
+  }
+  return stores;
+}
+
+function cacheDir(): string | undefined {
+  if (Deno.build.os === "darwin") {
+    const home = homeDir();
+    if (home) {
+      return join(home, "Library/Caches");
+    }
+  } else if (Deno.build.os === "windows") {
+    return Deno.env.get("LOCALAPPDATA");
+  } else {
+    const cacheHome = Deno.env.get("XDG_CACHE_HOME");
+    if (cacheHome) {
+      return cacheHome;
+    } else {
+      const home = homeDir();
+      if (home) {
+        return join(home, ".cache");
+      }
+    }
+  }
+}
+
+function homeDir(): string | undefined {
+  if (Deno.build.os === "windows") {
+    Deno.permissions.request({ name: "env", variable: "USERPROFILE" });
+    return Deno.env.get("USERPROFILE");
+  } else {
+    Deno.permissions.request({ name: "env", variable: "HOME" });
+    return Deno.env.get("HOME");
+  }
 }

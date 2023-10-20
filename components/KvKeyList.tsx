@@ -24,7 +24,7 @@ function KvKeyItem(
     }
   }
   return (
-    <li class="py-2 hover:bg-gray(100 dark:700) group">
+    <li class="py-2 dark:hover:bg-gray-700 hover:bg-gray-200 group">
       <a
         href="#"
         onClick={onClick}

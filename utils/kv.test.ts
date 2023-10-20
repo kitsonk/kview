@@ -1,5 +1,5 @@
 import { assertEquals } from "$std/assert/assert_equals.ts";
-import { pathToKey } from "./kv.ts";
+import { keyJsonToPath, keyToJson, pathToKey } from "./kv.ts";
 
 Deno.test({
   name: "pathToKey - single string",
@@ -18,7 +18,7 @@ Deno.test({
 Deno.test({
   name: "pathToKey - number",
   fn() {
-    assertEquals(pathToKey("1000/1abc"), [1000, "1abc"]);
+    assertEquals(pathToKey("__n__1000/1abc"), [1000, "1abc"]);
   },
 });
 
@@ -37,6 +37,26 @@ Deno.test({
 Deno.test({
   name: "pathToKey - bigint",
   fn() {
-    assertEquals(pathToKey("100n/100"), [100n, 100]);
+    assertEquals(pathToKey("100n/__n__100"), [100n, 100]);
+  },
+});
+
+Deno.test({
+  name: "pathToKey - Uint8Array",
+  fn() {
+    assertEquals(pathToKey("__u8__AQID/foo"), [
+      new Uint8Array([1, 2, 3]),
+      "foo",
+    ]);
+  },
+});
+
+Deno.test({
+  name: "keyJsonToPath - Uint8Array",
+  fn() {
+    assertEquals(
+      keyJsonToPath(keyToJson([new Uint8Array([1, 2, 3])])),
+      "__u8__AQID",
+    );
   },
 });

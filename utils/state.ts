@@ -1,9 +1,12 @@
 import { signal } from "@preact/signals";
 
-function createAppState() {
-  const accessToken = signal("");
+import { type KvLocalInfo } from "./kv.ts";
 
-  return { accessToken };
+function createAppState() {
+  const accessToken = signal<string | undefined>(undefined);
+  const localStores = signal<KvLocalInfo[] | undefined>(undefined);
+
+  return { accessToken, localStores };
 }
 
 export const state = createAppState();
