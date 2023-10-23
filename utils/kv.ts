@@ -1,5 +1,5 @@
 import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
-import { join } from "$std/path/mod.ts";
+import { join } from "$std/path/join.ts";
 
 import { state } from "./state.ts";
 

@@ -1,0 +1,20 @@
+{
+  "dirs": ["docs", "static"],
+  "files": [
+    "./fresh.config.ts",
+    "./fresh.gen.ts",
+    "./LICENSE",
+    "./main.ts",
+    "./README.md",
+    "./twind.config.ts",
+    "./docs/index.md",
+    "./static/android-chrome-192x192.png",
+    "./static/android-chrome-512x512.png",
+    "./static/apple-touch-icon.png",
+    "./static/favicon-16x16.png",
+    "./static/favicon-32x32.png",
+    "./static/favicon.ico",
+    "./static/logo.svg",
+    "./static/site.webmanifest"
+  ]
+}
