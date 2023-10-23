@@ -40,12 +40,13 @@ async function main() {
     message: "Choose the installation path for kview:",
     default: "kview",
   });
-  let installPath = await $.path(installLocation).realPath();
+  let installPath = $.path(installLocation);
   if (installPath.isFileSync()) {
     $.logError("ERROR: Install path is a file! Exiting.");
     Deno.exit(1);
   }
   if (installPath.isDirSync()) {
+    installPath = await installPath.realPath();
     if (
       !(await $.confirm({
         message:
