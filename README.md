@@ -25,9 +25,9 @@ the following to start the `kview` server:
 deno task start
 ```
 
-_Note_: the [kitsonk/kview]() repository can also be cloned, though this will
-effectively be a development environment for kview, versus a standalone web
-application.
+_Note_: the [kitsonk/kview](https://github.com/kitsonk/kview) repository can
+also be cloned, though this will effectively be a development environment for
+kview, versus a standalone web application.
 
 ---
 
