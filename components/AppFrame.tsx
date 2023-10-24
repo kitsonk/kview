@@ -1,10 +1,14 @@
 import { NavItem } from "./NavItem.tsx";
+import { BreadcrumbItem, Breadcrumbs } from "$components/Breadcrumbs.tsx";
 import { state } from "$utils/state.ts";
 
 import { type ComponentChildren } from "preact";
 
 export function AppFrame(
-  { children }: { children: ComponentChildren },
+  { children, breadcrumbs }: {
+    children: ComponentChildren;
+    breadcrumbs?: BreadcrumbItem[];
+  },
 ) {
   return (
     <div class="antialiased bg-gray(50 dark:900)">
@@ -56,7 +60,8 @@ export function AppFrame(
       </aside>
 
       <main class="p-4 md:ml-64 h-auto pt-20">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
           {children}
         </div>
       </main>
