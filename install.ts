@@ -31,7 +31,7 @@ async function getDenoConfig(): Promise<DenoConfig> {
       `Error fetching base deno.json: ${res.status} ${res.statusText}`,
     );
   }
-  return JSONC.parse(await res.text());
+  return JSONC.parse(await res.text()) as unknown as DenoConfig;
 }
 
 async function main() {

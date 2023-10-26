@@ -1,0 +1,21 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repository
+        uses: actions/checkout@v3
+      
+      - name: install deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 1.X
+      
+      - name: check repo
+        run: deno task check
+
+      - name: run tests
+        run: deno task test
