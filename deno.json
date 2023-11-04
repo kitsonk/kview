@@ -2,6 +2,7 @@
   "lock": false,
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check --unstable **/*.ts && deno check --unstable **/*.tsx",
+    "test": "deno test --unstable",
     "start": "deno run -A --unstable --watch=static/,routes/ dev.ts",
     "build": "deno run -A --unstable dev.ts build",
     "preview": "deno run -A --unstable main.ts",
