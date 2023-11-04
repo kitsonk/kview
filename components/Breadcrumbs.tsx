@@ -11,10 +11,12 @@ export function Breadcrumbs(
       {breadcrumbs?.map(({ href, text }, i) => (
         <a
           href={href}
-          class="text-lg font-semibold text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100"
+          class="font-semibold text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100"
         >
           {text}
-          {i !== breadcrumbs.length - 1 ? " / " : undefined}
+          {i !== breadcrumbs.length - 1
+            ? <span class="text-gray-300 dark:text-gray-700 px-2">/</span>
+            : undefined}
         </a>
       ))}
     </div>
