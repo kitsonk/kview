@@ -63,7 +63,7 @@ export function AppFrame(
       </aside>
 
       <main class="p-4 md:ml-64 h-auto pt-20">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           {children}
         </div>
       </main>
