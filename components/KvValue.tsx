@@ -90,6 +90,12 @@ export function KvValue({ value }: { value: KvValueJSON }) {
       border = true;
       children = <span class="font-bold italic text-gray-500">null</span>;
       break;
+    case "undefined":
+      label = "Undefined";
+      color = "gray";
+      border = true;
+      children = <span class="font-bold italic text-gray-500">undefined</span>;
+      break;
     case "number":
       label = "Number";
       color = "purple";

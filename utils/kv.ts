@@ -23,6 +23,11 @@ interface KvNullJSON {
   value: null;
 }
 
+interface KvUndefinedJSON {
+  type: "undefined";
+  value: undefined;
+}
+
 interface KvBooleanJSON {
   type: "boolean";
   value: boolean;
@@ -72,6 +77,7 @@ export type KvValueJSON =
   | KvNumberJSON
   | KvBigIntJSON
   | KvNullJSON
+  | KvUndefinedJSON
   | KvBooleanJSON
   | KvUint8ArrayJSON
   | KvMapJSON
@@ -94,6 +100,8 @@ function toValueJSON(value: unknown): KvValueJSON {
       return { type: "boolean", value };
     case "number":
       return { type: "number", value };
+    case "undefined":
+      return { type: "undefined", value };
     case "object":
       if (value === null) {
         return { type: "null", value };
@@ -118,6 +126,36 @@ function toValueJSON(value: unknown): KvValueJSON {
       return { type: "string", value };
     default:
       throw new TypeError("Unable to serialize value.");
+  }
+}
+
+export function toValue(json: KvValueJSON): unknown {
+  switch (json.type) {
+    case "bigint":
+      return BigInt(json.value);
+    case "Uint8Array":
+      return decodeBase64Url(json.value);
+    case "Map":
+      return new Map(json.value);
+    case "Set":
+      return new Set(json.value);
+    case "RegExp": {
+      const parts = json.value.split("/");
+      const flags = parts.pop();
+      const [, ...pattern] = parts;
+      return new RegExp(pattern.join("/"), flags);
+    }
+    case "KvU64":
+      return new Deno.KvU64(BigInt(json.value));
+    case "boolean":
+    case "number":
+    case "null":
+    case "object":
+    case "string":
+      return json.value;
+    default:
+      // deno-lint-ignore no-explicit-any
+      throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
   }
 }
 
