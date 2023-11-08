@@ -12,6 +12,7 @@ import {
 
 interface PutBody {
   value: KvValueJSON;
+  versionstamp?: string | null;
   expireIn?: number;
   overwrite?: boolean;
 }
@@ -39,12 +40,13 @@ export const handler: Handlers = {
   async PUT(req, { params: { id, path } }) {
     try {
       const key = pathToKey(path);
-      const { value, expireIn, overwrite }: PutBody = await req.json();
+      const { value, versionstamp = null, expireIn, overwrite }: PutBody =
+        await req.json();
       assert(typeof value === "object" && "type" in value && "value" in value);
       const kv = await getKv(id);
       let op = kv.atomic();
       if (!overwrite) {
-        op = op.check({ key, versionstamp: null });
+        op = op.check({ key, versionstamp });
       }
       op = op.set(key, toValue(value), { expireIn });
       const res = await op.commit();

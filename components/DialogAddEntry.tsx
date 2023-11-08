@@ -3,11 +3,10 @@ import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { assert } from "$std/assert/assert.ts";
 import {
-  keyJsonToPath,
-  type KvKeyJSON,
-  type KvKeyPartJSON,
-  type KvValueJSON,
-} from "$utils/kv.ts";
+  formDataToKvKeyPartJSON,
+  formDataToKvValueJSON,
+} from "$utils/formData.ts";
+import { keyJsonToPath, type KvKeyJSON } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { AddButton } from "./AddButton.tsx";
@@ -15,43 +14,6 @@ import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { KvKey } from "./KvKey.tsx";
-
-function formDataToKvKeyPartJSON(type: string, value: string): KvKeyPartJSON {
-  switch (type) {
-    case "string":
-    case "bigint":
-    case "Uint8Array":
-      return { type, value };
-    case "number":
-      return { type, value: parseInt(value, 10) };
-    case "boolean":
-      return { type, value: value === "true" ? true : false };
-    default:
-      throw new TypeError(`Unexpected key part type: "${type}"`);
-  }
-}
-
-function formDataToKvValueJSON(type: string, value: string): KvValueJSON {
-  switch (type) {
-    case "string":
-    case "number":
-    case "bigint":
-    case "boolean":
-    case "Uint8Array":
-      return formDataToKvKeyPartJSON(type, value);
-    case "null":
-      return { type, value: null };
-    case "Map":
-    case "Set":
-    case "object":
-      return { type, value: JSON.parse(value) };
-    case "RegExp":
-    case "KvU64":
-      return { type, value };
-    default:
-      throw new TypeError(`Unexpected key part type: "${type}"`);
-  }
-}
 
 export function DialogAddEntry(
   { open, currentKey, databaseId, loadKeys }: {
@@ -130,7 +92,7 @@ export function DialogAddEntry(
               open.value = false;
             }
           }).catch((err) => {
-            addNotification("Error adding entry.", "error");
+            alert.value = "Error adding entry.";
             console.error(err);
           });
           evt.preventDefault();

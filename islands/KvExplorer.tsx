@@ -51,7 +51,7 @@ export default function KvExplorer(
   const currentEntry = useSignal<{ key: KvKeyJSON } | KvEntryJSON | null>(null);
   let entryController: AbortController | undefined;
 
-  useSignalEffect(() => {
+  function loadValue() {
     currentEntry.value = null;
     if (currentEntryKey.value === null) {
       return;
@@ -83,7 +83,9 @@ export default function KvExplorer(
       loadingEntry.value = false;
       keyController = undefined;
     });
-  });
+  }
+
+  useSignalEffect(loadValue);
 
   return (
     <>
@@ -123,7 +125,13 @@ export default function KvExplorer(
             <Loader />
           </div>
         )
-        : <KvEntry entry={currentEntry} />}
+        : (
+          <KvEntry
+            entry={currentEntry}
+            databaseId={databaseId}
+            loadValue={loadValue}
+          />
+        )}
     </>
   );
 }
