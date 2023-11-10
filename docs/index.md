@@ -84,10 +84,11 @@ value, which is supported by Deno KV.
 `kview` is far from functionally complete. Here is a roadmap of items that would
 be great to add to `kview`:
 
-- Add keys.
-- Edit values.
+- Improve editing/adding complex values.
 - "Batch" tooling, like syncing KV stores, batch uploading, etc.
 - Better display of Uint8Arrays.
+- Support for direct `Request` and `Response`.
+- Better support for arbitrary cloneable objects.
 - Improve accessability.
 - Ability to add a specific local KV store.
 - Ability to change the cache location for local KV stores.

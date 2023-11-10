@@ -1,4 +1,4 @@
-import { ComponentChildren } from "preact";
+import { type ComponentChildren } from "preact";
 import { type Signal } from "@preact/signals";
 import { type KvKeyJSON } from "$utils/kv.ts";
 
@@ -6,10 +6,11 @@ import IconHome from "./icons/Home.tsx";
 import { KvKeyPart } from "./KvKeyPart.tsx";
 
 export function KvKey(
-  { value, entry, showRoot }: {
+  { value, entry, showRoot, noLink }: {
     value: Signal<KvKeyJSON> | KvKeyJSON;
     entry?: Signal<KvKeyJSON | null>;
     showRoot?: boolean;
+    noLink?: boolean;
   },
 ) {
   let key: KvKeyJSON;
@@ -21,13 +22,15 @@ export function KvKey(
   } else {
     isSignal = true;
     key = value.value;
-    onClick = (evt: Event) => {
-      evt.preventDefault();
-      if (entry) {
-        entry.value = null;
-      }
-      value.value = [];
-    };
+    if (!noLink) {
+      onClick = (evt: Event) => {
+        evt.preventDefault();
+        if (entry) {
+          entry.value = null;
+        }
+        value.value = [];
+      };
+    }
   }
   key = [...key];
   const children: ComponentChildren[] = [];
@@ -37,7 +40,7 @@ export function KvKey(
       <KvKeyPart
         part={part}
         entry={entry}
-        link={isSignal
+        link={!noLink && isSignal
           ? [[...key, part], value as Signal<KvKeyJSON>]
           : undefined}
       />,

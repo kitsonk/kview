@@ -1,7 +1,10 @@
+import { AddButton } from "$components/AddButton.tsx";
+import { DialogAddEntry } from "$components/DialogAddEntry.tsx";
 import { KvKey } from "$components/KvKey.tsx";
 import { KvKeyList } from "$components/KvKeyList.tsx";
 import { KvEntry } from "$components/KvEntry.tsx";
 import { Loader } from "$components/Loader.tsx";
+import { Toaster } from "$components/Toaster.tsx";
 import { useSignal, useSignalEffect } from "@preact/signals";
 import { DashDb } from "$utils/dash.ts";
 import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
@@ -11,11 +14,12 @@ export default function KvExplorer(
 ) {
   const currentKey = useSignal<KvKeyJSON>([]);
   const loadingKeys = useSignal(false);
+  const addDialogOpen = useSignal(false);
   const list = useSignal<{ key: KvKeyJSON; count: number }[]>([]);
   let keyController: AbortController | undefined;
   const databaseId = db?.databaseId ?? id;
 
-  useSignalEffect(() => {
+  function loadKeys() {
     const target = `/api/kv/${databaseId}/${keyJsonToPath(currentKey.value)}`;
     loadingKeys.value = true;
     if (keyController) {
@@ -25,7 +29,7 @@ export default function KvExplorer(
     const { signal } = keyController;
     fetch(new URL(target, import.meta.url), { signal })
       .then((res) => {
-        if (res.status === 200) {
+        if (res.ok) {
           return res.json().then((data) => list.value = data);
         }
         console.error(
@@ -38,14 +42,16 @@ export default function KvExplorer(
         loadingKeys.value = false;
         keyController = undefined;
       });
-  });
+  }
+
+  useSignalEffect(loadKeys);
 
   const currentEntryKey = useSignal<KvKeyJSON | null>(null);
   const loadingEntry = useSignal(false);
   const currentEntry = useSignal<{ key: KvKeyJSON } | KvEntryJSON | null>(null);
   let entryController: AbortController | undefined;
 
-  useSignalEffect(() => {
+  function loadValue() {
     currentEntry.value = null;
     if (currentEntryKey.value === null) {
       return;
@@ -77,10 +83,19 @@ export default function KvExplorer(
       loadingEntry.value = false;
       keyController = undefined;
     });
-  });
+  }
+
+  useSignalEffect(loadValue);
 
   return (
     <>
+      <Toaster />
+      <DialogAddEntry
+        open={addDialogOpen}
+        currentKey={currentKey}
+        loadKeys={loadKeys}
+        databaseId={databaseId}
+      />
       <div class="border rounded p-2">
         <h2 class="font-bold mb-2">Path</h2>
         <KvKey value={currentKey} entry={currentEntryKey} showRoot />
@@ -98,6 +113,11 @@ export default function KvExplorer(
               currentEntryKey={currentEntryKey}
             />
           )}
+        <div class="w-full my-2 md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+          <AddButton onClick={() => addDialogOpen.value = true}>
+            Add entry
+          </AddButton>
+        </div>
       </div>
       {loadingEntry.value
         ? (
@@ -105,7 +125,14 @@ export default function KvExplorer(
             <Loader />
           </div>
         )
-        : <KvEntry entry={currentEntry} />}
+        : (
+          <KvEntry
+            entry={currentEntry}
+            databaseId={databaseId}
+            loadKeys={loadKeys}
+            loadValue={loadValue}
+          />
+        )}
     </>
   );
 }
