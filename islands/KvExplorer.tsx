@@ -129,6 +129,7 @@ export default function KvExplorer(
           <KvEntry
             entry={currentEntry}
             databaseId={databaseId}
+            loadKeys={loadKeys}
             loadValue={loadValue}
           />
         )}

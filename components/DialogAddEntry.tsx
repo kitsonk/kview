@@ -16,11 +16,12 @@ import { Dialog } from "./Dialog.tsx";
 import { KvKey } from "./KvKey.tsx";
 
 export function DialogAddEntry(
-  { open, currentKey, databaseId, loadKeys }: {
+  { open, currentKey, databaseId, loadKeys, subEntry }: {
     open: Signal<boolean>;
     currentKey: Signal<KvKeyJSON>;
     databaseId?: string;
     loadKeys: () => void;
+    subEntry?: boolean;
   },
 ) {
   const form = useRef<HTMLFormElement>(null);
@@ -32,7 +33,7 @@ export function DialogAddEntry(
     >
       <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-          Add entry
+          {subEntry ? "Add sub-entry" : "Add entry"}
         </h3>
         <CloseButton
           onClick={() => {
@@ -230,7 +231,9 @@ export function DialogAddEntry(
             </div>
           </fieldset>
         </div>
-        <AddButton>Add new entry</AddButton>
+        <AddButton>
+          {subEntry ? "Add new sub-entry" : "Add new entry"}
+        </AddButton>
       </form>
     </Dialog>
   );

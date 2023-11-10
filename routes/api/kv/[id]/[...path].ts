@@ -17,6 +17,10 @@ interface PutBody {
   overwrite?: boolean;
 }
 
+interface DeleteBody {
+  versionstamp: string;
+}
+
 export const handler: Handlers = {
   async GET(req, { params: { id, path } }) {
     const prefix = pathToKey(path);
@@ -56,15 +60,31 @@ export const handler: Handlers = {
         return Response.json(res, { status: 409, statusText: "Conflict" });
       }
     } catch (err) {
-      console.error(err);
       return Response.json({
         status: 400,
         statusText: "Bad Request",
         error: JSON.stringify(err),
-      }, {
+      }, { status: 400, statusText: "Bad Request" });
+    }
+  },
+  async DELETE(req, { params: { id, path } }) {
+    try {
+      const key = pathToKey(path);
+      const { versionstamp }: DeleteBody = await req.json();
+      const kv = await getKv(id);
+      const res = await kv
+        .atomic().check({ key, versionstamp }).delete(key).commit();
+      if (res.ok) {
+        return Response.json(res, { status: 200, statusText: "OK" });
+      } else {
+        return Response.json(res, { status: 409, statusText: "Conflict" });
+      }
+    } catch (err) {
+      return Response.json({
         status: 400,
         statusText: "Bad Request",
-      });
+        error: JSON.stringify(err),
+      }, { status: 400, statusText: "BadRequest" });
     }
   },
 };

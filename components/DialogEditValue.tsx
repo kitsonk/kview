@@ -7,7 +7,6 @@ import {
 } from "$utils/formData.ts";
 import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
 
-import { AddButton } from "./AddButton.tsx";
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";

@@ -1,12 +1,14 @@
 import { type Signal, useSignal } from "@preact/signals";
 import { type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
 
+import { DialogAddEntry } from "./DialogAddEntry.tsx";
+import { DialogDeleteEntry } from "./DialogDeleteEntry.tsx";
 import { DialogEditValue } from "./DialogEditValue.tsx";
 import { KvKey } from "./KvKey.tsx";
 import { KvValue } from "./KvValue.tsx";
 
 export function KvEntry(
-  { entry, loadValue, databaseId }: {
+  { entry, loadValue, loadKeys, databaseId }: {
     entry: Signal<
       | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
       | KvEntryJSON
@@ -14,6 +16,7 @@ export function KvEntry(
     >;
     databaseId?: string;
     loadValue(): void;
+    loadKeys(): void;
   },
 ) {
   if (!entry.value) {
@@ -21,6 +24,9 @@ export function KvEntry(
   }
   const { key, versionstamp, value } = entry.value;
   const editDialogOpen = useSignal(false);
+  const addEntryDialogOpen = useSignal(false);
+  const deleteEntryDialogOpen = useSignal(false);
+  const currentKey = useSignal(key);
   return (
     <>
       <DialogEditValue
@@ -28,6 +34,20 @@ export function KvEntry(
         entry={entry}
         databaseId={databaseId}
         loadValue={loadValue}
+      />
+      <DialogAddEntry
+        open={addEntryDialogOpen}
+        currentKey={currentKey}
+        databaseId={databaseId}
+        loadKeys={loadKeys}
+        subEntry
+      />
+      <DialogDeleteEntry
+        open={deleteEntryDialogOpen}
+        entry={entry}
+        databaseId={databaseId}
+        loadValue={loadValue}
+        loadKeys={loadKeys}
       />
       <div class="border rounded p-2 lg:col-span-2">
         <h2 class="font-bold mb-2">Key</h2>
@@ -56,6 +76,26 @@ export function KvEntry(
           >
             {value ? "Edit value" : "Add value"}
           </button>
+          {value
+            ? (
+              <>
+                <button
+                  class="flex items-center justify-center font-bold text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                  type="button"
+                  onClick={() => addEntryDialogOpen.value = true}
+                >
+                  Add sub-entry
+                </button>
+                <button
+                  class="flex items-center justify-center font-bold text-white bg-primary-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+                  type="button"
+                  onClick={() => deleteEntryDialogOpen.value = true}
+                >
+                  Delete entry
+                </button>
+              </>
+            )
+            : undefined}
         </div>
       </div>
     </>
