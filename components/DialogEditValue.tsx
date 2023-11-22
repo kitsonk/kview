@@ -51,7 +51,7 @@ export function DialogEditValue(
           }}
         />
       </div>
-      {alert.value && <ErrorAlert>{alert.value}</ErrorAlert>}
+      <ErrorAlert>{alert}</ErrorAlert>
       <form
         method="dialog"
         ref={form}
