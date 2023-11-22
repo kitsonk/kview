@@ -1,5 +1,14 @@
 # kview change log
 
+## Version 0.3.0
+
+- feat: add breadcrumbs (#2)
+- feat: add breadcrumbs to orgs, projects (#3)
+- feat: support remote stores (fba563c)
+- fix: tweak breadcrumbs (f3df252)
+- fix: add background on hover in EditLabel component (#4)
+- chore: update fresh (0ec6d05)
+
 ## Version 0.2.0
 
 - feat: support adding new entries (24a2bda)
