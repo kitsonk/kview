@@ -19,6 +19,32 @@ press <kbd>Enter</kbd> or click elsewhere to save the value. Pressing
 Navigating to an individual local KV store will allow you to navigate the
 contents of the store.
 
+## Remote KV
+
+You can connect to arbitrary remote Deno KV stores. This is specifically
+designed to be able to connect to
+[hosted `denokv` instances](https://deno.com/blog/kv-is-open-source-with-continuous-backup#self-host-deno-kv-with-denokv).
+
+Remote KV stores can be added by selecting the `Add remote store` button which
+will open an add dialog. You will be prompted for the URL and access token to
+connect to the instance as well as an optional name making it easier to identify
+the instance.
+
+Currently, there is no easy way to validate a remote connection URL. Deno will
+continually try to connect to remote locations even if the connection is wrong.
+Therefore there is a "Validate connection" button when adding or editing the
+configuration of a remote store.
+
+You can delete the connection information to a remote store by selecting the
+store in the list of remotes and choosing to delete it. This will only delete
+the configuration information held in `kview` and does not modify anything in
+the remote store.
+
+Remote servers are accessible by everyone who has access to the instance of
+`kview` and the connection information is persisted in Deno CLI via local
+storage, which means they will be persisted from invocation to invocation of the
+server.
+
 ## Deno Deploy KV
 
 In order to provide connections to remote Deno Deploy KV stores, the application
@@ -78,6 +104,14 @@ value, which is supported by Deno KV.
   be displayed separately, and in the sort order provided by Deno KV, but there
   is no way to tell one Uint8Array key part from another.
 - `kview` cannot determine the "origin" associated with local KV stores.
+- Deno currently does not handle remote stores well enough to be resilient to
+  accidental user misconfiguration (see
+  [denoland/deno#21211](https://github.com/denoland/deno/issues/21211) and
+  [denoland/deno#21263](https://github.com/denoland/deno/issues/21263). When
+  viewing a remote store that is not correctly configured, it will simply appear
+  to "hang", loading indefinitely. Use the "Validate connection" button when
+  adding or updating the configuration to attempt to diagnose configuration
+  issues.
 
 ## Roadmap Items
 

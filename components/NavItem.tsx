@@ -6,6 +6,7 @@ import IconLocal from "./icons/Local.tsx";
 import IconLogin from "./icons/Login.tsx";
 import IconLogout from "./icons/Logout.tsx";
 import IconOrganization from "./icons/Organization.tsx";
+import IconRemote from "./icons/Remote.tsx";
 import IconUser from "./icons/User.tsx";
 
 const ICONS = {
@@ -15,6 +16,7 @@ const ICONS = {
   "login": <IconLogin />,
   "logout": <IconLogout />,
   "org": <IconOrganization />,
+  "remote": <IconRemote />,
   "user": <IconUser />,
 } as const;
 

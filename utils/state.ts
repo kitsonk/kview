@@ -1,7 +1,12 @@
 import { type ComponentChildren } from "preact";
-import { signal } from "@preact/signals";
+import { effect, signal } from "@preact/signals";
 
 import { type KvLocalInfo } from "./kv.ts";
+import {
+  getRemoteStores,
+  type RemoteStoreInfo,
+  setRemoteStores,
+} from "./remoteStores.ts";
 
 type NotificationType = "error" | "warning" | "success";
 
@@ -15,9 +20,12 @@ export interface Notification {
 function createAppState() {
   const accessToken = signal<string | undefined>(undefined);
   const localStores = signal<KvLocalInfo[] | undefined>(undefined);
+  const remoteStores = signal<RemoteStoreInfo[]>(getRemoteStores());
   const notifications = signal<Notification[]>([]);
 
-  return { accessToken, localStores, notifications };
+  effect(() => setRemoteStores(remoteStores.value));
+
+  return { accessToken, localStores, remoteStores, notifications };
 }
 
 export const state = createAppState();

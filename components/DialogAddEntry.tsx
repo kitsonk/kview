@@ -13,6 +13,7 @@ import { AddButton } from "./AddButton.tsx";
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
+import { Label } from "./Label.tsx";
 import { KvKey } from "./KvKey.tsx";
 
 export function DialogAddEntry(
@@ -43,7 +44,7 @@ export function DialogAddEntry(
           }}
         />
       </div>
-      {alert.value && <ErrorAlert>{alert.value}</ErrorAlert>}
+      <ErrorAlert>{alert}</ErrorAlert>
       <form
         method="dialog"
         ref={form}
@@ -107,12 +108,7 @@ export function DialogAddEntry(
             <KvKey value={currentKey} showRoot noLink />
           </div>
           <div>
-            <label
-              for="key_part"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Key Part
-            </label>
+            <Label for="key_part">Key Part</Label>
             <input
               type="text"
               name="key_part"
@@ -123,12 +119,7 @@ export function DialogAddEntry(
             />
           </div>
           <div>
-            <label
-              for="key_part_type"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Key Part Type
-            </label>
+            <Label for="key_part_type">Key Part Type</Label>
             <select
               id="key_part_type"
               name="key_part_type"
@@ -142,12 +133,7 @@ export function DialogAddEntry(
             </select>
           </div>
           <div class="sm:col-span-2">
-            <label
-              for="value"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Value
-            </label>
+            <Label for="value">Value</Label>
             <textarea
               id="value"
               name="value"
@@ -158,12 +144,7 @@ export function DialogAddEntry(
             </textarea>
           </div>
           <div class="sm:col-span-2">
-            <label
-              for="value_type"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Value Type
-            </label>
+            <Label for="value_type">Value Type</Label>
             <select
               id="value_type"
               name="value_type"
@@ -183,12 +164,7 @@ export function DialogAddEntry(
             </select>
           </div>
           <div>
-            <label
-              for="expires_in"
-              class="block mb-2 test-sm font-medium text-gray-900 dark:text-white"
-            >
-              Expires In
-            </label>
+            <Label for="expires_in">Expires In</Label>
             <input
               type="number"
               id="expires_in"
@@ -213,12 +189,7 @@ export function DialogAddEntry(
                 />
               </div>
               <div class="ml-2 text-sm">
-                <label
-                  for="overwrite"
-                  class="font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Overwrite if exists
-                </label>
+                <Label for="overwrite">Overwrite if exists</Label>
                 <p
                   id="overwrite-text"
                   class="text-xs font-normal text-gray-500 dark:text-gray-300 max-w-xs"

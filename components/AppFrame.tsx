@@ -53,14 +53,16 @@ export function AppFrame(
             {state.localStores.value?.length
               ? <NavItem icon="local" href="/local">Local</NavItem>
               : undefined}
-            {state.accessToken.value
-              ? (
+            {state.accessToken.value &&
+              (
                 <>
                   <NavItem icon="user" href="/user">User</NavItem>
                   <NavItem icon="org" href="/orgs">Organizations</NavItem>
-                  <NavItem icon="logout" href="/logout">Logout</NavItem>
                 </>
-              )
+              )}
+            <NavItem icon="remote" href="/remote">Remote</NavItem>
+            {state.accessToken.value
+              ? <NavItem icon="logout" href="/logout">Logout</NavItem>
               : <NavItem icon="login" href="/login">Login</NavItem>}
           </ul>
           <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">

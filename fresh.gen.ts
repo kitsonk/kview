@@ -9,19 +9,25 @@ import * as $3 from "./routes/_middleware.ts";
 import * as $4 from "./routes/api/kv/[id]/[...path].ts";
 import * as $5 from "./routes/api/kv/[id]/index.ts";
 import * as $6 from "./routes/api/local/index.ts";
-import * as $7 from "./routes/docs/index.tsx";
-import * as $8 from "./routes/index.tsx";
-import * as $9 from "./routes/local/[id].tsx";
-import * as $10 from "./routes/local/index.tsx";
-import * as $11 from "./routes/login.tsx";
-import * as $12 from "./routes/logout.tsx";
-import * as $13 from "./routes/orgs/[id].tsx";
-import * as $14 from "./routes/orgs/index.tsx";
-import * as $15 from "./routes/projects/[name]/index.tsx";
-import * as $16 from "./routes/projects/[name]/kv/[branch].tsx";
-import * as $17 from "./routes/user.ts";
+import * as $7 from "./routes/api/remote/check.ts";
+import * as $8 from "./routes/api/remote/index.ts";
+import * as $9 from "./routes/docs/index.tsx";
+import * as $10 from "./routes/index.tsx";
+import * as $11 from "./routes/local/[id].tsx";
+import * as $12 from "./routes/local/index.tsx";
+import * as $13 from "./routes/login.tsx";
+import * as $14 from "./routes/logout.tsx";
+import * as $15 from "./routes/orgs/[id].tsx";
+import * as $16 from "./routes/orgs/index.tsx";
+import * as $17 from "./routes/projects/[name]/index.tsx";
+import * as $18 from "./routes/projects/[name]/kv/[branch].tsx";
+import * as $19 from "./routes/remote/[id].tsx";
+import * as $20 from "./routes/remote/index.tsx";
+import * as $21 from "./routes/user.ts";
 import * as $$0 from "./islands/KvExplorer.tsx";
 import * as $$1 from "./islands/LocalKvList.tsx";
+import * as $$2 from "./islands/RemoteControls.tsx";
+import * as $$3 from "./islands/RemoteKvList.tsx";
 
 const manifest = {
   routes: {
@@ -32,21 +38,27 @@ const manifest = {
     "./routes/api/kv/[id]/[...path].ts": $4,
     "./routes/api/kv/[id]/index.ts": $5,
     "./routes/api/local/index.ts": $6,
-    "./routes/docs/index.tsx": $7,
-    "./routes/index.tsx": $8,
-    "./routes/local/[id].tsx": $9,
-    "./routes/local/index.tsx": $10,
-    "./routes/login.tsx": $11,
-    "./routes/logout.tsx": $12,
-    "./routes/orgs/[id].tsx": $13,
-    "./routes/orgs/index.tsx": $14,
-    "./routes/projects/[name]/index.tsx": $15,
-    "./routes/projects/[name]/kv/[branch].tsx": $16,
-    "./routes/user.ts": $17,
+    "./routes/api/remote/check.ts": $7,
+    "./routes/api/remote/index.ts": $8,
+    "./routes/docs/index.tsx": $9,
+    "./routes/index.tsx": $10,
+    "./routes/local/[id].tsx": $11,
+    "./routes/local/index.tsx": $12,
+    "./routes/login.tsx": $13,
+    "./routes/logout.tsx": $14,
+    "./routes/orgs/[id].tsx": $15,
+    "./routes/orgs/index.tsx": $16,
+    "./routes/projects/[name]/index.tsx": $17,
+    "./routes/projects/[name]/kv/[branch].tsx": $18,
+    "./routes/remote/[id].tsx": $19,
+    "./routes/remote/index.tsx": $20,
+    "./routes/user.ts": $21,
   },
   islands: {
     "./islands/KvExplorer.tsx": $$0,
     "./islands/LocalKvList.tsx": $$1,
+    "./islands/RemoteControls.tsx": $$2,
+    "./islands/RemoteKvList.tsx": $$3,
   },
   baseUrl: import.meta.url,
 };

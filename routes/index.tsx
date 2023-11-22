@@ -2,6 +2,7 @@ import { AppFrame } from "$components/AppFrame.tsx";
 import { OrgList } from "$components/OrgList.tsx";
 import { User } from "$components/User.tsx";
 import LocalKvList from "$islands/LocalKvList.tsx";
+import RemoteKvList from "$islands/RemoteKvList.tsx";
 import { getRootData } from "$utils/dash.ts";
 import { state } from "$utils/state.ts";
 
@@ -15,9 +16,7 @@ export default async function Home() {
   }
   return (
     <AppFrame>
-      {state.localStores.value
-        ? <LocalKvList stores={state.localStores.value} />
-        : undefined}
+      <LocalKvList />
       {user && (
         <div>
           <h1 class="text-xl font-bold py-2">User</h1>
@@ -25,6 +24,7 @@ export default async function Home() {
         </div>
       )}
       {data && <OrgList data={data} />}
+      <RemoteKvList stores={state.remoteStores.value} />
     </AppFrame>
   );
 }

@@ -11,7 +11,7 @@ function Org({ data: { name, id } }: { data: DashOrganization }) {
           class="flex items-center border rounded p-2 hover:bg-gray(200 dark:800)"
         >
           <IconOrganization size={16} />
-          <div class="px-4">{name}</div>
+          <div class="px-4 font-semibold">{name}</div>
         </a>
       </li>
     )

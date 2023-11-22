@@ -1,7 +1,16 @@
 import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
 import { join } from "$std/path/join.ts";
 
+import { setAccessToken } from "./dash.ts";
+import { findById } from "./remoteStores.ts";
 import { state } from "./state.ts";
+
+export interface KvLocalInfo {
+  id: string;
+  name?: string;
+  path: string;
+  size: number;
+}
 
 interface KvStringJSON {
   type: "string";
@@ -174,7 +183,11 @@ export function getKv(id: string): Promise<Deno.Kv> {
   if (GUID_RE.test(id)) {
     return p = Deno.openKv(`https://api.deno.com/databases/${id}/connect`);
   } else {
-    if (state.localStores.value) {
+    const maybeRemote = findById(id, state.remoteStores.value);
+    if (maybeRemote) {
+      setAccessToken(maybeRemote.accessToken);
+      return p = Deno.openKv(maybeRemote.url);
+    } else if (state.localStores.value) {
       const store = state.localStores.value.find(({ id: i }) => id === i);
       if (store) {
         return p = Deno.openKv(store.path);
@@ -257,13 +270,6 @@ export function entryToResponse(
     status: 200,
     statusText: "OK",
   });
-}
-
-export interface KvLocalInfo {
-  id: string;
-  name?: string;
-  path: string;
-  size: number;
 }
 
 export async function localStores() {
