@@ -3,7 +3,6 @@ import { type RouteContext } from "$fresh/server.ts";
 import { AppFrame } from "$components/AppFrame.tsx";
 import { ProjectList } from "$components/ProjectList.tsx";
 import { getOrganizationDetail, getRootData } from "$utils/dash.ts";
-import { BreadcrumbItem } from "$components/Breadcrumbs.tsx";
 
 export default async function OrganizationDetails(
   _req: Request,
@@ -11,20 +10,21 @@ export default async function OrganizationDetails(
 ) {
   let { projects, name } = await getOrganizationDetail(id);
   const isUser = name === null;
-  if (!name) {
+  if (!isUser) {
     name = (await getRootData()).user.name;
   }
-  const breadcrumbs: BreadcrumbItem[] = isUser
-    ? [
-      { href: "/user", text: "User" },
-    ]
-    : [
-      { href: "/orgs", text: "Organizations" },
-      { href: `/orgs/${id}`, text: name },
-    ];
 
   return (
-    <AppFrame breadcrumbs={breadcrumbs}>
+    <AppFrame
+      breadcrumbs={isUser
+        ? [
+          { href: "/user", text: "User" },
+        ]
+        : [
+          { href: "/orgs", text: "Organizations" },
+          { href: `/orgs/${id}`, text: name! },
+        ]}
+    >
       <Head>
         <title>{name} &mdash; kview</title>
       </Head>
