@@ -42,27 +42,3 @@ export function formDataToKvValueJSON(
       throw new TypeError(`Unexpected type: "${type}"`);
   }
 }
-
-export function kvValueJSONToFormData(
-  value: KvValueJSON,
-): [type: string, value: string] {
-  switch (value.type) {
-    case "string":
-    case "bigint":
-    case "Uint8Array":
-    case "RegExp":
-    case "KvU64":
-      return [value.type, value.value];
-    case "number":
-    case "boolean":
-      return [value.type, String(value.value)];
-    case "null":
-      return [value.type, "null"];
-    case "Map":
-    case "Set":
-    case "object":
-      return [value.type, JSON.stringify(value.value)];
-    default:
-      throw new TypeError(`Unexpected type: "${value.type}"`);
-  }
-}

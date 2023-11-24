@@ -1,16 +1,14 @@
 import { type ComponentChildren } from "preact";
 import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
-import {
-  formDataToKvValueJSON,
-  kvValueJSONToFormData,
-} from "$utils/formData.ts";
+import { formDataToKvValueJSON } from "$utils/formData.ts";
 import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { KvKey } from "./KvKey.tsx";
+import { KvValueEditor } from "./KvValueEditor.tsx";
 import { assert } from "$std/assert/assert.ts";
 import { addNotification } from "$utils/state.ts";
 
@@ -31,9 +29,7 @@ export function DialogEditValue(
   }
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
-  const [valueType, value] = entry.value.value
-    ? kvValueJSONToFormData(entry.value.value)
-    : ["string", undefined];
+
   return (
     <Dialog
       class="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
@@ -115,64 +111,7 @@ export function DialogEditValue(
             </h2>
             <KvKey value={entry.value.key} noLink />
           </div>
-          <div class="sm:col-span-2">
-            <label
-              for="value"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Value
-            </label>
-            <textarea
-              id="value"
-              name="value"
-              rows={4}
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Provide a value for the entry"
-              value={value}
-            >
-            </textarea>
-          </div>
-          <div class="sm:col-span-2">
-            <label
-              for="value_type"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Value Type
-            </label>
-            <select
-              id="value_type"
-              name="value_type"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            >
-              <option selected={valueType === "string"} value="string">
-                String
-              </option>
-              <option selected={valueType === "number"} value="number">
-                Number
-              </option>
-              <option selected={valueType === "bigint"} value="bigint">
-                BigInt
-              </option>
-              <option selected={valueType === "null"} value="null">Null</option>
-              <option selected={valueType === "boolean"} value="boolean">
-                Boolean
-              </option>
-              <option selected={valueType === "object"} value="object">
-                JSON
-              </option>
-              <option selected={valueType === "Uint8Array"} value="Uint8Array">
-                Uint8Array
-              </option>
-              <option selected={valueType === "Map"} value="Map">Map</option>
-              <option selected={valueType === "Set"} value="Set">Set</option>
-              <option selected={valueType === "RegExp"} value="RegExp">
-                RegExp
-              </option>
-              <option selected={valueType === "KvU64"} value="KvU64">
-                KvU64
-              </option>
-            </select>
-          </div>
+          <KvValueEditor value={entry.value.value} />
           <div>
             <label
               for="expires_in"
