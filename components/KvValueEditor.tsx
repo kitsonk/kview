@@ -111,13 +111,14 @@ export function KvValueEditor({ value }: { value?: KvValueJSON | undefined }) {
         );
       case "object":
         return (
-          <EditorJson
-            id="value"
-            name="value"
-            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            placeholder="Provide a value for the entry"
-            value={valueValue}
-          />
+          <div class="max-h-48 overflow-auto max-w-3xl text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+            <EditorJson
+              id="value"
+              name="value"
+              placeholder="Provide a value for the entry"
+              value={valueValue}
+            />
+          </div>
         );
       default:
         return (
