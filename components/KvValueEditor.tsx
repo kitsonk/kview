@@ -1,6 +1,7 @@
-import { type ComponentChildren } from "preact";
 import { useComputed, useSignal } from "@preact/signals";
 import { KvValueJSON } from "$utils/kv.ts";
+
+import { EditorJson } from "./EditorJson.tsx";
 
 function kvValueJSONToFormData(
   value: KvValueJSON,
@@ -26,7 +27,7 @@ function kvValueJSONToFormData(
   }
 }
 
-export function KvValueEditor({ value }: { value: KvValueJSON | undefined }) {
+export function KvValueEditor({ value }: { value?: KvValueJSON | undefined }) {
   const [valueTypeValue, v] = value
     ? kvValueJSONToFormData(value)
     : ["string", undefined];
@@ -106,6 +107,16 @@ export function KvValueEditor({ value }: { value: KvValueJSON | undefined }) {
             placeholder="Provide a regular expression"
             value={valueValue}
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
+          />
+        );
+      case "object":
+        return (
+          <EditorJson
+            id="value"
+            name="value"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Provide a value for the entry"
+            value={valueValue}
           />
         );
       default:

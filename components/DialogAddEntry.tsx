@@ -15,6 +15,7 @@ import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { Label } from "./Label.tsx";
 import { KvKey } from "./KvKey.tsx";
+import { KvValueEditor } from "./KvValueEditor.tsx";
 
 export function DialogAddEntry(
   { open, currentKey, databaseId, loadKeys, subEntry }: {
@@ -132,37 +133,7 @@ export function DialogAddEntry(
               <option value="Uint8Array">Uint8Array</option>
             </select>
           </div>
-          <div class="sm:col-span-2">
-            <Label for="value">Value</Label>
-            <textarea
-              id="value"
-              name="value"
-              rows={4}
-              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Provide a value for the entry"
-            >
-            </textarea>
-          </div>
-          <div class="sm:col-span-2">
-            <Label for="value_type">Value Type</Label>
-            <select
-              id="value_type"
-              name="value_type"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            >
-              <option selected value="string">String</option>
-              <option value="number">Number</option>
-              <option value="bigint">BigInt</option>
-              <option value="null">Null</option>
-              <option value="boolean">Boolean</option>
-              <option value="object">JSON</option>
-              <option value="Uint8Array">Uint8Array</option>
-              <option value="Map">Map</option>
-              <option value="Set">Set</option>
-              <option value="RegExp">RegExp</option>
-              <option value="KvU64">KvU64</option>
-            </select>
-          </div>
+          <KvValueEditor />
           <div>
             <Label for="expires_in">Expires In</Label>
             <input

@@ -1,3 +1,4 @@
+import { highlightJson } from "$utils/highlight.ts";
 import { type KvValueJSON } from "$utils/kv.ts";
 import { decodeBase64Url } from "$std/encoding/base64url.ts";
 
@@ -105,7 +106,7 @@ export function KvValue({ value }: { value: KvValueJSON }) {
       label = "JSON";
       color = "blue";
       children = (
-        <pre><code>{JSON.stringify(value.value, undefined, "  ")}</code></pre>
+        <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(value.value) }}></code></pre>
       );
       break;
     case "string":
