@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.4.0
+
+- feat: improve editing values (ebde17b)
+- feat: rich JSON editing and display (d3fc0b1)
+- chore: update std (449c480)
+- chore: minor cleanups (a950742)
+
 ## Version 0.3.0
 
 - feat: add breadcrumbs (#2)
