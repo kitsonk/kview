@@ -46,10 +46,10 @@ export function EditLabel(
   return view.value === View.Label
     ? (
       <span
-        class={labelClass}
+        class={value.value ? labelClass : `${labelClass} italic`}
         onClick={() => view.value = View.Input}
       >
-        {value.value || <span class="italic">{emptyDisplay}</span>}
+        {value.value || emptyDisplay}
       </span>
     )
     : (
@@ -60,7 +60,7 @@ export function EditLabel(
         class={inputClass}
         id={id}
         name={name}
-        onChange={(e) => {
+        onInput={(e) => {
           if (!escaped) {
             current.value = e.currentTarget.value;
           }

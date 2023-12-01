@@ -1,6 +1,7 @@
 import { Head } from "$fresh/runtime.ts";
 import { AppFrame } from "$components/AppFrame.tsx";
 import LocalKvList from "$islands/LocalKvList.tsx";
+import { state } from "$utils/state.ts";
 
 export default function Local() {
   return (
@@ -8,7 +9,7 @@ export default function Local() {
       <Head>
         <title>Local Stores &mdash; kview</title>
       </Head>
-      <LocalKvList />
+      <LocalKvList stores={state.localStores.value} />
     </AppFrame>
   );
 }

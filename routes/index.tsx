@@ -16,7 +16,7 @@ export default async function Home() {
   }
   return (
     <AppFrame>
-      <LocalKvList />
+      <LocalKvList stores={state.localStores.value} />
       {user && (
         <div>
           <h1 class="text-xl font-bold py-2">User</h1>
