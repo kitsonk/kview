@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.4.1
+
+- fix: better sizing JSON edit box (d25f125)
+- fix: edit label of local stores (31f3ab7)
+
 ## Version 0.4.0
 
 - feat: improve editing values (ebde17b)
