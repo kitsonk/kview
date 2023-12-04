@@ -72,6 +72,20 @@ interface KvObjectJSON {
   value: unknown;
 }
 
+interface KvErrorJSON {
+  type: "Error";
+  value: {
+    name: string;
+    message: string;
+    stack?: string;
+  };
+}
+
+interface KvDateJSON {
+  type: "Date";
+  value: string;
+}
+
 export type KvKeyPartJSON =
   | KvStringJSON
   | KvNumberJSON
@@ -93,7 +107,9 @@ export type KvValueJSON =
   | KvSetJSON
   | KvRegExpJSON
   | KvKvU64JSON
-  | KvObjectJSON;
+  | KvObjectJSON
+  | KvErrorJSON
+  | KvDateJSON;
 
 export interface KvEntryJSON {
   key: KvKeyJSON;
@@ -130,12 +146,23 @@ function toValueJSON(value: unknown): KvValueJSON {
       if (value instanceof Deno.KvU64) {
         return { type: "KvU64", value: String(value) };
       }
+      if (value instanceof Error) {
+        const { name, message, stack } = value;
+        return { type: "Error", value: { name, message, stack } };
+      }
+      if (value instanceof Date) {
+        return { type: "Date", value: value.toJSON() };
+      }
       return { type: "object", value };
     case "string":
       return { type: "string", value };
     default:
       throw new TypeError("Unable to serialize value.");
   }
+}
+
+export function isEditable(value: KvValueJSON | undefined): boolean {
+  return !!(value && (!["Error"].includes(value.type)));
 }
 
 export function toValue(json: KvValueJSON): unknown {
@@ -156,6 +183,8 @@ export function toValue(json: KvValueJSON): unknown {
     }
     case "KvU64":
       return new Deno.KvU64(BigInt(json.value));
+    case "Date":
+      return new Date(json.value);
     case "boolean":
     case "number":
     case "null":

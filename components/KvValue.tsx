@@ -102,6 +102,37 @@ export function KvValue({ value }: { value: KvValueJSON }) {
       color = "purple";
       children = String(value.value);
       break;
+    case "Date":
+      label = "Date";
+      color = "orange";
+      children = String(value.value);
+      break;
+    case "Error":
+      label = "Error";
+      color = "blue";
+      children = (
+        <table class="w-full">
+          <tbody>
+            <tr>
+              <td>Name:</td>
+              <td>{value.value.name}</td>
+            </tr>
+            <tr>
+              <td>Message:</td>
+              <td>{value.value.message}</td>
+            </tr>
+            {value.value.stack && (
+              <tr>
+                <td>Stack:</td>
+                <td>
+                  <pre>{value.value.stack}</pre>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      );
+      break;
     case "object":
       label = "JSON";
       color = "blue";

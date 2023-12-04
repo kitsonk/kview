@@ -36,6 +36,7 @@ export function formDataToKvValueJSON(
     case "object":
       return { type, value: JSON.parse(value) };
     case "RegExp":
+    case "Date":
     case "KvU64":
       return { type, value };
     default:

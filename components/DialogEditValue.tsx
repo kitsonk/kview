@@ -1,16 +1,16 @@
 import { type ComponentChildren } from "preact";
 import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
+import { assert } from "$std/assert/assert.ts";
 import { formDataToKvValueJSON } from "$utils/formData.ts";
 import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
+import { addNotification } from "$utils/state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { KvKey } from "./KvKey.tsx";
 import { KvValueEditor } from "./KvValueEditor.tsx";
-import { assert } from "$std/assert/assert.ts";
-import { addNotification } from "$utils/state.ts";
 
 export function DialogEditValue(
   { open, entry, databaseId, loadValue }: {

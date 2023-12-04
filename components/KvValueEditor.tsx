@@ -11,6 +11,7 @@ function kvValueJSONToFormData(
     case "bigint":
     case "Uint8Array":
     case "RegExp":
+    case "Date":
     case "KvU64":
       return [value.type, value.value];
     case "number":
@@ -109,6 +110,19 @@ export function KvValueEditor({ value }: { value?: KvValueJSON | undefined }) {
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           />
         );
+      case "Date":
+        return (
+          <input
+            id="value"
+            name="value"
+            type="text"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            pattern="[0-9]{4}-((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(0[469]|11)-(0[1-9]|[12][0-9]|30)|(02)-(0[1-9]|[12][0-9]))T(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])\.[0-9]{3}Z"
+            placeholder="Provide an ISO format Date"
+            value={valueValue}
+            onChange={(evt) => valueValue.value = evt.currentTarget.value}
+          />
+        );
       case "object":
         return (
           <div class="max-h-48 overflow-auto max-w-3xl text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -172,6 +186,7 @@ export function KvValueEditor({ value }: { value?: KvValueJSON | undefined }) {
           <option value="Set">Set</option>
           <option value="RegExp">RegExp</option>
           <option value="KvU64">KvU64</option>
+          <option value="Date">Date</option>
         </select>
       </div>
     </>
