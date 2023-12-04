@@ -2,65 +2,66 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from "./routes/_404.tsx";
-import * as $1 from "./routes/_500.tsx";
-import * as $2 from "./routes/_app.tsx";
-import * as $3 from "./routes/_middleware.ts";
-import * as $4 from "./routes/api/kv/[id]/[...path].ts";
-import * as $5 from "./routes/api/kv/[id]/index.ts";
-import * as $6 from "./routes/api/local/index.ts";
-import * as $7 from "./routes/api/remote/check.ts";
-import * as $8 from "./routes/api/remote/index.ts";
-import * as $9 from "./routes/docs/index.tsx";
-import * as $10 from "./routes/index.tsx";
-import * as $11 from "./routes/local/[id].tsx";
-import * as $12 from "./routes/local/index.tsx";
-import * as $13 from "./routes/login.tsx";
-import * as $14 from "./routes/logout.tsx";
-import * as $15 from "./routes/orgs/[id].tsx";
-import * as $16 from "./routes/orgs/index.tsx";
-import * as $17 from "./routes/projects/[name]/index.tsx";
-import * as $18 from "./routes/projects/[name]/kv/[branch].tsx";
-import * as $19 from "./routes/remote/[id].tsx";
-import * as $20 from "./routes/remote/index.tsx";
-import * as $21 from "./routes/user.ts";
-import * as $$0 from "./islands/KvExplorer.tsx";
-import * as $$1 from "./islands/LocalKvList.tsx";
-import * as $$2 from "./islands/RemoteControls.tsx";
-import * as $$3 from "./islands/RemoteKvList.tsx";
+import * as $_404 from "./routes/_404.tsx";
+import * as $_500 from "./routes/_500.tsx";
+import * as $_app from "./routes/_app.tsx";
+import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_kv_id_path_ from "./routes/api/kv/[id]/[...path].ts";
+import * as $api_kv_id_index from "./routes/api/kv/[id]/index.ts";
+import * as $api_local_index from "./routes/api/local/index.ts";
+import * as $api_remote_check from "./routes/api/remote/check.ts";
+import * as $api_remote_index from "./routes/api/remote/index.ts";
+import * as $docs_index from "./routes/docs/index.tsx";
+import * as $index from "./routes/index.tsx";
+import * as $local_id_ from "./routes/local/[id].tsx";
+import * as $local_index from "./routes/local/index.tsx";
+import * as $login from "./routes/login.tsx";
+import * as $logout from "./routes/logout.tsx";
+import * as $orgs_id_ from "./routes/orgs/[id].tsx";
+import * as $orgs_index from "./routes/orgs/index.tsx";
+import * as $projects_name_index from "./routes/projects/[name]/index.tsx";
+import * as $projects_name_kv_branch_ from "./routes/projects/[name]/kv/[branch].tsx";
+import * as $remote_id_ from "./routes/remote/[id].tsx";
+import * as $remote_index from "./routes/remote/index.tsx";
+import * as $user from "./routes/user.ts";
+import * as $KvExplorer from "./islands/KvExplorer.tsx";
+import * as $LocalKvList from "./islands/LocalKvList.tsx";
+import * as $RemoteControls from "./islands/RemoteControls.tsx";
+import * as $RemoteKvList from "./islands/RemoteKvList.tsx";
+import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
-    "./routes/_404.tsx": $0,
-    "./routes/_500.tsx": $1,
-    "./routes/_app.tsx": $2,
-    "./routes/_middleware.ts": $3,
-    "./routes/api/kv/[id]/[...path].ts": $4,
-    "./routes/api/kv/[id]/index.ts": $5,
-    "./routes/api/local/index.ts": $6,
-    "./routes/api/remote/check.ts": $7,
-    "./routes/api/remote/index.ts": $8,
-    "./routes/docs/index.tsx": $9,
-    "./routes/index.tsx": $10,
-    "./routes/local/[id].tsx": $11,
-    "./routes/local/index.tsx": $12,
-    "./routes/login.tsx": $13,
-    "./routes/logout.tsx": $14,
-    "./routes/orgs/[id].tsx": $15,
-    "./routes/orgs/index.tsx": $16,
-    "./routes/projects/[name]/index.tsx": $17,
-    "./routes/projects/[name]/kv/[branch].tsx": $18,
-    "./routes/remote/[id].tsx": $19,
-    "./routes/remote/index.tsx": $20,
-    "./routes/user.ts": $21,
+    "./routes/_404.tsx": $_404,
+    "./routes/_500.tsx": $_500,
+    "./routes/_app.tsx": $_app,
+    "./routes/_middleware.ts": $_middleware,
+    "./routes/api/kv/[id]/[...path].ts": $api_kv_id_path_,
+    "./routes/api/kv/[id]/index.ts": $api_kv_id_index,
+    "./routes/api/local/index.ts": $api_local_index,
+    "./routes/api/remote/check.ts": $api_remote_check,
+    "./routes/api/remote/index.ts": $api_remote_index,
+    "./routes/docs/index.tsx": $docs_index,
+    "./routes/index.tsx": $index,
+    "./routes/local/[id].tsx": $local_id_,
+    "./routes/local/index.tsx": $local_index,
+    "./routes/login.tsx": $login,
+    "./routes/logout.tsx": $logout,
+    "./routes/orgs/[id].tsx": $orgs_id_,
+    "./routes/orgs/index.tsx": $orgs_index,
+    "./routes/projects/[name]/index.tsx": $projects_name_index,
+    "./routes/projects/[name]/kv/[branch].tsx": $projects_name_kv_branch_,
+    "./routes/remote/[id].tsx": $remote_id_,
+    "./routes/remote/index.tsx": $remote_index,
+    "./routes/user.ts": $user,
   },
   islands: {
-    "./islands/KvExplorer.tsx": $$0,
-    "./islands/LocalKvList.tsx": $$1,
-    "./islands/RemoteControls.tsx": $$2,
-    "./islands/RemoteKvList.tsx": $$3,
+    "./islands/KvExplorer.tsx": $KvExplorer,
+    "./islands/LocalKvList.tsx": $LocalKvList,
+    "./islands/RemoteControls.tsx": $RemoteControls,
+    "./islands/RemoteKvList.tsx": $RemoteKvList,
   },
   baseUrl: import.meta.url,
-};
+} satisfies Manifest;
 
 export default manifest;
