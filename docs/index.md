@@ -120,7 +120,6 @@ be great to add to `kview`:
 
 - Improve editing/adding complex values.
 - "Batch" tooling, like syncing KV stores, batch uploading, etc.
-- Better display of Uint8Arrays.
 - Improve accessability.
 - Ability to add a specific local KV store.
 - Ability to change the cache location for local KV stores.

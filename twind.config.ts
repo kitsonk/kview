@@ -115,6 +115,9 @@ export default {
         purple: colors.heliotrope,
         gray: colors["gray-chateau"],
       },
+      spacing: {
+        "108": "27rem",
+      },
     },
     fontFamily: {
       body: [

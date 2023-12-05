@@ -162,7 +162,7 @@ function toValueJSON(value: unknown): KvValueJSON {
 }
 
 export function isEditable(value: KvValueJSON | undefined): boolean {
-  return !!(value && (!["Error"].includes(value.type)));
+  return !!(value && (!["Error", "Uint8Array"].includes(value.type)));
 }
 
 export function toValue(json: KvValueJSON): unknown {
