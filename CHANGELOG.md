@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.5.0
+
+- feat: support Dates and Errors (dad986d)
+- feat: add hex viewer for Uint8Array (78ddb49)
+- chore: update to Fresh 1.6 (d9ae025)
+
 ## Version 0.4.1
 
 - fix: better sizing JSON edit box (d25f125)
