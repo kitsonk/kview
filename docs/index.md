@@ -5,12 +5,26 @@ Deno KV store. It requires the Deno CLI to be its host.
 
 ## Local KV
 
+### Auto discovered
+
 The application will use the same logic that the Deno CLI does to determine the
 default cache location for KV stores, and will enumerate them. The logic Deno
 CLI uses to cache "origin storage" is to generate a unique hash of the origin.
 This means it is not possible for `kview` to be able to determine what script
 the store belongs to. Instead `kview` allows you to name individual stores it
 detects, which get stored in a cookie in the browser.
+
+### Specified local KV
+
+`kview` allows you to manually add local KV stores where you specify the path to
+the store like you would with `Deno.openKv("/path/to/store")`. If `kview` is
+able to access the store it will add it to the local stores. Specified local
+stores will persist across runs of the server by persisting information in local
+storage. When starting up the `kview` instance or updating specified local
+stores, `kview` will validate that each store is actually a file and remove any
+that are no longer valid.
+
+### Naming stores
 
 To name or change a name of a local store, click on the store name and either
 press <kbd>Enter</kbd> or click elsewhere to save the value. Pressing
@@ -121,6 +135,5 @@ be great to add to `kview`:
 - Improve editing/adding complex values.
 - "Batch" tooling, like syncing KV stores, batch uploading, etc.
 - Improve accessability.
-- Ability to add a specific local KV store.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.

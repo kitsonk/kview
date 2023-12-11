@@ -25,6 +25,7 @@ import * as $remote_id_ from "./routes/remote/[id].tsx";
 import * as $remote_index from "./routes/remote/index.tsx";
 import * as $user from "./routes/user.ts";
 import * as $KvExplorer from "./islands/KvExplorer.tsx";
+import * as $LocalControls from "./islands/LocalControls.tsx";
 import * as $LocalKvList from "./islands/LocalKvList.tsx";
 import * as $RemoteControls from "./islands/RemoteControls.tsx";
 import * as $RemoteKvList from "./islands/RemoteKvList.tsx";
@@ -57,6 +58,7 @@ const manifest = {
   },
   islands: {
     "./islands/KvExplorer.tsx": $KvExplorer,
+    "./islands/LocalControls.tsx": $LocalControls,
     "./islands/LocalKvList.tsx": $LocalKvList,
     "./islands/RemoteControls.tsx": $RemoteControls,
     "./islands/RemoteKvList.tsx": $RemoteKvList,

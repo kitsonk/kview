@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
-import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
+import { type Signal, useSignal } from "@preact/signals";
 import { assert } from "$std/assert/assert.ts";
 import { encodeBase64Url } from "$std/encoding/base64url.ts";
 import { type RemoteStoreInfo } from "$utils/remoteStores.ts";

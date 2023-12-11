@@ -1,12 +1,14 @@
+import { useSignal, useSignalEffect } from "@preact/signals";
+import { encodeBase64Url } from "$std/encoding/base64url.ts";
 import { format } from "$std/fmt/bytes.ts";
 import { type KvLocalInfo } from "$utils/kv.ts";
-import { useSignal, useSignalEffect } from "@preact/signals";
 
 import { EditLabel } from "./EditLabel.tsx";
 import IconKV from "./icons/KV.tsx";
 
-export function LocalKv({ db: { name, id, size } }: { db: KvLocalInfo }) {
+export function LocalKv({ db: { name, id, size, path } }: { db: KvLocalInfo }) {
   const value = useSignal(name);
+  const href = id === path ? encodeBase64Url(id) : id;
 
   useSignalEffect(() => {
     if (value.value && value.value !== name) {
@@ -21,7 +23,7 @@ export function LocalKv({ db: { name, id, size } }: { db: KvLocalInfo }) {
   return (
     <li class="flex items-center border rounded p-2 hover:bg-gray(200 dark:800)">
       <a
-        href={`/local/${id}`}
+        href={`/local/${href}`}
       >
         <div class="p-2">
           <IconKV size={12} />
@@ -35,7 +37,7 @@ export function LocalKv({ db: { name, id, size } }: { db: KvLocalInfo }) {
           emptyDisplay="[unnamed]"
         />
         <a
-          href={`/local/${id}`}
+          href={`/local/${href}`}
         >
           <div class="text-gray(600 dark:400) text-sm">{format(size)}</div>
           <div class="overflow-ellipsis overflow-hidden text-sm text-gray(600 dark:400)">

@@ -1,13 +1,13 @@
 import { type Signal } from "@preact/signals";
-import { type RemoteStoreInfo } from "$utils/remoteStores.ts";
+import { type KvLocalInfo } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { Dialog } from "./Dialog.tsx";
 
-export function DialogDeleteRemote(
+export function DialogDeleteLocal(
   { open, store }: {
     open: Signal<boolean>;
-    store: RemoteStoreInfo;
+    store: KvLocalInfo;
   },
 ) {
   return (
@@ -40,11 +40,11 @@ export function DialogDeleteRemote(
         Are you sure?
       </h3>
       <p class="mb-4 font-light text-gray-500 dark:text-gray-400">
-        Are you sure you want to delete the remote info?
+        Are you sure you want to delete the local info?
       </p>
       <p class="mb-4 font-light text-gray-500 dark:text-gray-400">
-        This will not delete the remote store, just the connection information
-        in kview.
+        This will not delete the local store, just the connection information in
+        kview.
       </p>
       <div class="flex items-center space-x-4">
         <button
@@ -59,7 +59,7 @@ export function DialogDeleteRemote(
           type="submit"
           class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
           onClick={() => {
-            const target = "/api/remote";
+            const target = "/api/local";
             const body = JSON.stringify(store);
             open.value = false;
             fetch(new URL(target, import.meta.url), {
@@ -68,7 +68,7 @@ export function DialogDeleteRemote(
               headers: { "content-type": "application/json" },
             }).then((res) => {
               if (res.ok) {
-                window.location.replace(new URL("/remote", import.meta.url));
+                window.location.replace(new URL("/local", import.meta.url));
               } else {
                 addNotification("Error deleting store info.", "error");
                 return res.json().then((err) => console.error(err));

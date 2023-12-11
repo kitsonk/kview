@@ -117,6 +117,8 @@ export interface KvEntryJSON {
   versionstamp: string;
 }
 
+export const LOCAL_STORES = "local_stores";
+
 function toValueJSON(value: unknown): KvValueJSON {
   switch (typeof value) {
     case "bigint":
@@ -217,7 +219,9 @@ export function getKv(id: string): Promise<Deno.Kv> {
       setAccessToken(maybeRemote.accessToken);
       return p = Deno.openKv(maybeRemote.url);
     } else if (state.localStores.value) {
-      const store = state.localStores.value.find(({ id: i }) => id === i);
+      const store = state.localStores.value.find(({ id: i }) =>
+        id === i || id === encodeBase64Url(i)
+      );
       if (store) {
         return p = Deno.openKv(store.path);
       }
@@ -327,6 +331,19 @@ export async function localStores() {
     } catch {
       // just swallow here
     }
+  }
+  const localStoresString = localStorage.getItem(LOCAL_STORES);
+  if (localStoresString) {
+    const localStores: string[] = JSON.parse(localStoresString);
+    const validStores: string[] = [];
+    for (const path of localStores) {
+      const { isFile, size } = await Deno.stat(path);
+      if (isFile) {
+        stores.push({ id: path, path, size });
+        validStores.push(path);
+      }
+    }
+    localStorage.setItem(LOCAL_STORES, JSON.stringify(validStores));
   }
   return stores;
 }

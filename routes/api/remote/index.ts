@@ -19,7 +19,6 @@ export const handler: Handlers = {
       assert(
         typeof item === "object" && "url" in item && "accessToken" in item,
       );
-      console.log(oldUrl, item);
       state.remoteStores.value = oldUrl
         ? replaceRemoteStore(oldUrl, item, state.remoteStores.value)
         : upsertRemoteStore(
