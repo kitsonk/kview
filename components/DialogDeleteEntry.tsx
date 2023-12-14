@@ -1,5 +1,6 @@
 import { type Signal } from "@preact/signals";
-import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
+import { keyJsonToPath } from "$utils/kv.ts";
+import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { Dialog } from "./Dialog.tsx";

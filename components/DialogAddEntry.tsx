@@ -6,7 +6,8 @@ import {
   formDataToKvKeyPartJSON,
   formDataToKvValueJSON,
 } from "$utils/formData.ts";
-import { keyJsonToPath, type KvKeyJSON } from "$utils/kv.ts";
+import { keyJsonToPath } from "$utils/kv.ts";
+import type { KvKeyJSON } from "$utils/kv_json.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { AddButton } from "./AddButton.tsx";

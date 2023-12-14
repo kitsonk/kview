@@ -7,7 +7,7 @@ import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
 import * as $api_kv_id_path_ from "./routes/api/kv/[id]/[...path].ts";
-import * as $api_kv_id_index from "./routes/api/kv/[id]/index.ts";
+import * as $api_kv_id_bulk_path_ from "./routes/api/kv/[id]/_bulk/[...path].ts";
 import * as $api_local_index from "./routes/api/local/index.ts";
 import * as $api_remote_check from "./routes/api/remote/check.ts";
 import * as $api_remote_index from "./routes/api/remote/index.ts";
@@ -38,7 +38,7 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
     "./routes/api/kv/[id]/[...path].ts": $api_kv_id_path_,
-    "./routes/api/kv/[id]/index.ts": $api_kv_id_index,
+    "./routes/api/kv/[id]/_bulk/[...path].ts": $api_kv_id_bulk_path_,
     "./routes/api/local/index.ts": $api_local_index,
     "./routes/api/remote/check.ts": $api_remote_check,
     "./routes/api/remote/index.ts": $api_remote_index,

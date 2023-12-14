@@ -2,6 +2,12 @@ import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
 import { join } from "$std/path/join.ts";
 
 import { setAccessToken } from "./dash.ts";
+import type {
+  KvEntryJSON,
+  KvKeyJSON,
+  KvKeyPartJSON,
+  KvValueJSON,
+} from "./kv_json.ts";
 import { findById } from "./remoteStores.ts";
 import { state } from "./state.ts";
 
@@ -12,114 +18,9 @@ export interface KvLocalInfo {
   size: number;
 }
 
-interface KvStringJSON {
-  type: "string";
-  value: string;
-}
-
-interface KvNumberJSON {
-  type: "number";
-  value: number;
-}
-
-interface KvBigIntJSON {
-  type: "bigint";
-  value: string;
-}
-
-interface KvNullJSON {
-  type: "null";
-  value: null;
-}
-
-interface KvUndefinedJSON {
-  type: "undefined";
-  value: undefined;
-}
-
-interface KvBooleanJSON {
-  type: "boolean";
-  value: boolean;
-}
-
-interface KvUint8ArrayJSON {
-  type: "Uint8Array";
-  value: string;
-}
-
-interface KvMapJSON {
-  type: "Map";
-  value: [unknown, unknown][];
-}
-
-interface KvSetJSON {
-  type: "Set";
-  value: unknown[];
-}
-
-interface KvRegExpJSON {
-  type: "RegExp";
-  value: string;
-}
-
-interface KvKvU64JSON {
-  type: "KvU64";
-  value: string;
-}
-
-interface KvObjectJSON {
-  type: "object";
-  value: unknown;
-}
-
-interface KvErrorJSON {
-  type: "Error";
-  value: {
-    name: string;
-    message: string;
-    stack?: string;
-  };
-}
-
-interface KvDateJSON {
-  type: "Date";
-  value: string;
-}
-
-export type KvKeyPartJSON =
-  | KvStringJSON
-  | KvNumberJSON
-  | KvBigIntJSON
-  | KvBooleanJSON
-  | KvUint8ArrayJSON;
-
-export type KvKeyJSON = KvKeyPartJSON[];
-
-export type KvValueJSON =
-  | KvStringJSON
-  | KvNumberJSON
-  | KvBigIntJSON
-  | KvNullJSON
-  | KvUndefinedJSON
-  | KvBooleanJSON
-  | KvUint8ArrayJSON
-  | KvMapJSON
-  | KvSetJSON
-  | KvRegExpJSON
-  | KvKvU64JSON
-  | KvObjectJSON
-  | KvErrorJSON
-  | KvDateJSON;
-
-export interface KvEntryJSON {
-  key: KvKeyJSON;
-  value: KvValueJSON;
-  versionstamp: string;
-}
-
 export const LOCAL_STORES = "local_stores";
 
-function toValueJSON(value: unknown): KvValueJSON {
+function toKeyPartJSON(value: unknown): KvKeyPartJSON {
   switch (typeof value) {
     case "bigint":
       return { type: "bigint", value: String(value) };
@@ -127,6 +28,25 @@ function toValueJSON(value: unknown): KvValueJSON {
       return { type: "boolean", value };
     case "number":
       return { type: "number", value };
+    case "object":
+      if (value instanceof Uint8Array) {
+        return { type: "Uint8Array", value: encodeBase64Url(value) };
+      }
+      throw new TypeError("Unable to serialize key part.");
+    case "string":
+      return { type: "string", value };
+    default:
+      throw new TypeError("Unable to serialize value.");
+  }
+}
+
+function toValueJSON(value: unknown): KvValueJSON {
+  switch (typeof value) {
+    case "bigint":
+    case "boolean":
+    case "number":
+    case "string":
+      return toKeyPartJSON(value);
     case "undefined":
       return { type: "undefined", value };
     case "object":
@@ -134,7 +54,7 @@ function toValueJSON(value: unknown): KvValueJSON {
         return { type: "null", value };
       }
       if (value instanceof Uint8Array) {
-        return { type: "Uint8Array", value: encodeBase64Url(value) };
+        return toKeyPartJSON(value);
       }
       if (value instanceof Map) {
         return { type: "Map", value: [...value.entries()] };
@@ -156,8 +76,6 @@ function toValueJSON(value: unknown): KvValueJSON {
         return { type: "Date", value: value.toJSON() };
       }
       return { type: "object", value };
-    case "string":
-      return { type: "string", value };
     default:
       throw new TypeError("Unable to serialize value.");
   }
@@ -209,26 +127,41 @@ export function getKv(id: string): Promise<Deno.Kv> {
   if (p && currentId === id) {
     return p;
   }
+  const info = getKvPath(id);
+  if (!info) {
+    throw new Error(`Store ID "${id}" not found.`);
+  }
+
   currentId = id;
   p?.then((kv) => kv.close());
+  const { path, accessToken } = info;
+  if (accessToken) {
+    setAccessToken(accessToken);
+  }
+  return p = Deno.openKv(path);
+}
+
+export function getKvPath(id: string): {
+  path: string;
+  accessToken?: string;
+} | undefined {
   if (GUID_RE.test(id)) {
-    return p = Deno.openKv(`https://api.deno.com/databases/${id}/connect`);
+    return { path: `https://api.deno.com/databases/${id}/connect` };
   } else {
     const maybeRemote = findById(id, state.remoteStores.value);
     if (maybeRemote) {
-      setAccessToken(maybeRemote.accessToken);
-      return p = Deno.openKv(maybeRemote.url);
+      const { url, accessToken } = maybeRemote;
+      return { path: url, accessToken };
     } else if (state.localStores.value) {
       const store = state.localStores.value.find(({ id: i }) =>
         id === i || id === encodeBase64Url(i)
       );
       if (store) {
-        return p = Deno.openKv(store.path);
+        const { path } = store;
+        return { path };
       }
-      throw new Error(`Store ID "${id}" not found.`);
     }
   }
-  throw new Error("unreachable");
 }
 
 export function pathToKey(path: string): Deno.KvKey {
@@ -290,14 +223,18 @@ export function keyCountToResponse(
   });
 }
 
-export function entryToResponse(
+export function entryToJSON(
   { key, value, versionstamp }: Deno.KvEntry<unknown>,
-): Response {
-  const body = JSON.stringify({
-    key: key.map(toValueJSON),
+): KvEntryJSON {
+  return {
+    key: key.map(toKeyPartJSON),
     value: toValueJSON(value),
     versionstamp,
-  });
+  };
+}
+
+export function entryToResponse(entry: Deno.KvEntry<unknown>): Response {
+  const body = JSON.stringify(entryToJSON(entry));
   return new Response(body, {
     headers: { "Content-Type": "application/json" },
     status: 200,

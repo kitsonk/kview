@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { type Signal } from "@preact/signals";
-import { type KvKeyJSON } from "$utils/kv.ts";
+import type { KvKeyJSON } from "$utils/kv_json.ts";
 
 import IconHome from "./icons/Home.tsx";
 import { KvKeyPart } from "./KvKeyPart.tsx";

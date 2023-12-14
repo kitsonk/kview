@@ -111,6 +111,45 @@ When navigating to a partial key that does not have a value associated with, the
 value display will display _no value_. This different than an actual _null_
 value, which is supported by Deno KV.
 
+## Bulk export
+
+`kview` supports exporting data from a Deno KV store in the format of new line
+delimitated JSON ([ndjson](https://ndjson.org/)), where each entry is provided
+as a standalone JSON object delimitated by a new line. The main reason for this
+versus a pure JSON output is that the format supports streaming.
+
+When exploring a KV store, an `Export...` button will be available. When
+clicking on the export button, a confirmation dialog will be displayed. When at
+the root of the store, the export will export all the entries from the store.
+When having navigated to a sub-key, only the entries which have a prefix of the
+current key will be exported.
+
+Also because the of rich set of key types and value types that Deno KV supports
+it is necessary to reformat key parts and values into forms that can be fully
+serialized in JSON. The interface for each line is:
+
+```ts
+interface KvEntryJSON {
+  key: KvKeyJSON;
+  value: KvValueJSON;
+  versionstamp: string;
+}
+```
+
+Of which you would expect an entry with a key of `["a"]` and a value of
+`"string"` to look like this:
+
+```json
+{
+  "key": [{ "type": "string", "value": "a" }],
+  "value": { "type": "string", "value": "string" },
+  "versionstamp": "000000000001b3950000"
+}
+```
+
+A full set of TypeScript types describing how KV entries are serialised is
+available in [`/utils/kv_json.ts`](https://deno.land/x/kview/utils/kv_json.ts).
+
 ## Limitations
 
 - Deno KV supports key parts that are Uint8Array. While `kview` properly handles
@@ -133,7 +172,7 @@ value, which is supported by Deno KV.
 be great to add to `kview`:
 
 - Improve editing/adding complex values.
-- "Batch" tooling, like syncing KV stores, batch uploading, etc.
+- More "batch" tooling, like syncing KV stores, batch uploading, etc.
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.

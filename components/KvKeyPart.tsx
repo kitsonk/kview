@@ -1,5 +1,5 @@
 import { type Signal } from "@preact/signals";
-import { type KvKeyJSON, type KvKeyPartJSON } from "$utils/kv.ts";
+import type { KvKeyJSON, KvKeyPartJSON } from "$utils/kv_json.ts";
 
 export function KvKeyPart(
   { part: { type, value }, entry, link }: {

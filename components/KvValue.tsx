@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { highlightJson } from "$utils/highlight.ts";
-import { type KvValueJSON } from "$utils/kv.ts";
+import type { KvValueJSON } from "$utils/kv_json.ts";
 
 import { HexViewer } from "./HexViewer.tsx";
 

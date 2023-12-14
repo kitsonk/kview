@@ -5,10 +5,10 @@ import {
   entryToResponse,
   getKv,
   keyCountToResponse,
-  type KvValueJSON,
   pathToKey,
   toValue,
 } from "$utils/kv.ts";
+import type { KvValueJSON } from "$utils/kv_json.ts";
 
 interface PutBody {
   value: KvValueJSON;
@@ -23,7 +23,7 @@ interface DeleteBody {
 
 export const handler: Handlers = {
   async GET(req, { params: { id, path } }) {
-    const prefix = pathToKey(path);
+    const prefix = path === "" ? [] : pathToKey(path);
     const kv = await getKv(id);
     const url = new URL(req.url, import.meta.url);
     if (url.searchParams.has("entry")) {

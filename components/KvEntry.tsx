@@ -1,5 +1,6 @@
 import { type Signal, useSignal } from "@preact/signals";
-import { isEditable, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
+import { isEditable } from "$utils/kv.ts";
+import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
 
 import { DialogAddEntry } from "./DialogAddEntry.tsx";
 import { DialogDeleteEntry } from "./DialogDeleteEntry.tsx";

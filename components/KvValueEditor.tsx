@@ -1,5 +1,5 @@
 import { useComputed, useSignal } from "@preact/signals";
-import { KvValueJSON } from "$utils/kv.ts";
+import type { KvValueJSON } from "$utils/kv_json.ts";
 
 import { EditorJson } from "./EditorJson.tsx";
 

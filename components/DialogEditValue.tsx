@@ -3,7 +3,8 @@ import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { assert } from "$std/assert/assert.ts";
 import { formDataToKvValueJSON } from "$utils/formData.ts";
-import { keyJsonToPath, type KvEntryJSON, type KvKeyJSON } from "$utils/kv.ts";
+import { keyJsonToPath } from "$utils/kv.ts";
+import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
