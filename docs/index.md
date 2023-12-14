@@ -172,6 +172,8 @@ available in [`/utils/kv_json.ts`](https://deno.land/x/kview/utils/kv_json.ts).
 be great to add to `kview`:
 
 - Improve editing/adding complex values.
+- Support `.watch()` functionality.
+- Document APIs to enable custom integrations.
 - More "batch" tooling, like syncing KV stores, batch uploading, etc.
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
