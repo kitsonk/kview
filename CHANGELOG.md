@@ -1,5 +1,13 @@
 # kview change log
 
+## Version 0.6.0
+
+- feat: support arbitrary local stores (d742aed)
+- feat: support bulk exporting (2172856)
+- chore: update to fresh 1.6.1 (b327967)
+- chore: update std to 0.209.0 (a72d6ca)
+- docs: update roadmap (8e38314)
+
 ## Version 0.5.0
 
 - feat: support Dates and Errors (dad986d)
