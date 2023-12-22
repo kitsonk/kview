@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.7.0
+
+- feat: support watches (f78c8af)
+
 ## Version 0.6.0
 
 - feat: support arbitrary local stores (d742aed)
