@@ -3,11 +3,11 @@ import { uniqueCount } from "kv_toolbox/keys.ts";
 import { assert } from "$std/assert/assert.ts";
 import {
   entryToResponse,
-  getKv,
   keyCountToResponse,
   pathToKey,
   toValue,
 } from "$utils/kv.ts";
+import { getKv } from "$utils/kv_state.ts";
 import type { KvValueJSON } from "$utils/kv_json.ts";
 
 interface PutBody {

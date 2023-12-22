@@ -59,7 +59,7 @@ export default async function Local(
         </table>
       </div>
       <LocalControls store={store} />
-      <KvExplorer id={id} />
+      <KvExplorer id={id} href={`/local/${id}`} />
     </AppFrame>
   );
 }

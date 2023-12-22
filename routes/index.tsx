@@ -15,7 +15,7 @@ export default async function Home() {
     user = data.user;
   }
   return (
-    <AppFrame>
+    <AppFrame selected="home">
       <LocalKvList stores={state.localStores.value} />
       {user && (
         <div>

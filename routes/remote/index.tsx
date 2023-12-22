@@ -9,6 +9,7 @@ export default function Home() {
       breadcrumbs={[
         { href: "/remote", text: "Remote" },
       ]}
+      selected="remote"
     >
       <Head>
         <title>Remote Stores &mdash; kview</title>

@@ -1,15 +1,13 @@
 import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
 import { join } from "$std/path/join.ts";
 
-import { setAccessToken } from "./dash.ts";
 import type {
   KvEntryJSON,
+  KvEntryMaybeJSON,
   KvKeyJSON,
   KvKeyPartJSON,
   KvValueJSON,
 } from "./kv_json.ts";
-import { findById } from "./remoteStores.ts";
-import { state } from "./state.ts";
 
 export interface KvLocalInfo {
   id: string;
@@ -85,12 +83,24 @@ export function isEditable(value: KvValueJSON | undefined): boolean {
   return !!(value && (!["Error", "Uint8Array"].includes(value.type)));
 }
 
-export function toValue(json: KvValueJSON): unknown {
+function toKeyPart(json: KvKeyPartJSON): Deno.KvKeyPart {
   switch (json.type) {
     case "bigint":
       return BigInt(json.value);
     case "Uint8Array":
       return decodeBase64Url(json.value);
+    case "boolean":
+    case "number":
+    case "string":
+      return json.value;
+    default:
+      // deno-lint-ignore no-explicit-any
+      throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
+  }
+}
+
+export function toValue(json: KvValueJSON): unknown {
+  switch (json.type) {
     case "Map":
       return new Map(json.value);
     case "Set":
@@ -105,62 +115,18 @@ export function toValue(json: KvValueJSON): unknown {
       return new Deno.KvU64(BigInt(json.value));
     case "Date":
       return new Date(json.value);
+    case "bigint":
+    case "Uint8Array":
     case "boolean":
     case "number":
+    case "string":
+      return toKeyPart(json);
     case "null":
     case "object":
-    case "string":
       return json.value;
     default:
       // deno-lint-ignore no-explicit-any
       throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
-  }
-}
-
-let currentId = "";
-let p: Promise<Deno.Kv> | undefined;
-
-const GUID_RE =
-  /[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/;
-
-export function getKv(id: string): Promise<Deno.Kv> {
-  if (p && currentId === id) {
-    return p;
-  }
-  const info = getKvPath(id);
-  if (!info) {
-    throw new Error(`Store ID "${id}" not found.`);
-  }
-
-  currentId = id;
-  p?.then((kv) => kv.close());
-  const { path, accessToken } = info;
-  if (accessToken) {
-    setAccessToken(accessToken);
-  }
-  return p = Deno.openKv(path);
-}
-
-export function getKvPath(id: string): {
-  path: string;
-  accessToken?: string;
-} | undefined {
-  if (GUID_RE.test(id)) {
-    return { path: `https://api.deno.com/databases/${id}/connect` };
-  } else {
-    const maybeRemote = findById(id, state.remoteStores.value);
-    if (maybeRemote) {
-      const { url, accessToken } = maybeRemote;
-      return { path: url, accessToken };
-    } else if (state.localStores.value) {
-      const store = state.localStores.value.find(({ id: i }) =>
-        id === i || id === encodeBase64Url(i)
-      );
-      if (store) {
-        const { path } = store;
-        return { path };
-      }
-    }
   }
 }
 
@@ -210,6 +176,10 @@ export function keyToJson(key: Deno.KvKey): KvKeyJSON {
   return key.map(toValueJSON) as KvKeyJSON;
 }
 
+export function toKey(key: KvKeyJSON): Deno.KvKey {
+  return key.map(toKeyPart);
+}
+
 export function keyCountToResponse(
   data: { key: Deno.KvKey; count: number }[],
 ): Response {
@@ -229,6 +199,16 @@ export function entryToJSON(
   return {
     key: key.map(toKeyPartJSON),
     value: toValueJSON(value),
+    versionstamp,
+  };
+}
+
+export function maybeEntryToJSON(
+  { key, value, versionstamp }: Deno.KvEntryMaybe<unknown>,
+): KvEntryMaybeJSON {
+  return {
+    key: key.map(toKeyPartJSON),
+    value: value ? toValueJSON(value) : null,
     versionstamp,
   };
 }

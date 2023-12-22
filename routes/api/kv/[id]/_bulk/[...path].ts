@@ -1,6 +1,7 @@
 import { type RouteContext } from "$fresh/server.ts";
 import { setAccessToken } from "$utils/dash.ts";
-import { entryToJSON, getKvPath, pathToKey } from "$utils/kv.ts";
+import { entryToJSON, pathToKey } from "$utils/kv.ts";
+import { getKvPath } from "$utils/kv_state.ts";
 
 const encoder = new TextEncoder();
 

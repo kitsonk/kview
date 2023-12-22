@@ -109,3 +109,9 @@ export interface KvEntryJSON {
   value: KvValueJSON;
   versionstamp: string;
 }
+
+export interface KvEntryMaybeJSON {
+  key: KvKeyJSON;
+  value: KvValueJSON | null;
+  versionstamp: string | null;
+}

@@ -12,7 +12,12 @@ import { keyJsonToPath } from "$utils/kv.ts";
 import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
 
 export default function KvExplorer(
-  { db, id }: { db?: DashDb; id?: string },
+  { db, id, label, href }: {
+    db?: DashDb;
+    id?: string;
+    label?: string;
+    href?: string;
+  },
 ) {
   const currentKey = useSignal<KvKeyJSON>([]);
   const loadingKeys = useSignal(false);
@@ -143,6 +148,8 @@ export default function KvExplorer(
           <KvEntry
             entry={currentEntry}
             databaseId={databaseId}
+            name={label}
+            href={href}
             loadKeys={loadKeys}
             loadValue={loadValue}
           />

@@ -2,11 +2,9 @@ import { type ComponentChildren } from "preact";
 import { effect, signal } from "@preact/signals";
 
 import { type KvLocalInfo } from "./kv.ts";
-import {
-  getRemoteStores,
-  type RemoteStoreInfo,
-  setRemoteStores,
-} from "./remoteStores.ts";
+import type { KvKeyJSON } from "./kv_json.ts";
+import { getRemoteStores, setRemoteStores } from "./remoteStores.ts";
+import { getWatches, setWatches } from "./watches.ts";
 
 type NotificationType = "error" | "warning" | "success";
 
@@ -17,15 +15,30 @@ export interface Notification {
   dismissible?: boolean;
 }
 
+export interface KvWatchJson {
+  databaseId: string;
+  key: KvKeyJSON;
+}
+
 function createAppState() {
   const accessToken = signal<string | undefined>(undefined);
+  const sessionToken = signal<string | undefined>(undefined);
   const localStores = signal<KvLocalInfo[] | undefined>(undefined);
-  const remoteStores = signal<RemoteStoreInfo[]>(getRemoteStores());
+  const remoteStores = signal(getRemoteStores());
+  const watches = signal(getWatches());
   const notifications = signal<Notification[]>([]);
 
   effect(() => setRemoteStores(remoteStores.value));
+  effect(() => setWatches(watches.value));
 
-  return { accessToken, localStores, remoteStores, notifications };
+  return {
+    accessToken,
+    sessionToken,
+    localStores,
+    remoteStores,
+    watches,
+    notifications,
+  };
 }
 
 export const state = createAppState();

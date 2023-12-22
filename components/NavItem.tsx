@@ -5,6 +5,7 @@ import IconHome from "./icons/Home.tsx";
 import IconLocal from "./icons/Local.tsx";
 import IconLogin from "./icons/Login.tsx";
 import IconLogout from "./icons/Logout.tsx";
+import IconObserve from "./icons/Observe.tsx";
 import IconOrganization from "./icons/Organization.tsx";
 import IconRemote from "./icons/Remote.tsx";
 import IconUser from "./icons/User.tsx";
@@ -15,16 +16,18 @@ const ICONS = {
   "local": <IconLocal />,
   "login": <IconLogin />,
   "logout": <IconLogout />,
+  "observe": <IconObserve />,
   "org": <IconOrganization />,
   "remote": <IconRemote />,
   "user": <IconUser />,
 } as const;
 
 export function NavItem(
-  { children, count, icon, href = "#" }: {
+  { children, count, icon, selected, href = "#" }: {
     children: ComponentChildren;
     count?: number;
     icon: keyof typeof ICONS;
+    selected?: boolean;
     href?: string;
   },
 ) {
@@ -32,7 +35,11 @@ export function NavItem(
     <li>
       <a
         href={href}
-        class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:dark:bg-gray-700 hover:bg-gray-100 group"
+        class={`flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white ${
+          selected
+            ? "dark:bg-gray-700 bg-gray-100"
+            : "hover:dark:bg-gray-700 hover:bg-gray-100"
+        } group`}
       >
         <span class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
           {ICONS[icon]}

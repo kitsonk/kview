@@ -1,8 +1,11 @@
 import { type DashOrganization, type DashRootData } from "$utils/dash.ts";
 
+import { PlanTag } from "./PlanTag.tsx";
 import IconOrganization from "./icons/Organization.tsx";
 
-function Org({ data: { name, id } }: { data: DashOrganization }) {
+function Org(
+  { data: { name, id, subscription: { plan } } }: { data: DashOrganization },
+) {
   return name !== null
     ? (
       <li>
@@ -12,6 +15,7 @@ function Org({ data: { name, id } }: { data: DashOrganization }) {
         >
           <IconOrganization size={16} />
           <div class="px-4 font-semibold">{name}</div>
+          <PlanTag plan={plan} />
         </a>
       </li>
     )

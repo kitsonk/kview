@@ -9,6 +9,7 @@ import { state } from "./state.ts";
 export interface DashRootData {
   user: DashUser;
   organizations: DashOrganization[];
+  sudo: boolean;
 }
 
 export interface DashUser {
@@ -20,6 +21,11 @@ export interface DashUser {
   isBlocked: boolean;
   isAdmin: boolean;
   pro: boolean;
+  subscription: {
+    plan: string;
+    currentPeriodStart: string;
+    currentPeriodEnd: string;
+  };
   features: string[];
   createdAt: string;
   updatedAt: string;
@@ -29,6 +35,11 @@ export interface DashOrganization {
   id: string;
   name: string | null;
   pro: boolean;
+  subscription: {
+    plan: string;
+    currentPeriodStart: string;
+    currentPeriodEnd: string;
+  };
   features: Record<string, boolean>;
   createdAt: string;
   updatedAt: string;
@@ -149,9 +160,12 @@ export type DashProject = DashProjectGit | DashProjectPlayground;
 const DENO_KV_ACCESS_TOKEN = "DENO_KV_ACCESS_TOKEN";
 const DASH_BASE_URL = "https://dash.deno.com/";
 
-export function setAccessToken(token: string) {
+export function setAccessToken(token: string, sessionToken?: boolean) {
   Deno.env.set(DENO_KV_ACCESS_TOKEN, token);
   state.accessToken.value = token;
+  if (sessionToken) {
+    state.sessionToken.value = token;
+  }
 }
 
 export function clearAccessToken() {

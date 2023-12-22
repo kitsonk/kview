@@ -1,21 +1,48 @@
 import { type Signal, useSignal } from "@preact/signals";
 import { isEditable } from "$utils/kv.ts";
 import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
+import { addNotification } from "$utils/state.ts";
 
 import { DialogAddEntry } from "./DialogAddEntry.tsx";
 import { DialogDeleteEntry } from "./DialogDeleteEntry.tsx";
 import { DialogEditValue } from "./DialogEditValue.tsx";
 import { KvKey } from "./KvKey.tsx";
 import { KvValue } from "./KvValue.tsx";
+import IconObserve from "./icons/Observe.tsx";
+
+async function watchEntry(
+  databaseId: string,
+  key: KvKeyJSON,
+  name?: string,
+  href?: string,
+) {
+  const res = await fetch(new URL("/api/watch", import.meta.url), {
+    method: "PUT",
+    body: JSON.stringify({ databaseId, key, name, href }),
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  if (res.ok) {
+    addNotification("Watch added.", "success", true);
+  } else {
+    addNotification("Error adding watch.", "error", true);
+    console.error(
+      `Status: ${res.status} ${res.statusText}\n\n${await res.text()}`,
+    );
+  }
+}
 
 export function KvEntry(
-  { entry, loadValue, loadKeys, databaseId }: {
+  { entry, loadValue, loadKeys, databaseId, name, href }: {
     entry: Signal<
       | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
       | KvEntryJSON
       | null
     >;
     databaseId?: string;
+    name?: string;
+    href?: string;
     loadValue(): void;
     loadKeys(): void;
   },
@@ -54,7 +81,20 @@ export function KvEntry(
         loadKeys={loadKeys}
       />
       <div class="border rounded p-2 lg:col-span-2">
-        <h2 class="font-bold mb-2">Key</h2>
+        <div class="flex">
+          <h2 class="font-bold my-2 flex-grow">Key</h2>
+          {databaseId
+            ? (
+              <button
+                type="button"
+                class="flex-none text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                onClick={() => watchEntry(databaseId, key, name, href)}
+              >
+                <IconObserve size={4} />
+              </button>
+            )
+            : undefined}
+        </div>
         <KvKey value={key} />
         {value
           ? (

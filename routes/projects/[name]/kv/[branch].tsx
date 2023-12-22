@@ -38,10 +38,14 @@ export default async function OrgKvBranch(
     >
       <Head>
         <title>
-          {name}:{branch === "preview" ? "*" : branch} &mdash; kview
+          {name}:{branch} &mdash; kview
         </title>
       </Head>
-      <KvExplorer db={db} />
+      <KvExplorer
+        db={db}
+        label={`${name}:${branch}`}
+        href={`/projects/${name}/kv/${branch}`}
+      />
     </AppFrame>
   );
 }

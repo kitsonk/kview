@@ -1,8 +1,10 @@
 import { type DashUser } from "$utils/dash.ts";
+
+import { PlanTag } from "./PlanTag.tsx";
 import IconGitHub from "./icons/GitHub.tsx";
 
 export function User(
-  { data: { login, name, avatarUrl, pro, id }, noLink }: {
+  { data: { login, name, avatarUrl, subscription: { plan }, id }, noLink }: {
     data: DashUser;
     noLink?: boolean;
   },
@@ -21,13 +23,7 @@ export function User(
           <span class="mx-2 block">{login}</span>
         </div>
       </div>
-      {pro
-        ? (
-          <div class="rounded-full px-2 bg-primary-500 text-gray-900">
-            PRO
-          </div>
-        )
-        : null}
+      <PlanTag plan={plan} />
     </>
   );
   if (noLink) {

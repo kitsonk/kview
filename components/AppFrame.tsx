@@ -12,9 +12,17 @@ const dialogCss = css({
 });
 
 export function AppFrame(
-  { children, breadcrumbs }: {
+  { children, breadcrumbs, selected }: {
     children: ComponentChildren;
     breadcrumbs?: BreadcrumbItem[];
+    selected?:
+      | "home"
+      | "local"
+      | "user"
+      | "orgs"
+      | "remote"
+      | "watches"
+      | "docs";
   },
 ) {
   return (
@@ -49,24 +57,61 @@ export function AppFrame(
       >
         <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <ul class="space-y-2">
-            <NavItem icon="home" href="/">Home</NavItem>
+            <NavItem icon="home" href="/" selected={selected === "home"}>
+              Home
+            </NavItem>
             {state.localStores.value?.length
-              ? <NavItem icon="local" href="/local">Local</NavItem>
+              ? (
+                <NavItem
+                  icon="local"
+                  href="/local"
+                  selected={selected === "local"}
+                >
+                  Local
+                </NavItem>
+              )
               : undefined}
             {state.accessToken.value &&
               (
                 <>
-                  <NavItem icon="user" href="/user">User</NavItem>
-                  <NavItem icon="org" href="/orgs">Organizations</NavItem>
+                  <NavItem
+                    icon="user"
+                    href="/user"
+                    selected={selected === "user"}
+                  >
+                    User
+                  </NavItem>
+                  <NavItem
+                    icon="org"
+                    href="/orgs"
+                    selected={selected === "orgs"}
+                  >
+                    Organizations
+                  </NavItem>
                 </>
               )}
-            <NavItem icon="remote" href="/remote">Remote</NavItem>
+            <NavItem
+              icon="remote"
+              href="/remote"
+              selected={selected === "remote"}
+            >
+              Remote
+            </NavItem>
+            <NavItem
+              icon="observe"
+              href="/watch"
+              selected={selected === "watches"}
+            >
+              Watches
+            </NavItem>
             {state.accessToken.value
               ? <NavItem icon="logout" href="/logout">Logout</NavItem>
               : <NavItem icon="login" href="/login">Login</NavItem>}
           </ul>
           <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
-            <NavItem icon="docs" href="/docs">Docs</NavItem>
+            <NavItem icon="docs" href="/docs" selected={selected === "docs"}>
+              Docs
+            </NavItem>
           </ul>
         </div>
       </aside>

@@ -11,6 +11,8 @@ import * as $api_kv_id_bulk_path_ from "./routes/api/kv/[id]/_bulk/[...path].ts"
 import * as $api_local_index from "./routes/api/local/index.ts";
 import * as $api_remote_check from "./routes/api/remote/check.ts";
 import * as $api_remote_index from "./routes/api/remote/index.ts";
+import * as $api_watch_index from "./routes/api/watch/index.ts";
+import * as $api_watch_server from "./routes/api/watch/server.ts";
 import * as $docs_index from "./routes/docs/index.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $local_id_ from "./routes/local/[id].tsx";
@@ -24,11 +26,13 @@ import * as $projects_name_kv_branch_ from "./routes/projects/[name]/kv/[branch]
 import * as $remote_id_ from "./routes/remote/[id].tsx";
 import * as $remote_index from "./routes/remote/index.tsx";
 import * as $user from "./routes/user.ts";
+import * as $watch from "./routes/watch.tsx";
 import * as $KvExplorer from "./islands/KvExplorer.tsx";
 import * as $LocalControls from "./islands/LocalControls.tsx";
 import * as $LocalKvList from "./islands/LocalKvList.tsx";
 import * as $RemoteControls from "./islands/RemoteControls.tsx";
 import * as $RemoteKvList from "./islands/RemoteKvList.tsx";
+import * as $Watches from "./islands/Watches.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -42,6 +46,8 @@ const manifest = {
     "./routes/api/local/index.ts": $api_local_index,
     "./routes/api/remote/check.ts": $api_remote_check,
     "./routes/api/remote/index.ts": $api_remote_index,
+    "./routes/api/watch/index.ts": $api_watch_index,
+    "./routes/api/watch/server.ts": $api_watch_server,
     "./routes/docs/index.tsx": $docs_index,
     "./routes/index.tsx": $index,
     "./routes/local/[id].tsx": $local_id_,
@@ -55,6 +61,7 @@ const manifest = {
     "./routes/remote/[id].tsx": $remote_id_,
     "./routes/remote/index.tsx": $remote_index,
     "./routes/user.ts": $user,
+    "./routes/watch.tsx": $watch,
   },
   islands: {
     "./islands/KvExplorer.tsx": $KvExplorer,
@@ -62,6 +69,7 @@ const manifest = {
     "./islands/LocalKvList.tsx": $LocalKvList,
     "./islands/RemoteControls.tsx": $RemoteControls,
     "./islands/RemoteKvList.tsx": $RemoteKvList,
+    "./islands/Watches.tsx": $Watches,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

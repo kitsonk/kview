@@ -33,7 +33,7 @@ export const handler: MiddlewareHandler[] = [
       const cookies = new SecureCookieMap(req, { keys });
       const accessToken = await cookies.get(ACCESS_TOKEN);
       if (accessToken) {
-        setAccessToken(accessToken);
+        setAccessToken(accessToken, true);
       }
       const storeNamesValue = await cookies.get(STORE_NAMES);
       if (storeNamesValue) {

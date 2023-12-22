@@ -5,7 +5,10 @@ import { state } from "$utils/state.ts";
 
 export default function Local() {
   return (
-    <AppFrame breadcrumbs={[{ href: "/local", text: "Local" }]}>
+    <AppFrame
+      breadcrumbs={[{ href: "/local", text: "Local" }]}
+      selected="local"
+    >
       <Head>
         <title>Local Stores &mdash; kview</title>
       </Head>

@@ -150,6 +150,19 @@ Of which you would expect an entry with a key of `["a"]` and a value of
 A full set of TypeScript types describing how KV entries are serialised is
 available in [`/utils/kv_json.ts`](https://deno.land/x/kview/utils/kv_json.ts).
 
+## Watches
+
+When browsing entries there will be an eye icon. When selected this will store
+the entry to be watched:
+
+<svg width="16" height="16" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g><path d="m442.37 268.29c5.6328-7.168 5.6328-16.895 0-24.062-3.582-4.0977-83.969-98.305-186.37-98.305s-182.79 93.695-186.37 97.793c-5.6328 7.168-5.6328 16.895 0 24.062 3.582 4.0938 83.969 98.301 186.37 98.301s182.79-94.207 186.37-97.789zm-201.21-74.242c12.801 0 23.039 10.238 23.039 23.039 0 12.801-10.238 23.039-23.039 23.039-12.801 0-23.039-10.238-23.039-23.039 0-12.797 10.238-23.039 23.039-23.039zm14.848 134.66c-65.023 0-122.37-49.152-145.92-72.703 14.848-14.848 43.52-39.938 79.359-56.32-3.5859 8.7031-5.6328 17.922-5.6328 28.16 0 39.938 32.258 72.703 72.703 72.703 39.938 0 72.703-32.258 72.703-72.703 0-9.7266-2.0469-19.457-5.6328-28.16 35.84 16.383 64.512 41.473 79.359 56.32-24.57 23.551-81.914 72.703-146.94 72.703z"/><path d="m18.945 198.66h25.602c3.5859 0 6.1445-3.0703 6.1445-6.1445l-0.003906-88.574h88.574c3.5859 0 6.1445-3.0703 6.1445-6.1445v-25.602c0-3.5859-3.0703-6.1445-6.1445-6.1445h-120.32c-3.5859 0-6.1445 3.0703-6.1445 6.1445v120.32c0 3.5859 3.0703 6.1445 6.1445 6.1445z"/><path d="m139.78 408.06h-88.578v-88.574c0-3.5859-3.0703-6.1445-6.1445-6.1445h-25.602c-3.5859 0-6.1445 3.0703-6.1445 6.1445v120.32c0 3.5859 3.0703 6.1445 6.1445 6.1445h120.32c3.5859 0 6.1445-3.0703 6.1445-6.1445v-25.602c0.003906-3.0703-3.0703-6.1445-6.1406-6.1445z"/><path d="m493.05 65.535h-120.83c-3.5859 0-6.1445 3.0703-6.1445 6.1445v25.602c0 3.5859 3.0703 6.1445 6.1445 6.1445h88.578v88.574c0 3.5859 3.0703 6.1445 6.1445 6.1445h25.602c3.5859 0 6.1445-3.0703 6.1445-6.1445l-0.003906-119.81c0.51172-3.582-2.5586-6.6562-5.6328-6.6562z"/><path d="m493.05 313.34h-25.602c-3.5859 0-6.1445 3.0703-6.1445 6.1445v88.574h-89.086c-3.5859 0-6.1445 3.0703-6.1445 6.1445v25.602c0 3.5859 3.0703 6.1445 6.1445 6.1445h120.32c3.5859 0 6.1445-3.0703 6.1445-6.1445v-120.32c0.51172-3.5859-2.5586-6.1445-5.6328-6.1445z"/></g></svg>
+
+Navigating to the _Watch_ section will display all valid watches grouped by KV
+store and continue to monitor them. A watch can be removed by clicking on the
+trashcan icon on the entry card:
+
+<svg width="16" height="16" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m135.53 123.21h243.68c27.379 0 52.02 24.641 52.02 54.758v279.27c0 30.117-24.641 54.758-52.02 54.758h-243.68c-30.117 0-54.758-24.641-54.758-54.758v-279.27c0-30.117 24.641-54.758 54.758-54.758zm73.926-123.21h95.828c30.117 0 27.379 30.117 27.379 52.02h71.188c16.43 0 27.379 13.691 27.379 30.117 0 16.43-10.953 27.379-27.379 27.379h-292.96c-16.43 0-30.117-10.953-30.117-27.379 0-16.43 13.691-30.117 30.117-30.117h68.449c0-21.902-2.7383-52.02 30.117-52.02zm84.879 52.02c-2.7383-8.2148-10.953-16.43-19.164-16.43h-35.594c-10.953 0-19.164 8.2148-21.902 16.43h76.664zm-131.42 128.68c10.953 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-5.4766 16.43-16.43 16.43-8.2148 0-13.691-8.2148-13.691-16.43v-249.16c0-8.2148 5.4766-16.43 13.691-16.43zm93.09 0c8.2148 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-8.2148 16.43-16.43 16.43s-16.43-8.2148-16.43-16.43v-249.16c0-8.2148 8.2148-16.43 16.43-16.43zm93.09 0c8.2148 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-8.2148 16.43-16.43 16.43s-16.43-8.2148-16.43-16.43v-249.16c0-8.2148 8.2148-16.43 16.43-16.43z" fill-rule="evenodd"/></svg>
+
 ## Limitations
 
 - Deno KV supports key parts that are Uint8Array. While `kview` properly handles
@@ -165,14 +178,19 @@ available in [`/utils/kv_json.ts`](https://deno.land/x/kview/utils/kv_json.ts).
   to "hang", loading indefinitely. Use the "Validate connection" button when
   adding or updating the configuration to attempt to diagnose configuration
   issues.
+- For local datastores, currently Deno does not support watches where changes
+  are made in other processes (see
+  [denoland/deno#21640](https://github.com/denoland/deno/issues/21640)).
+  Therefore changes made outside of `kview` will not be observed via a watch,
+  but a refresh of the page will update any changes to values.
 
 ## Roadmap Items
 
-`kview` is far from functionally complete. Here is a roadmap of items that would
+`kview` is not yet functionally complete. Here is a roadmap of items that would
 be great to add to `kview`:
 
 - Improve editing/adding complex values.
-- Support `.watch()` functionality.
+- "Flash" updates on watches.
 - Document APIs to enable custom integrations.
 - More "batch" tooling, like syncing KV stores, batch uploading, etc.
 - Improve accessability.
