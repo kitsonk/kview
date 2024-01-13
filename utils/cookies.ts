@@ -1,4 +1,4 @@
-import { KeyStack } from "$std/crypto/keystack.ts";
+import { KeyStack } from "$std/crypto/unstable_keystack.ts";
 export {
   mergeHeaders,
   SecureCookieMap,

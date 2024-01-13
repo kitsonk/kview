@@ -193,6 +193,8 @@ be great to add to `kview`:
 - "Flash" updates on watches.
 - Document APIs to enable custom integrations.
 - More "batch" tooling, like syncing KV stores, batch uploading, etc.
+- Ability to upload binary data as an `Uint8Array`.
+- Ability to download `Uint8Array` as file.
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.

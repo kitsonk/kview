@@ -215,7 +215,7 @@ export async function getProjectDetails(name: string): Promise<DashProject> {
       "Cookie": `token=${state.accessToken.value}`,
     },
   });
-  if (req.status !== 200) {
+  if (!req.ok) {
     throw new Error(
       `Fetch Project Details: ${req.statusText}\n\n${await req.text()}`,
     );
@@ -249,7 +249,7 @@ export async function getProjectDbs(name: string): Promise<DashDb[]> {
       "Cookie": `token=${state.accessToken.value}`,
     },
   });
-  if (req.status !== 200) {
+  if (!req.ok) {
     throw new Error(
       `Fetch KV Details: ${req.statusText}\n\n${await req.text()}`,
     );
