@@ -35,7 +35,3 @@ export default async function OrganizationDetails(
     </AppFrame>
   );
 }
-
-function renderNotFound() {
-  throw new Error("Function not implemented.");
-}
