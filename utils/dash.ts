@@ -226,7 +226,7 @@ export async function getProjectDetails(name: string): Promise<DashProject> {
 /** For a given organization, retrieve the organization details. */
 export async function getOrganizationDetail(
   id: string,
-): Promise<DashOrganizationDetail> {
+): Promise<{ organization: DashOrganizationDetail }> {
   const req = await fetch(`${DASH_BASE_URL}orgs/${id}?_data_`, {
     method: "GET",
     headers: {

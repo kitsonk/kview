@@ -8,11 +8,10 @@ export default async function OrganizationDetails(
   _req: Request,
   { params: { id } }: RouteContext,
 ) {
-  let { projects, name } = await getOrganizationDetail(id);
-  const isUser = name === null;
-  if (!isUser) {
-    name = (await getRootData()).user.name;
-  }
+  const { organization } = await getOrganizationDetail(id);
+  const projects = organization.projects ?? [];
+  const name = organization.name ?? (await getRootData()).user.name;
+  const isUser = organization.name === null;
 
   return (
     <AppFrame
