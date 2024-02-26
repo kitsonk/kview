@@ -53,7 +53,7 @@ export function DialogEditValue(
         method="dialog"
         ref={form}
         onSubmit={(evt) => {
-          alert.value === undefined;
+          alert.value == undefined;
           const { currentTarget } = evt;
           const data = new FormData(currentTarget);
           const valueType = data.get("value_type");

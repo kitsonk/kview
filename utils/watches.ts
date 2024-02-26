@@ -1,4 +1,4 @@
-import { equals } from "kv_toolbox/keys.ts";
+import { equals } from "kv-toolbox/keys";
 
 import { keyToJson, toKey } from "./kv.ts";
 import type { KvKeyJSON } from "./kv_json.ts";

@@ -6,6 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_jobs_id_ from "./routes/api/jobs/[id].ts";
+import * as $api_jobs_index from "./routes/api/jobs/index.ts";
 import * as $api_kv_id_path_ from "./routes/api/kv/[id]/[...path].ts";
 import * as $api_kv_id_bulk_path_ from "./routes/api/kv/[id]/_bulk/[...path].ts";
 import * as $api_local_index from "./routes/api/local/index.ts";
@@ -15,6 +17,7 @@ import * as $api_watch_index from "./routes/api/watch/index.ts";
 import * as $api_watch_server from "./routes/api/watch/server.ts";
 import * as $docs_index from "./routes/docs/index.tsx";
 import * as $index from "./routes/index.tsx";
+import * as $job from "./routes/job.tsx";
 import * as $local_id_ from "./routes/local/[id].tsx";
 import * as $local_index from "./routes/local/index.tsx";
 import * as $login from "./routes/login.tsx";
@@ -41,6 +44,8 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
+    "./routes/api/jobs/[id].ts": $api_jobs_id_,
+    "./routes/api/jobs/index.ts": $api_jobs_index,
     "./routes/api/kv/[id]/[...path].ts": $api_kv_id_path_,
     "./routes/api/kv/[id]/_bulk/[...path].ts": $api_kv_id_bulk_path_,
     "./routes/api/local/index.ts": $api_local_index,
@@ -50,6 +55,7 @@ const manifest = {
     "./routes/api/watch/server.ts": $api_watch_server,
     "./routes/docs/index.tsx": $docs_index,
     "./routes/index.tsx": $index,
+    "./routes/job.tsx": $job,
     "./routes/local/[id].tsx": $local_id_,
     "./routes/local/index.tsx": $local_index,
     "./routes/login.tsx": $login,

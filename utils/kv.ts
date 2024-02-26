@@ -18,6 +18,15 @@ export interface KvLocalInfo {
 
 export const LOCAL_STORES = "local_stores";
 
+interface Ctor {
+  new (...args: unknown[]): Error;
+}
+
+function isCtor(value: unknown): value is Ctor {
+  return !!(typeof value === "function" && "prototype" in value &&
+    typeof value["prototype"] === "object");
+}
+
 function toKeyPartJSON(value: unknown): KvKeyPartJSON {
   switch (typeof value) {
     case "bigint":
@@ -115,6 +124,28 @@ export function toValue(json: KvValueJSON): unknown {
       return new Deno.KvU64(BigInt(json.value));
     case "Date":
       return new Date(json.value);
+    case "Error": {
+      let err: Error | undefined;
+      if (json.value.name in globalThis) {
+        // deno-lint-ignore no-explicit-any
+        const ctor = (globalThis as any)[json.value.name];
+        if (isCtor(ctor)) {
+          err = new ctor(json.value.message);
+        }
+      }
+      if (!err) {
+        err = new Error(json.value.message);
+      }
+      Object.defineProperty(err, "stack", {
+        value: json.value.stack,
+        writable: false,
+        enumerable: false,
+        configurable: true,
+      });
+      return err;
+    }
+    case "undefined":
+      return undefined;
     case "bigint":
     case "Uint8Array":
     case "boolean":

@@ -111,7 +111,24 @@ When navigating to a partial key that does not have a value associated with, the
 value display will display _no value_. This different than an actual _null_
 value, which is supported by Deno KV.
 
-## Bulk export
+## Bulk operations
+
+### Import
+
+`kview` supports import data into a Deno KV store in the format of new line
+deliminated JSON ([ndjson](https://ndjson.org)), where each entry is provided as
+a standalone JSON object delimitated by a new line.
+
+While exploring a KV store, an `Import...` button will be available. Clicking on
+the button will bring up a dialog to select the file to import into the target
+KV store.
+
+To see information about import jobs, you can select _Jobs_ on the left hand
+side. The current status will be provided along with other details. Job
+information is only stored in the memory of the current server, so will
+disappear when the server is restarted.
+
+### Export
 
 `kview` supports exporting data from a Deno KV store in the format of new line
 delimitated JSON ([ndjson](https://ndjson.org/)), where each entry is provided

@@ -8,6 +8,7 @@ import IconLogout from "./icons/Logout.tsx";
 import IconObserve from "./icons/Observe.tsx";
 import IconOrganization from "./icons/Organization.tsx";
 import IconRemote from "./icons/Remote.tsx";
+import IconTask from "./icons/Task.tsx";
 import IconUser from "./icons/User.tsx";
 
 const ICONS = {
@@ -19,6 +20,7 @@ const ICONS = {
   "observe": <IconObserve />,
   "org": <IconOrganization />,
   "remote": <IconRemote />,
+  "task": <IconTask />,
   "user": <IconUser />,
 } as const;
 

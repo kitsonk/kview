@@ -1,8 +1,5 @@
 import { KeyStack } from "$std/crypto/unstable_keystack.ts";
-export {
-  mergeHeaders,
-  SecureCookieMap,
-} from "$std/http/unstable_cookie_map.ts";
+export { mergeHeaders, SecureCookieMap } from "oak_commons/cookie_map";
 
 export const ACCESS_TOKEN = "access_token";
 export const STORE_NAMES = "store_names";

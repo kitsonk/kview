@@ -1,5 +1,5 @@
 import { type Handlers } from "$fresh/server.ts";
-import { uniqueCount } from "kv_toolbox/keys.ts";
+import { uniqueCount } from "kv-toolbox/keys";
 import { assert } from "$std/assert/assert.ts";
 import {
   entryToResponse,

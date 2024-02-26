@@ -1,4 +1,5 @@
 import { assertEquals } from "$std/assert/assert_equals.ts";
+import { assert } from "$std/assert/assert.ts";
 import { keyJsonToPath, keyToJson, pathToKey, toValue } from "./kv.ts";
 
 Deno.test({
@@ -153,5 +154,47 @@ Deno.test({
       toValue({ type: "object", value: { a: "string" } }),
       { a: "string" },
     );
+  },
+});
+
+Deno.test({
+  name: "toValue - Date",
+  fn() {
+    const value = toValue({ type: "Date", value: "2023-12-16T17:24:00.000Z" });
+    assert(value instanceof Date);
+    assertEquals(value.toISOString(), "2023-12-16T17:24:00.000Z");
+  },
+});
+
+Deno.test({
+  name: "toValue - Error - SyntaxError",
+  fn() {
+    const value = toValue({
+      type: "Error",
+      value: { name: "SyntaxError", message: "an error", stack: `Line\nLine` },
+    });
+    assert(value instanceof SyntaxError);
+    assertEquals(value.message, "an error");
+    assertEquals(value.stack, `Line\nLine`);
+  },
+});
+
+Deno.test({
+  name: "toValue - Error - Custom Error",
+  fn() {
+    const value = toValue({
+      type: "Error",
+      value: { name: "CustomError", message: "an error", stack: `Line\nLine` },
+    });
+    assert(value instanceof Error);
+    assertEquals(value.message, "an error");
+    assertEquals(value.stack, `Line\nLine`);
+  },
+});
+
+Deno.test({
+  name: "toValue - undefined",
+  fn() {
+    assertEquals(toValue({ type: "undefined", value: undefined }), undefined);
   },
 });

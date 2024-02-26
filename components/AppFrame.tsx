@@ -22,6 +22,7 @@ export function AppFrame(
       | "orgs"
       | "remote"
       | "watches"
+      | "jobs"
       | "docs";
   },
 ) {
@@ -103,6 +104,9 @@ export function AppFrame(
               selected={selected === "watches"}
             >
               Watches
+            </NavItem>
+            <NavItem icon="task" href="/job" selected={selected === "jobs"}>
+              Jobs
             </NavItem>
             {state.accessToken.value
               ? <NavItem icon="logout" href="/logout">Logout</NavItem>

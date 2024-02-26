@@ -52,7 +52,11 @@ export default async function Remote(
         </table>
       </div>
       <RemoteControls store={store} />
-      <KvExplorer id={id} href={`/remote/${id}`} />
+      <KvExplorer
+        id={id}
+        label={store.name ?? store.url}
+        href={`/remote/${id}`}
+      />
     </AppFrame>
   );
 }
