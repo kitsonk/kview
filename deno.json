@@ -1,7 +1,7 @@
 {
   "lock": false,
   "tasks": {
-    "check": "deno fmt --check && deno lint && deno check --unstable-kv **/*.ts && deno check --unstable **/*.tsx",
+    "check": "deno fmt --check && deno lint && deno check --unstable-kv **/*.ts && deno check --unstable-kv **/*.tsx",
     "test": "deno test --unstable-kv",
     "start": "deno run -A --unstable-kv --watch=static/,routes/ dev.ts",
     "build": "deno run -A --unstable-kv dev.ts build",
