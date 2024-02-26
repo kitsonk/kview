@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.8.1
+
+- fix: type check issue on Jobs component (c0fed97)
+- chore: use explicit unstable flag in check task (475ac35)
+- chore: update install deps and remove deprecated syntax (b3f5703)
+
 ## Version 0.8.0
 
 - feat: support bulk imports (0b6a738)
