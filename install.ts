@@ -1,9 +1,9 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-net
 
-import $ from "https://deno.land/x/dax@0.35.0/mod.ts";
-import * as JSONC from "https://deno.land/std@0.203.0/jsonc/mod.ts";
+import $ from "https://deno.land/x/dax@0.39.2/mod.ts";
+import * as JSONC from "https://deno.land/std@0.217.0/jsonc/mod.ts";
 
-import manifest from "./install.manifest.json" assert { type: "json" };
+import manifest from "./install.manifest.json" with { type: "json" };
 
 interface DenoConfig {
   exclude?: string[];
@@ -13,7 +13,7 @@ interface DenoConfig {
 }
 
 const TASKS = {
-  "start": "deno run -A --unstable main.ts",
+  "start": "deno run -A --unstable-kv main.ts",
 };
 
 const IMPORT_MAP_ENTRIES: [string, string][] = [
