@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.8.0
+
+- feat: support bulk imports (0b6a738)
+- fix: change typing and attribute handling for organization details (#7)
+- chore: update dependencies (0cf397a)
+- chore: remove unused function (349da8d)
+
 ## Version 0.7.0
 
 - feat: support watches (f78c8af)
