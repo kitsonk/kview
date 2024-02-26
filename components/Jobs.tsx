@@ -118,7 +118,7 @@ function JobItem(
 export function Jobs() {
   const jobs = getJobs();
   if (jobs.length) {
-    return jobs.map((job) => <JobItem job={job} />);
+    return <>{jobs.map((job) => <JobItem job={job} />)}</>;
   } else {
     return (
       <div class="col-span-3 p-8 flex justify-center">
