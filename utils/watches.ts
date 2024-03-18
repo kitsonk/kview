@@ -1,5 +1,5 @@
-import { equals } from "kv-toolbox/keys";
-import { keyToJSON, type KvKeyJSON, toKey } from "kv-toolbox/json";
+import { equals } from "@kitsonk/kv-toolbox/keys";
+import { keyToJSON, type KvKeyJSON, toKey } from "@kitsonk/kv-toolbox/json";
 
 export type Watches = Record<
   string,

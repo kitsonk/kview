@@ -1,6 +1,6 @@
+import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal, useComputed } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvKeyJSON } from "kv-toolbox/json";
 
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";

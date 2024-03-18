@@ -1,4 +1,4 @@
-import type { KvKeyPartJSON, KvValueJSON } from "kv-toolbox/json";
+import { type KvKeyPartJSON, type KvValueJSON } from "@kitsonk/kv-toolbox/json";
 
 export function formDataToKvKeyPartJSON(
   type: string,

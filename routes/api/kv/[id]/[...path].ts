@@ -1,8 +1,13 @@
 import { type Handlers } from "$fresh/server.ts";
-import { batchedAtomic } from "kv-toolbox/batched_atomic";
-import { tree, uniqueCount } from "kv-toolbox/keys";
-import { toKey, toValue } from "kv-toolbox/json";
-import { assert } from "$std/assert/assert.ts";
+import { batchedAtomic } from "@kitsonk/kv-toolbox/batched_atomic";
+import { tree, uniqueCount } from "@kitsonk/kv-toolbox/keys";
+import {
+  type KvKeyJSON,
+  type KvValueJSON,
+  toKey,
+  toValue,
+} from "@kitsonk/kv-toolbox/json";
+import { assert } from "@std/assert/assert";
 import {
   entryToResponse,
   keyCountToResponse,
@@ -10,7 +15,6 @@ import {
   treeToResponse,
 } from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
-import type { KvKeyJSON, KvValueJSON } from "kv-toolbox/json";
 
 interface PutBody {
   value: KvValueJSON;

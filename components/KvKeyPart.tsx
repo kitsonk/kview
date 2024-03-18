@@ -1,5 +1,5 @@
+import { type KvKeyJSON, type KvKeyPartJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal } from "@preact/signals";
-import type { KvKeyJSON, KvKeyPartJSON } from "kv-toolbox/json";
 
 export function KvKeyPart(
   { part: { type, value }, entry, link }: {

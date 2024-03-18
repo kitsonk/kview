@@ -3,8 +3,8 @@ import { Head } from "$fresh/runtime.ts";
 import { type RouteContext } from "$fresh/server.ts";
 import KvExplorer from "$islands/KvExplorer.tsx";
 import LocalControls from "$islands/LocalControls.tsx";
-import { encodeBase64Url } from "$std/encoding/base64url.ts";
-import { format } from "$std/fmt/bytes.ts";
+import { encodeBase64Url } from "@std/encoding/base64url";
+import { format } from "@std/fmt/bytes";
 import { state } from "$utils/state.ts";
 
 function shortenHash(hash: string) {

@@ -1,7 +1,4 @@
-import { type KeyTree } from "kv-toolbox/keys";
-import { decodeBase64Url } from "$std/encoding/base64url.ts";
-import { join } from "$std/path/join.ts";
-
+import { type KeyTree } from "@kitsonk/kv-toolbox/keys";
 import {
   entryToJSON,
   keyPartToJSON,
@@ -9,7 +6,9 @@ import {
   type KvKeyPartJSON,
   type KvValueJSON,
   valueToJSON,
-} from "kv-toolbox/json";
+} from "@kitsonk/kv-toolbox/json";
+import { decodeBase64Url } from "@std/encoding/base64url";
+import { join } from "@std/path/join";
 
 export interface KvKeyTreeNodeJSON {
   part: KvKeyPartJSON;

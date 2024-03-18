@@ -1,14 +1,14 @@
+import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type ComponentChildren } from "preact";
 import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { useRef } from "preact/hooks";
-import { assert } from "$std/assert/assert.ts";
+import { assert } from "@std/assert/assert";
 
 export function DialogImport(
   { open, databaseId, prefix, name, href }: {

@@ -1,6 +1,6 @@
 import { useSignal, useSignalEffect } from "@preact/signals";
-import { encodeBase64Url } from "$std/encoding/base64url.ts";
-import { format } from "$std/fmt/bytes.ts";
+import { encodeBase64Url } from "@std/encoding/base64url";
+import { format } from "@std/fmt/bytes";
 import { type KvLocalInfo } from "$utils/kv.ts";
 
 import { EditLabel } from "./EditLabel.tsx";

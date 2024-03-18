@@ -1,8 +1,8 @@
+import { KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { createContext } from "preact";
 import { computed, type Signal, signal } from "@preact/signals";
 
 import { type KvKeyTreeJSON, type KvKeyTreeNodeJSON } from "./kv.ts";
-import { KvKeyJSON } from "kv-toolbox/json";
 
 export interface TreeNode<Item> {
   id: string;

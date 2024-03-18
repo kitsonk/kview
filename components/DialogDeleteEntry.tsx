@@ -1,7 +1,7 @@
+import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvEntryJSON, KvKeyJSON } from "kv-toolbox/json";
-import { assert } from "$std/assert/assert.ts";
+import { assert } from "@std/assert/assert";
 import { addNotification } from "$utils/state.ts";
 
 import { Dialog } from "./Dialog.tsx";

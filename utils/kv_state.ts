@@ -1,4 +1,4 @@
-import { encodeBase64Url } from "$std/encoding/base64url.ts";
+import { encodeBase64Url } from "@std/encoding/base64url";
 
 import { setAccessToken } from "./dash.ts";
 import { findById } from "./remoteStores.ts";

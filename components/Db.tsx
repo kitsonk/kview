@@ -1,5 +1,5 @@
 import IconKV from "$components/icons/KV.tsx";
-import { format } from "$std/fmt/bytes.ts";
+import { format } from "@std/fmt/bytes";
 import { type DashDb } from "$utils/dash.ts";
 
 export function Db(

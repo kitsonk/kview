@@ -1,4 +1,4 @@
-import { escape } from "$std/html/entities.ts";
+import { escape } from "@std/html/entities";
 import { apply, tw } from "twind";
 
 const classes = {

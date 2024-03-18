@@ -1,4 +1,4 @@
-import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
+import { decodeBase64Url, encodeBase64Url } from "@std/encoding/base64url";
 
 export interface RemoteStoreInfo {
   url: string;

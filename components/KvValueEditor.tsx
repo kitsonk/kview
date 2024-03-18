@@ -1,5 +1,5 @@
+import { type KvValueJSON } from "@kitsonk/kv-toolbox/json";
 import { useComputed, useSignal } from "@preact/signals";
-import type { KvValueJSON } from "kv-toolbox/json";
 
 import { EditorJson } from "./EditorJson.tsx";
 

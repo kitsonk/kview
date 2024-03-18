@@ -1,5 +1,5 @@
+import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal } from "@preact/signals";
-import type { KvKeyJSON } from "kv-toolbox/json";
 
 import { KvKeyPart } from "./KvKeyPart.tsx";
 import IconExpand from "./icons/Expand.tsx";

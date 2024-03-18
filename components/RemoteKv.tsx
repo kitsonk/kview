@@ -1,4 +1,4 @@
-import { encodeBase64Url } from "$std/encoding/base64url.ts";
+import { encodeBase64Url } from "@std/encoding/base64url";
 import { type RemoteStoreInfo } from "$utils/remoteStores.ts";
 
 import IconRemote from "./icons/Remote.tsx";

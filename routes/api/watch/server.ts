@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { entryMaybeToJSON } from "kv-toolbox/json";
+import { entryMaybeToJSON } from "@kitsonk/kv-toolbox/json";
 import { effect } from "@preact/signals";
 import { setAccessToken } from "$utils/dash.ts";
 import { getKvName, getKvPath } from "$utils/kv_state.ts";

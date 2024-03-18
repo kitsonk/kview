@@ -1,6 +1,6 @@
 import { AppFrame } from "$components/AppFrame.tsx";
 import { Markdown } from "$components/Markdown.tsx";
-import { join } from "$std/path/join.ts";
+import { join } from "@std/path/join";
 
 export default async function DocsIndex() {
   const content = await Deno.readTextFile(join(Deno.cwd(), "docs", "index.md"));

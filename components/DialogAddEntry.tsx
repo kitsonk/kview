@@ -1,13 +1,13 @@
+import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type ComponentChildren } from "preact";
 import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
-import { assert } from "$std/assert/assert.ts";
+import { assert } from "@std/assert/assert";
 import {
   formDataToKvKeyPartJSON,
   formDataToKvValueJSON,
 } from "$utils/formData.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 import { AddButton } from "./AddButton.tsx";

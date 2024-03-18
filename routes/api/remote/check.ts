@@ -1,6 +1,6 @@
 import { type Handlers } from "$fresh/server.ts";
-import { assert } from "$std/assert/assert.ts";
-import { deadline } from "$std/async/deadline.ts";
+import { assert } from "@std/assert/assert";
+import { deadline } from "@std/async/deadline";
 import { type RemoteStoreInfo } from "$utils/remoteStores.ts";
 import { state } from "$utils/state.ts";
 import { setAccessToken } from "$utils/dash.ts";

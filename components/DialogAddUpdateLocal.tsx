@@ -1,8 +1,8 @@
 import { type ComponentChildren } from "preact";
 import { useRef } from "preact/hooks";
 import { type Signal, useSignal } from "@preact/signals";
-import { assert } from "$std/assert/assert.ts";
-import { encodeBase64Url } from "$std/encoding/base64url.ts";
+import { assert } from "@std/assert/assert";
+import { encodeBase64Url } from "@std/encoding/base64url";
 import { type KvLocalInfo } from "$utils/kv.ts";
 
 import { AddButton } from "./AddButton.tsx";

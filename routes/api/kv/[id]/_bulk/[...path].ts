@@ -1,5 +1,5 @@
 import { type Handlers } from "$fresh/server.ts";
-import { exportToResponse } from "kv-toolbox/ndjson";
+import { exportToResponse } from "@kitsonk/kv-toolbox/ndjson";
 import { pathToKey } from "$utils/kv.ts";
 import { importNdJson } from "$utils/kv_bulk.ts";
 import { getKvPath } from "$utils/kv_state.ts";

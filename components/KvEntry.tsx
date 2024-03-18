@@ -1,6 +1,6 @@
+import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal, useSignal } from "@preact/signals";
 import { isEditable } from "$utils/kv.ts";
-import type { KvEntryJSON, KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 import { DialogAddEntry } from "./DialogAddEntry.tsx";

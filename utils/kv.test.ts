@@ -1,5 +1,6 @@
-import { keyToJSON } from "kv-toolbox/json";
-import { assertEquals } from "$std/assert/assert_equals.ts";
+import { keyToJSON } from "@kitsonk/kv-toolbox/json";
+import { assertEquals } from "@std/assert/assert_equals";
+
 import { keyJsonToPath, pathToKey } from "./kv.ts";
 
 Deno.test({

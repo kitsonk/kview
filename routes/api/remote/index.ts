@@ -1,5 +1,5 @@
 import { type Handlers } from "$fresh/server.ts";
-import { assert } from "$std/assert/assert.ts";
+import { assert } from "@std/assert/assert";
 import {
   deleteRemoteStore,
   type RemoteStoreInfo,

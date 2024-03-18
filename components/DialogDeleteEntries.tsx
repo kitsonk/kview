@@ -1,3 +1,4 @@
+import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type ComponentChildren } from "preact";
 import { useRef } from "preact/hooks";
 import {
@@ -7,7 +8,6 @@ import {
   useSignalEffect,
 } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 import {
   kvTreeToNodes,

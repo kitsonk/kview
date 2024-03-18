@@ -11,7 +11,7 @@ import { Toaster } from "$components/Toaster.tsx";
 import { useSignal, useSignalEffect } from "@preact/signals";
 import { DashDb } from "$utils/dash.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvEntryJSON, KvKeyJSON } from "kv-toolbox/json";
+import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 
 export default function KvExplorer(
   { db, id, label, href }: {

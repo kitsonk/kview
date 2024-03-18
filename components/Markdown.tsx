@@ -1,4 +1,4 @@
-import { render } from "gfm";
+import { render } from "@deno/gfm";
 import { apply, tw } from "twind";
 import { css } from "twind/css";
 

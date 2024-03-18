@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-net
 
-import $ from "https://deno.land/x/dax@0.39.2/mod.ts";
-import * as JSONC from "https://deno.land/std@0.217.0/jsonc/mod.ts";
+import $ from "jsr:@david/dax@0.39.2";
+import * as JSONC from "jsr:@std/jsonc@0.220.1";
 
 import manifest from "./install.manifest.json" with { type: "json" };
 
