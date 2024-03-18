@@ -1,49 +1,6 @@
+import { importEntries } from "kv-toolbox/ndjson";
 import { setAccessToken } from "./dash.ts";
-import { toValue } from "$utils/kv.ts";
-import { entryToJSON, toKey } from "./kv.ts";
-import { type KvEntryJSON } from "./kv_json.ts";
 import { getKvPath } from "./kv_state.ts";
-import { NdJsonStream } from "./ndjson_stream.ts";
-
-const encoder = new TextEncoder();
-
-export function exportNdJson(
-  id: string,
-  prefix: Deno.KvKey,
-): ReadableStream<Uint8Array> | undefined {
-  const info = getKvPath(id);
-  if (!info) {
-    return undefined;
-  }
-  const { path, accessToken } = info;
-  if (accessToken) {
-    setAccessToken(accessToken);
-  }
-  let kv: Deno.Kv | undefined;
-  let cancelled = false;
-  return new ReadableStream<Uint8Array>({
-    async start(controller) {
-      kv = await Deno.openKv(path);
-      const iterator = kv.list({ prefix });
-      for await (const entry of iterator) {
-        if (cancelled) {
-          return;
-        }
-        controller.enqueue(
-          encoder.encode(`${JSON.stringify(entryToJSON(entry))}\n`),
-        );
-      }
-      kv.close();
-      kv = undefined;
-      controller.close();
-    },
-    cancel(_reason) {
-      cancelled = true;
-      kv?.close();
-      kv = undefined;
-    },
-  });
-}
 
 export type JobState =
   | "pending"
@@ -67,7 +24,6 @@ interface JobJSON {
 export class Job {
   #measure?: PerformanceMeasure;
   #state: JobState = "pending";
-  #transformStream = new NdJsonStream<KvEntryJSON>();
 
   get duration(): number | undefined {
     return this.#measure?.duration;
@@ -94,36 +50,31 @@ export class Job {
     return this.#state;
   }
 
-  get total(): number {
-    return this.#transformStream.count;
-  }
-
-  get transformStream(): NdJsonStream<KvEntryJSON> {
-    return this.#transformStream;
-  }
-
-  id: number;
+  accessToken?: string;
   count = 0;
   databaseId: string;
-  href?: string;
-  name?: string;
-  prefix: Deno.KvKey;
-  skipped = 0;
-  path?: string;
-  accessToken?: string;
-  file?: ReadableStream<Uint8Array>;
   // deno-lint-ignore no-explicit-any
   error?: any;
+  errors = 0;
+  href?: string;
+  id: number;
+  name?: string;
+  path?: string;
+  prefix: Deno.KvKey;
+  skipped = 0;
+  total: number;
 
   constructor(
     databaseId: string,
     prefix: Deno.KvKey,
+    total: number,
     name: string | null,
     href: string | null,
   ) {
     this.id = ++jobUid;
     this.databaseId = databaseId;
     this.prefix = prefix;
+    this.total = total;
     if (name) {
       this.name = name;
     }
@@ -140,9 +91,9 @@ export class Job {
       count,
       skipped,
       state,
-      total,
       duration,
       error,
+      total,
     } = this;
     const json: JobJSON = {
       id,
@@ -182,7 +133,9 @@ export function getJobs(): Job[] {
   return [...jobs.values()];
 }
 
-export function importNdJson(
+const LF = 0x0a;
+
+export async function importNdJson(
   id: string,
   prefix: Deno.KvKey,
   blob: Blob,
@@ -191,8 +144,10 @@ export function importNdJson(
     name: string | null;
     href: string | null;
   },
-): Job {
-  const job = new Job(id, prefix, name, href);
+): Promise<Job> {
+  const total =
+    new Uint8Array(await blob.arrayBuffer()).filter((b) => b === LF).length;
+  const job = new Job(id, prefix, total, name, href);
   jobs.set(job.id, job);
   const info = getKvPath(id);
   if (!info) {
@@ -202,42 +157,30 @@ export function importNdJson(
   const { path, accessToken } = info;
   job.path = path;
   job.accessToken = accessToken;
-  (async () => {
-    const stream = blob.stream().pipeThrough(job.transformStream);
-    try {
-      if (accessToken) {
-        setAccessToken(accessToken);
-      }
-      const kv = await Deno.openKv(path);
+
+  if (accessToken) {
+    setAccessToken(accessToken);
+  }
+  const kv = await Deno.openKv(path);
+  importEntries(kv, blob, {
+    prefix,
+    overwrite,
+    onProgress(count, skipped, errors) {
       if (job.state === "pending") {
         job.state = "processing";
-        for await (const { key, value } of stream) {
-          job.count++;
-          const entryKey = prefix.length
-            ? [...prefix, ...toKey(key)]
-            : toKey(key);
-          if (!overwrite) {
-            const maybeEntry = await kv.get(entryKey);
-            if (maybeEntry.versionstamp) {
-              job.skipped++;
-              continue;
-            }
-          }
-          await kv.set(entryKey, toValue(value));
-          if (job.state !== "processing") {
-            break;
-          }
-        }
       }
-      kv.close();
-      if (job.state === "processing") {
-        job.state = "done";
-      }
-    } catch (err) {
-      job.state = "errored";
-      job.error = err;
-      console.log(err);
-    }
-  })();
+      job.count = count;
+      job.skipped = skipped;
+      job.errors = errors;
+    },
+  }).then(({ count, skipped, errors, aborted }) => {
+    job.state = aborted ? "aborted" : "done";
+    job.count = count;
+    job.skipped = skipped;
+    job.errors = errors;
+  }).catch((error) => {
+    job.state = "errored";
+    job.error = error;
+  });
   return job;
 }

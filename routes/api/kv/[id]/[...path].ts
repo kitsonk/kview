@@ -1,14 +1,16 @@
 import { type Handlers } from "$fresh/server.ts";
-import { uniqueCount } from "kv-toolbox/keys";
+import { batchedAtomic } from "kv-toolbox/batched_atomic";
+import { tree, uniqueCount } from "kv-toolbox/keys";
+import { toKey, toValue } from "kv-toolbox/json";
 import { assert } from "$std/assert/assert.ts";
 import {
   entryToResponse,
   keyCountToResponse,
   pathToKey,
-  toValue,
+  treeToResponse,
 } from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
-import type { KvValueJSON } from "$utils/kv_json.ts";
+import type { KvKeyJSON, KvValueJSON } from "kv-toolbox/json";
 
 interface PutBody {
   value: KvValueJSON;
@@ -17,9 +19,7 @@ interface PutBody {
   overwrite?: boolean;
 }
 
-interface DeleteBody {
-  versionstamp: string;
-}
+type DeleteBody = KvKeyJSON[] | { versionstamp: string };
 
 export const handler: Handlers = {
   async GET(req, { params: { id, path } }) {
@@ -36,6 +36,9 @@ export const handler: Handlers = {
           statusText: "Not Found",
         });
       }
+    } else if (url.searchParams.has("tree")) {
+      const data = await tree(kv, prefix);
+      return treeToResponse(data);
     } else {
       const data = await uniqueCount(kv, prefix);
       return keyCountToResponse(data);
@@ -69,15 +72,33 @@ export const handler: Handlers = {
   },
   async DELETE(req, { params: { id, path } }) {
     try {
-      const key = pathToKey(path);
-      const { versionstamp }: DeleteBody = await req.json();
       const kv = await getKv(id);
-      const res = await kv
-        .atomic().check({ key, versionstamp }).delete(key).commit();
-      if (res.ok) {
-        return Response.json(res, { status: 200, statusText: "OK" });
+      const key = pathToKey(path);
+      const body: DeleteBody = await req.json();
+      if (Array.isArray(body)) {
+        const op = batchedAtomic(kv);
+        for (const item of body) {
+          op.delete([...key, ...toKey(item)]);
+        }
+        const results = await op.commit();
+        for (const res of results) {
+          if (!res.ok) {
+            return Response.json(res, {
+              status: 422,
+              statusText: "Unprocessable Content",
+            });
+          }
+        }
+        return Response.json(results, { status: 200, statusText: "OK" });
       } else {
-        return Response.json(res, { status: 409, statusText: "Conflict" });
+        const { versionstamp } = body;
+        const res = await kv
+          .atomic().check({ key, versionstamp }).delete(key).commit();
+        if (res.ok) {
+          return Response.json(res, { status: 200, statusText: "OK" });
+        } else {
+          return Response.json(res, { status: 409, statusText: "Conflict" });
+        }
       }
     } catch (err) {
       return Response.json({

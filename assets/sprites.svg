@@ -1,0 +1,9 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <defs>
+    <symbol viewBox="0 0 24 24" id="ic-baseline-arrow-right"><path fill="currentColor" d="m10 17l5-5l-5-5z"></path></symbol>
+    <symbol viewBox="0 0 24 24" id="ic-baseline-arrow-drop-down"><path fill="currentColor" d="m7 10l5 5l5-5z"></path></symbol>
+  </defs>
+</svg>

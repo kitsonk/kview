@@ -1,8 +1,8 @@
+import type { KvKeyJSON } from "kv-toolbox/json";
 import { type ComponentChildren } from "preact";
 import { effect, signal } from "@preact/signals";
 
 import { type KvLocalInfo } from "./kv.ts";
-import type { KvKeyJSON } from "./kv_json.ts";
 import { getRemoteStores, setRemoteStores } from "./remoteStores.ts";
 import { getWatches, setWatches } from "./watches.ts";
 

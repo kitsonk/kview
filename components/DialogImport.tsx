@@ -1,7 +1,7 @@
 import { type ComponentChildren } from "preact";
 import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvKeyJSON } from "$utils/kv_json.ts";
+import type { KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";

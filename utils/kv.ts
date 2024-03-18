@@ -1,13 +1,26 @@
-import { decodeBase64Url, encodeBase64Url } from "$std/encoding/base64url.ts";
+import { type KeyTree } from "kv-toolbox/keys";
+import { decodeBase64Url } from "$std/encoding/base64url.ts";
 import { join } from "$std/path/join.ts";
 
-import type {
-  KvEntryJSON,
-  KvEntryMaybeJSON,
-  KvKeyJSON,
-  KvKeyPartJSON,
-  KvValueJSON,
-} from "./kv_json.ts";
+import {
+  entryToJSON,
+  keyPartToJSON,
+  type KvKeyJSON,
+  type KvKeyPartJSON,
+  type KvValueJSON,
+  valueToJSON,
+} from "kv-toolbox/json";
+
+export interface KvKeyTreeNodeJSON {
+  part: KvKeyPartJSON;
+  hasValue?: true;
+  children?: KvKeyTreeNodeJSON[];
+}
+
+export interface KvKeyTreeJSON {
+  prefix?: KvKeyJSON;
+  children?: KvKeyTreeNodeJSON[];
+}
 
 export interface KvLocalInfo {
   id: string;
@@ -18,151 +31,15 @@ export interface KvLocalInfo {
 
 export const LOCAL_STORES = "local_stores";
 
-interface Ctor {
-  new (...args: unknown[]): Error;
-}
-
-function isCtor(value: unknown): value is Ctor {
-  return !!(typeof value === "function" && "prototype" in value &&
-    typeof value["prototype"] === "object");
-}
-
-function toKeyPartJSON(value: unknown): KvKeyPartJSON {
-  switch (typeof value) {
-    case "bigint":
-      return { type: "bigint", value: String(value) };
-    case "boolean":
-      return { type: "boolean", value };
-    case "number":
-      return { type: "number", value };
-    case "object":
-      if (value instanceof Uint8Array) {
-        return { type: "Uint8Array", value: encodeBase64Url(value) };
-      }
-      throw new TypeError("Unable to serialize key part.");
-    case "string":
-      return { type: "string", value };
-    default:
-      throw new TypeError("Unable to serialize value.");
-  }
-}
-
-function toValueJSON(value: unknown): KvValueJSON {
-  switch (typeof value) {
-    case "bigint":
-    case "boolean":
-    case "number":
-    case "string":
-      return toKeyPartJSON(value);
-    case "undefined":
-      return { type: "undefined", value };
-    case "object":
-      if (value === null) {
-        return { type: "null", value };
-      }
-      if (value instanceof Uint8Array) {
-        return toKeyPartJSON(value);
-      }
-      if (value instanceof Map) {
-        return { type: "Map", value: [...value.entries()] };
-      }
-      if (value instanceof Set) {
-        return { type: "Set", value: [...value] };
-      }
-      if (value instanceof RegExp) {
-        return { type: "RegExp", value: String(value) };
-      }
-      if (value instanceof Deno.KvU64) {
-        return { type: "KvU64", value: String(value) };
-      }
-      if (value instanceof Error) {
-        const { name, message, stack } = value;
-        return { type: "Error", value: { name, message, stack } };
-      }
-      if (value instanceof Date) {
-        return { type: "Date", value: value.toJSON() };
-      }
-      return { type: "object", value };
-    default:
-      throw new TypeError("Unable to serialize value.");
-  }
-}
-
 export function isEditable(value: KvValueJSON | undefined): boolean {
   return !!(value && (!["Error", "Uint8Array"].includes(value.type)));
 }
 
-function toKeyPart(json: KvKeyPartJSON): Deno.KvKeyPart {
-  switch (json.type) {
-    case "bigint":
-      return BigInt(json.value);
-    case "Uint8Array":
-      return decodeBase64Url(json.value);
-    case "boolean":
-    case "number":
-    case "string":
-      return json.value;
-    default:
-      // deno-lint-ignore no-explicit-any
-      throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
-  }
-}
-
-export function toValue(json: KvValueJSON): unknown {
-  switch (json.type) {
-    case "Map":
-      return new Map(json.value);
-    case "Set":
-      return new Set(json.value);
-    case "RegExp": {
-      const parts = json.value.split("/");
-      const flags = parts.pop();
-      const [, ...pattern] = parts;
-      return new RegExp(pattern.join("/"), flags);
-    }
-    case "KvU64":
-      return new Deno.KvU64(BigInt(json.value));
-    case "Date":
-      return new Date(json.value);
-    case "Error": {
-      let err: Error | undefined;
-      if (json.value.name in globalThis) {
-        // deno-lint-ignore no-explicit-any
-        const ctor = (globalThis as any)[json.value.name];
-        if (isCtor(ctor)) {
-          err = new ctor(json.value.message);
-        }
-      }
-      if (!err) {
-        err = new Error(json.value.message);
-      }
-      Object.defineProperty(err, "stack", {
-        value: json.value.stack,
-        writable: false,
-        enumerable: false,
-        configurable: true,
-      });
-      return err;
-    }
-    case "undefined":
-      return undefined;
-    case "bigint":
-    case "Uint8Array":
-    case "boolean":
-    case "number":
-    case "string":
-      return toKeyPart(json);
-    case "null":
-    case "object":
-      return json.value;
-    default:
-      // deno-lint-ignore no-explicit-any
-      throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
-  }
-}
-
 export function pathToKey(path: string): Deno.KvKey {
   const key: Deno.KvKeyPart[] = [];
+  if (path === "") {
+    return key;
+  }
   for (const part of path.split("/")) {
     if (part === "true") {
       key.push(true);
@@ -203,45 +80,44 @@ export function keyJsonToPath(key: KvKeyJSON): string {
   }).join("/");
 }
 
-export function keyToJson(key: Deno.KvKey): KvKeyJSON {
-  return key.map(toValueJSON) as KvKeyJSON;
-}
-
-export function toKey(key: KvKeyJSON): Deno.KvKey {
-  return key.map(toKeyPart);
-}
-
 export function keyCountToResponse(
   data: { key: Deno.KvKey; count: number }[],
 ): Response {
-  const body = JSON.stringify(
-    data.map(({ key, count }) => ({ key: key.map(toValueJSON), count })),
-  );
-  return new Response(body, {
-    headers: { "Content-Type": "application/json" },
-    status: 200,
-    statusText: "OK",
-  });
+  const body = data.map(({ key, count }) => ({
+    key: key.map(valueToJSON),
+    count,
+  }));
+  return Response.json(body);
 }
 
-export function entryToJSON(
-  { key, value, versionstamp }: Deno.KvEntry<unknown>,
-): KvEntryJSON {
-  return {
-    key: key.map(toKeyPartJSON),
-    value: toValueJSON(value),
-    versionstamp,
-  };
+interface KeyTreeNode {
+  part: Deno.KvKeyPart;
+  hasValue?: true;
+  children?: KeyTreeNode[];
 }
 
-export function maybeEntryToJSON(
-  { key, value, versionstamp }: Deno.KvEntryMaybe<unknown>,
-): KvEntryMaybeJSON {
-  return {
-    key: key.map(toKeyPartJSON),
-    value: value ? toValueJSON(value) : null,
-    versionstamp,
-  };
+function nodeToJSON(
+  { part, hasValue, children }: KeyTreeNode,
+): KvKeyTreeNodeJSON {
+  const result: KvKeyTreeNodeJSON = { part: keyPartToJSON(part) };
+  if (hasValue) {
+    result.hasValue = hasValue;
+  }
+  if (children) {
+    result.children = children.map(nodeToJSON);
+  }
+  return result;
+}
+
+export function treeToResponse({ prefix, children }: KeyTree): Response {
+  const body: KvKeyTreeJSON = {};
+  if (prefix) {
+    body.prefix = prefix.map(keyPartToJSON);
+  }
+  if (children) {
+    body.children = children.map(nodeToJSON);
+  }
+  return Response.json(body);
 }
 
 export function entryToResponse(entry: Deno.KvEntry<unknown>): Response {

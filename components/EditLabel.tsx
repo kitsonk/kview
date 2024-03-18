@@ -28,7 +28,7 @@ export function EditLabel(
   const view = useSignal(View.Label);
   const current = useSignal(value.peek());
   const previous = useSignal(value.peek());
-  const textInput = useRef<HTMLInputElement | null>(null);
+  const textInput = useRef<HTMLInputElement>(null);
   let escaped = false;
 
   useEffect(() => {

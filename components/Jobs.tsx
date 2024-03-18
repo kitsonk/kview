@@ -1,7 +1,7 @@
 import { KvKey } from "./KvKey.tsx";
 import { format } from "$std/fmt/duration.ts";
 
-import { keyToJson } from "$utils/kv.ts";
+import { keyToJSON } from "kv-toolbox/json";
 import { getJobs, type Job, type JobState } from "$utils/kv_bulk.ts";
 
 function JobState({ state }: { state: JobState }) {
@@ -71,7 +71,7 @@ function JobItem(
         ? (
           <>
             <h2 class="font-bold my-2">Prefix</h2>
-            <KvKey value={keyToJson(prefix)} />
+            <KvKey value={keyToJSON(prefix)} />
           </>
         )
         : undefined}

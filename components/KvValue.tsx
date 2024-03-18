@@ -1,6 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { highlightJson } from "$utils/highlight.ts";
-import type { KvValueJSON } from "$utils/kv_json.ts";
+import type { KvValueJSON } from "kv-toolbox/json";
 
 import { HexViewer } from "./HexViewer.tsx";
 
@@ -148,8 +148,8 @@ export function KvValue({ value }: { value: KvValueJSON }) {
           <table class="w-full">
             <tbody>
               <tr>
-                <td>Name:</td>
-                <td>{value.value.name}</td>
+                <td>Type:</td>
+                <td>{value.type}</td>
               </tr>
               <tr>
                 <td>Message:</td>

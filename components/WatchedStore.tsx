@@ -1,6 +1,6 @@
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvEntryMaybeJSON, KvKeyJSON } from "$utils/kv_json.ts";
+import type { KvEntryMaybeJSON, KvKeyJSON } from "kv-toolbox/json";
 
 import { KvKey } from "./KvKey.tsx";
 import { KvValue } from "./KvValue.tsx";

@@ -1,10 +1,10 @@
 import { Toaster } from "$components/Toaster.tsx";
 import { WatchedStore } from "$components/WatchedStore.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { toKey } from "kv-toolbox/json";
 import { equals } from "kv-toolbox/keys";
 import { batch, type Signal, signal } from "@preact/signals";
-import { toKey } from "$utils/kv.ts";
-import type { KvEntryMaybeJSON, KvKeyJSON } from "$utils/kv_json.ts";
+import type { KvEntryMaybeJSON, KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 export interface WatchNotification {

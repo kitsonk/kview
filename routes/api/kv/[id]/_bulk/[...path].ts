@@ -1,29 +1,26 @@
 import { type Handlers } from "$fresh/server.ts";
+import { exportToResponse } from "kv-toolbox/ndjson";
 import { pathToKey } from "$utils/kv.ts";
-import { exportNdJson, importNdJson } from "$utils/kv_bulk.ts";
+import { importNdJson } from "$utils/kv_bulk.ts";
+import { getKvPath } from "$utils/kv_state.ts";
+import { setAccessToken } from "$utils/dash.ts";
 
 export const handler: Handlers = {
-  GET(_req, { params: { id, path } }) {
+  async GET(_req, { params: { id, path } }) {
     const prefix = path === "" ? [] : pathToKey(path);
-    const body = exportNdJson(id, prefix);
-    if (!body) {
+    const info = getKvPath(id);
+    if (!info) {
       return Response.json({ status: 404, statusText: "Not Found" }, {
         status: 404,
         statusText: "Not Found",
       });
     }
-
-    return new Response(
-      body,
-      {
-        status: 200,
-        statusText: "OK",
-        headers: {
-          "content-type": "application/x-ndjson",
-          "content-disposition": `attachment; filename="${id}.ndjson"`,
-        },
-      },
-    );
+    const { path: kvPath, accessToken } = info;
+    if (accessToken) {
+      setAccessToken(accessToken);
+    }
+    const kv = await Deno.openKv(kvPath);
+    return exportToResponse(kv, { prefix }, { filename: id, close: true });
   },
   async POST(req, { params: { id, path } }) {
     const prefix = path === "" ? [] : pathToKey(path);
@@ -37,7 +34,7 @@ export const handler: Handlers = {
     const name = req.headers.get("kview-name");
     const href = req.headers.get("kview-href");
     const blob = await req.blob();
-    const job = importNdJson(id, prefix, blob, {
+    const job = await importNdJson(id, prefix, blob, {
       overwrite,
       name,
       href,

@@ -4,7 +4,7 @@ import { useRef } from "preact/hooks";
 import { assert } from "$std/assert/assert.ts";
 import { formDataToKvValueJSON } from "$utils/formData.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
+import type { KvEntryJSON, KvKeyJSON } from "kv-toolbox/json";
 import { addNotification } from "$utils/state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
@@ -90,7 +90,7 @@ export function DialogEditValue(
               addNotification(
                 entry.value?.value
                   ? "Value successfully updated."
-                  : "Value secuccessfully set.",
+                  : "Value successfully set.",
                 "success",
                 true,
               );

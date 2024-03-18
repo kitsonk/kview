@@ -15,6 +15,7 @@
     "./static/favicon-32x32.png",
     "./static/favicon.ico",
     "./static/logo.svg",
-    "./static/site.webmanifest"
+    "./static/site.webmanifest",
+    "./static/sprites.svg"
   ]
 }

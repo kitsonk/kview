@@ -1,7 +1,5 @@
 import { equals } from "kv-toolbox/keys";
-
-import { keyToJson, toKey } from "./kv.ts";
-import type { KvKeyJSON } from "./kv_json.ts";
+import { keyToJSON, type KvKeyJSON, toKey } from "kv-toolbox/json";
 
 export type Watches = Record<
   string,
@@ -20,7 +18,7 @@ export function serialize(
     href?: string;
   }[] = [];
   for (const [databaseId, { keys, name, href }] of Object.entries(watches)) {
-    data.push({ databaseId, keys: keys.map(keyToJson), name, href });
+    data.push({ databaseId, keys: keys.map(keyToJSON), name, href });
   }
   return data;
 }
@@ -53,7 +51,7 @@ export function setWatches(watches: Watches) {
     { keys: KvKeyJSON[]; name?: string; href?: string }
   > = Object.create(null);
   for (const [key, { keys, name, href }] of Object.entries(watches)) {
-    json[key] = { keys: keys.map(keyToJson), name, href };
+    json[key] = { keys: keys.map(keyToJSON), name, href };
   }
   localStorage.setItem(WATCHES_KEY, JSON.stringify(json));
 }

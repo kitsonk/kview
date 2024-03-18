@@ -4,6 +4,7 @@ import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { tw } from "twind";
 import { css } from "twind/css";
+import { asSignal } from "$utils/signals.ts";
 
 interface Record {
   value: string;
@@ -99,12 +100,6 @@ const textAreaCss = css({
   },
 });
 
-function isSignalLike<T>(value: unknown): value is JSX.SignalLike<T> {
-  return !!(value && typeof value === "object" && "value" in value &&
-    "peek" in value && typeof value.peek === "function" &&
-    "subscribe" in value && typeof value.subscribe === "function");
-}
-
 function getLines(text: string, position: number) {
   return text.substring(0, position).split("\n");
 }
@@ -162,7 +157,7 @@ export function Editor(
     rows,
   };
 
-  const valueSignal = isSignalLike(value) ? value : useSignal(value);
+  const valueSignal = asSignal(value);
   const highlighted = useComputed(() => highlight(valueSignal.value ?? ""));
   const capture = useSignal(false);
   const tabCharacter = (insertSpaces ? " " : "\t").repeat(tabSize);

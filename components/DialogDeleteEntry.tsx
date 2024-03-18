@@ -1,11 +1,11 @@
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
-import type { KvEntryJSON, KvKeyJSON } from "$utils/kv_json.ts";
+import type { KvEntryJSON, KvKeyJSON } from "kv-toolbox/json";
+import { assert } from "$std/assert/assert.ts";
 import { addNotification } from "$utils/state.ts";
 
 import { Dialog } from "./Dialog.tsx";
 import { KvKey } from "./KvKey.tsx";
-import { assert } from "$std/assert/assert.ts";
 
 export function DialogDeleteEntry(
   { open, entry, databaseId, loadValue, loadKeys }: {

@@ -1,6 +1,6 @@
+import { keyToJSON } from "kv-toolbox/json";
 import { assertEquals } from "$std/assert/assert_equals.ts";
-import { assert } from "$std/assert/assert.ts";
-import { keyJsonToPath, keyToJson, pathToKey, toValue } from "./kv.ts";
+import { keyJsonToPath, pathToKey } from "./kv.ts";
 
 Deno.test({
   name: "pathToKey - single string",
@@ -56,145 +56,8 @@ Deno.test({
   name: "keyJsonToPath - Uint8Array",
   fn() {
     assertEquals(
-      keyJsonToPath(keyToJson([new Uint8Array([1, 2, 3])])),
+      keyJsonToPath(keyToJSON([new Uint8Array([1, 2, 3])])),
       "__u8__AQID",
     );
-  },
-});
-
-Deno.test({
-  name: "toValue - string",
-  fn() {
-    assertEquals(toValue({ type: "string", value: "foo" }), "foo");
-  },
-});
-
-Deno.test({
-  name: "toValue - number",
-  fn() {
-    assertEquals(toValue({ type: "number", value: 1234 }), 1234);
-  },
-});
-
-Deno.test({
-  name: "toValue - bigint",
-  fn() {
-    assertEquals(toValue({ type: "bigint", value: "12345" }), 12345n);
-  },
-});
-
-Deno.test({
-  name: "toValue - boolean",
-  fn() {
-    assertEquals(toValue({ type: "boolean", value: true }), true);
-  },
-});
-
-Deno.test({
-  name: "toValue - Uint8Array",
-  fn() {
-    assertEquals(
-      toValue({ type: "Uint8Array", value: "AQID" }),
-      new Uint8Array([1, 2, 3]),
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - null",
-  fn() {
-    assertEquals(toValue({ type: "null", value: null }), null);
-  },
-});
-
-Deno.test({
-  name: "toValue - Map",
-  fn() {
-    assertEquals(
-      toValue({ type: "Map", value: [["key", "value"]] }),
-      new Map([["key", "value"]]),
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - Set",
-  fn() {
-    assertEquals(
-      toValue({ type: "Set", value: ["a", "b", "c"] }),
-      new Set(["a", "b", "c"]),
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - RegExp",
-  fn() {
-    assertEquals(
-      (toValue({ type: "RegExp", value: "/abc/i" }) as RegExp).toString(),
-      "/abc/i",
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - Array",
-  fn() {
-    assertEquals(
-      toValue({ type: "object", value: ["a", "b", "c"] }),
-      ["a", "b", "c"],
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - object",
-  fn() {
-    assertEquals(
-      toValue({ type: "object", value: { a: "string" } }),
-      { a: "string" },
-    );
-  },
-});
-
-Deno.test({
-  name: "toValue - Date",
-  fn() {
-    const value = toValue({ type: "Date", value: "2023-12-16T17:24:00.000Z" });
-    assert(value instanceof Date);
-    assertEquals(value.toISOString(), "2023-12-16T17:24:00.000Z");
-  },
-});
-
-Deno.test({
-  name: "toValue - Error - SyntaxError",
-  fn() {
-    const value = toValue({
-      type: "Error",
-      value: { name: "SyntaxError", message: "an error", stack: `Line\nLine` },
-    });
-    assert(value instanceof SyntaxError);
-    assertEquals(value.message, "an error");
-    assertEquals(value.stack, `Line\nLine`);
-  },
-});
-
-Deno.test({
-  name: "toValue - Error - Custom Error",
-  fn() {
-    const value = toValue({
-      type: "Error",
-      value: { name: "CustomError", message: "an error", stack: `Line\nLine` },
-    });
-    assert(value instanceof Error);
-    assertEquals(value.message, "an error");
-    assertEquals(value.stack, `Line\nLine`);
-  },
-});
-
-Deno.test({
-  name: "toValue - undefined",
-  fn() {
-    assertEquals(toValue({ type: "undefined", value: undefined }), undefined);
   },
 });

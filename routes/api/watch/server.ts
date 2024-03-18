@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
+import { entryMaybeToJSON } from "kv-toolbox/json";
 import { effect } from "@preact/signals";
 import { setAccessToken } from "$utils/dash.ts";
-import { maybeEntryToJSON } from "$utils/kv.ts";
 import { getKvName, getKvPath } from "$utils/kv_state.ts";
 import { state } from "$utils/state.ts";
 import { type Watches } from "$utils/watches.ts";
@@ -99,7 +99,7 @@ export const handler: Handlers = {
             databaseId,
             name: name ?? getKvName(databaseId),
             href,
-            entries: entries.map(maybeEntryToJSON),
+            entries: entries.map(entryMaybeToJSON),
           }),
         );
       }
