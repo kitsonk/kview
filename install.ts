@@ -1,5 +1,11 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-net
 
+/**
+ * Installation script for kview.
+ *
+ * @module
+ */
+
 import $ from "jsr:@david/dax@0.39.2";
 import * as JSONC from "jsr:@std/jsonc@0.220.1";
 
