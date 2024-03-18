@@ -1,4 +1,9 @@
 {
+  "name": "@kitsonk/kview",
+  "version": "0.8.2-pre.1",
+  "exports": {
+    "./install": "./install.ts"
+  },
   "lock": false,
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check --unstable-kv **/*.ts && deno check --unstable-kv **/*.tsx",
