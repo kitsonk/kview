@@ -25,6 +25,17 @@ the following to start the `kview` server:
 deno task start
 ```
 
+You can also upgrade your installation to the latest version by performing:
+
+```
+deno task upgrade
+```
+
+> [!WARNING]
+> If you do not have an upgrade task in your configuration, your installation
+> pre-dates the capability being added and you should instead re-install the
+> application which will then include the upgrade task.
+
 > [!TIP]
 > The [kitsonk/kview](https://github.com/kitsonk/kview) repository can also be
 > cloned, though this will effectively be a development environment for kview,

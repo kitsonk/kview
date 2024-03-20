@@ -165,7 +165,14 @@ Of which you would expect an entry with a key of `["a"]` and a value of
 ```
 
 A full set of TypeScript types describing how KV entries are serialised is
-available in [`/utils/kv_json.ts`](https://deno.land/x/kview/utils/kv_json.ts).
+available in
+[`@kitsonk/kv-toolbox/json`](https://jsr.io/@kitsonk/kv-toolbox/doc/json/~).
+
+### Deleting
+
+Pressing the `Delete...` button in the KV explorer will bring up a tree view of
+all keys that are children of the root or current key. Selecting keys in here
+will allow multiple entries to be deleted at once.
 
 ## Watches
 
@@ -209,9 +216,10 @@ be great to add to `kview`:
 - Improve editing/adding complex values.
 - "Flash" updates on watches.
 - Document APIs to enable custom integrations.
-- More "batch" tooling, like syncing KV stores, batch uploading, etc.
+- More "batch" tooling, like syncing KV stores, etc.
 - Ability to upload binary data as an `Uint8Array`.
-- Ability to download `Uint8Array` as file.
+- Ability to download `Uint8Array` as a file.
+- Better integration of `kv-toolbox` blob functionality.
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.
