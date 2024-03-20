@@ -1,7 +1,7 @@
 {
   "dirs": ["docs", "static"],
   "files": [
-    "./env.defaults",
+    "./.env.defaults",
     "./CHANGELOG.md",
     "./fresh.config.ts",
     "./fresh.gen.ts",
