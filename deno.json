@@ -1,6 +1,6 @@
 {
   "name": "@kitsonk/kview",
-  "version": "0.8.2-pre.1",
+  "version": "0.9.0",
   "exports": {
     "./install": "./install.ts"
   },

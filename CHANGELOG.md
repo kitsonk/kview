@@ -1,5 +1,14 @@
 # kview change log
 
+## Version 0.9.0
+
+- feat: bulk delete interface (10bb88f)
+- feat: add upgrade task (2ffd19e)
+- chore: migrate to JSR (d66c873)
+- chore: add jsr metadata (b13345d)
+- docs: add module doc to install.ts (4e8643a)
+- docs: update docs and README (0168f2c)
+
 ## Version 0.8.1
 
 - fix: type check issue on Jobs component (c0fed97)
