@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.9.1
+
+- feat: correct install manifest (8a7264e)
+
 ## Version 0.9.0
 
 - feat: bulk delete interface (10bb88f)
