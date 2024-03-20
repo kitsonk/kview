@@ -12,6 +12,9 @@ import * as JSONC from "jsr:@std/jsonc@0.220.1";
 import manifest from "./install.manifest.json" with { type: "json" };
 
 interface DenoConfig {
+  name?: string;
+  version?: string;
+  exports?: Record<string, string>;
   exclude?: string[];
   imports: Record<string, string>;
   lock?: boolean;
@@ -20,6 +23,7 @@ interface DenoConfig {
 
 const TASKS = {
   "start": "deno run -A --unstable-kv main.ts",
+  "upgrade": "deno run -A upgrade.ts",
 };
 
 const IMPORT_MAP_ENTRIES: [string, string][] = [
@@ -71,8 +75,11 @@ async function main() {
   const denoConfig = await getDenoConfig();
   denoConfig.tasks = TASKS;
   for (const [key, value] of IMPORT_MAP_ENTRIES) {
-    denoConfig.imports[key] = (new URL(value, import.meta.url)).toString();
+    denoConfig.imports[key] = new URL(value, import.meta.url).toString();
   }
+  delete denoConfig.name;
+  delete denoConfig.version;
+  delete denoConfig.exports;
   await installPath.join("deno.json").writeJsonPretty(denoConfig);
   $.logLight("  completed.");
   $.logStep("Write local application files...");

@@ -1,12 +1,15 @@
 {
   "dirs": ["docs", "static"],
   "files": [
+    "./env.defaults",
+    "./CHANGELOG.md",
     "./fresh.config.ts",
     "./fresh.gen.ts",
     "./LICENSE",
     "./main.ts",
     "./README.md",
     "./twind.config.ts",
+    "./upgrade.ts",
     "./docs/index.md",
     "./static/android-chrome-192x192.png",
     "./static/android-chrome-512x512.png",
