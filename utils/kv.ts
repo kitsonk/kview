@@ -1,6 +1,5 @@
 import { type KeyTree } from "@kitsonk/kv-toolbox/keys";
 import {
-  entryToJSON,
   keyPartToJSON,
   type KvKeyJSON,
   type KvKeyPartJSON,
@@ -117,15 +116,6 @@ export function treeToResponse({ prefix, children }: KeyTree): Response {
     body.children = children.map(nodeToJSON);
   }
   return Response.json(body);
-}
-
-export function entryToResponse(entry: Deno.KvEntry<unknown>): Response {
-  const body = JSON.stringify(entryToJSON(entry));
-  return new Response(body, {
-    headers: { "Content-Type": "application/json" },
-    status: 200,
-    statusText: "OK",
-  });
 }
 
 export async function localStores() {
