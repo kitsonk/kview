@@ -1,5 +1,6 @@
+import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
-import { type Signal, useSignal } from "@preact/signals";
+import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { isEditable } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";
 
@@ -36,8 +37,19 @@ async function watchEntry(
 export function KvEntry(
   { entry, loadValue, loadKeys, databaseId, name, href }: {
     entry: Signal<
-      | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
-      | KvEntryJSON
+      | {
+        key: KvKeyJSON;
+        versionstamp?: undefined;
+        value?: undefined;
+        meta?: undefined;
+      }
+      | (KvEntryJSON & { meta?: undefined })
+      | {
+        key: KvKeyJSON;
+        versionstamp?: undefined;
+        value?: undefined;
+        meta: BlobMeta;
+      }
       | null
     >;
     databaseId?: string;
@@ -50,12 +62,12 @@ export function KvEntry(
   if (!entry.value) {
     return null;
   }
-  const { key, versionstamp, value } = entry.value;
+  const { versionstamp, value, meta } = entry.value;
   const editable = isEditable(value);
   const editDialogOpen = useSignal(false);
   const addEntryDialogOpen = useSignal(false);
   const deleteEntryDialogOpen = useSignal(false);
-  const currentKey = useSignal(key);
+  const currentKey = useComputed(() => entry.value?.key);
   return (
     <>
       {editable && (
@@ -83,26 +95,29 @@ export function KvEntry(
       <div class="border rounded p-2 lg:col-span-2">
         <div class="flex">
           <h2 class="font-bold my-2 flex-grow">Key</h2>
-          {databaseId
+          {databaseId && !("meta" in entry.value)
             ? (
               <button
                 type="button"
                 class="flex-none text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-                onClick={() => watchEntry(databaseId, key, name, href)}
+                onClick={() =>
+                  watchEntry(databaseId, entry.value!.key, name, href)}
               >
                 <IconObserve size={4} />
               </button>
             )
             : undefined}
         </div>
-        <KvKey value={key} />
-        {value
+        <KvKey value={currentKey} />
+        {value || meta
           ? (
             <>
-              <KvValue value={value} />
-              <div class="text-sm text-gray(600 dark:400) p-1 italic">
-                Version: {versionstamp}
-              </div>
+              <KvValue value={value} meta={meta} />
+              {versionstamp && (
+                <div class="text-sm text-gray(600 dark:400) p-1 italic">
+                  Version: {versionstamp}
+                </div>
+              )}
             </>
           )
           : (
@@ -122,7 +137,7 @@ export function KvEntry(
               {value ? "Edit value" : "Add value"}
             </button>
           )}
-          {value
+          {value || meta
             ? (
               <>
                 <button

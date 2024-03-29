@@ -3,6 +3,7 @@ import { batchedAtomic } from "@kitsonk/kv-toolbox/batched_atomic";
 import {
   type BlobJSON,
   getAsJSON,
+  getMeta,
   remove,
   set,
   toValue as toBlob,
@@ -18,7 +19,12 @@ import {
 } from "@kitsonk/kv-toolbox/json";
 import { matches } from "@oak/commons/media_types";
 import { assert } from "@std/assert/assert";
-import { keyCountToResponse, pathToKey, treeToResponse } from "$utils/kv.ts";
+import {
+  isBlobJSON,
+  keyCountToResponse,
+  pathToKey,
+  treeToResponse,
+} from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
 
 interface PutBody {
@@ -30,9 +36,11 @@ interface PutBody {
 
 type DeleteBody = KvKeyJSON[] | { versionstamp: string };
 
-function isBlobJSON(value: unknown): value is BlobJSON {
-  return !!(typeof value === "object" && value && "meta" in value &&
-    "parts" in value);
+function notFound() {
+  return Response.json({ status: 404, statusText: "Not Found" }, {
+    status: 404,
+    statusText: "Not Found",
+  });
 }
 
 export const handler: Handlers = {
@@ -45,10 +53,7 @@ export const handler: Handlers = {
       if (maybeEntry.versionstamp !== null) {
         return Response.json(entryToJSON(maybeEntry));
       } else {
-        return Response.json({ status: 404, statusText: "Not Found" }, {
-          status: 404,
-          statusText: "Not Found",
-        });
+        return notFound();
       }
     } else if (url.searchParams.has("blob")) {
       const maybeBlob = await getAsJSON(kv, prefix);
@@ -58,10 +63,17 @@ export const handler: Handlers = {
           key: keyToJSON(prefix),
         });
       } else {
-        return Response.json({ status: 404, statusText: "Not Found" }, {
-          status: 404,
-          statusText: "Not Found",
+        return notFound();
+      }
+    } else if (url.searchParams.has("meta")) {
+      const meta = await getMeta(kv, prefix);
+      if (meta) {
+        return Response.json({
+          meta,
+          key: keyToJSON(prefix),
         });
+      } else {
+        return notFound();
       }
     } else if (url.searchParams.has("tree")) {
       const data = await tree(kv, prefix);

@@ -4,7 +4,7 @@ import { type Signal } from "@preact/signals";
 export function KvKeyPart(
   { part: { type, value }, entry, link }: {
     part: KvKeyPartJSON;
-    entry?: Signal<KvKeyJSON | null>;
+    entry?: Signal<{ key: KvKeyJSON } | null>;
     link?: [KvKeyJSON, Signal<KvKeyJSON>];
   },
 ) {
@@ -14,7 +14,7 @@ export function KvKeyPart(
     onClick = (evt: Event) => {
       evt.preventDefault();
       if (entry) {
-        entry.value = [...key];
+        entry.value = { key };
       }
       currentKey.value = key;
     };

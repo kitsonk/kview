@@ -1,3 +1,4 @@
+import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type ComponentChildren } from "preact";
 import { type Signal, useSignal } from "@preact/signals";
@@ -19,6 +20,12 @@ export function DialogEditValue(
     entry: Signal<
       | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
       | KvEntryJSON
+      | {
+        key: KvKeyJSON;
+        versionstamp?: undefined;
+        value?: undefined;
+        meta: BlobMeta;
+      }
       | null
     >;
     databaseId?: string;

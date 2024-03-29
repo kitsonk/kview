@@ -11,7 +11,14 @@ import { Toaster } from "$components/Toaster.tsx";
 import { useSignal, useSignalEffect } from "@preact/signals";
 import { DashDb } from "$utils/dash.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
+import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+
+interface ListElement {
+  key: KvKeyJSON;
+  count: number;
+  isBlob?: boolean;
+}
 
 export default function KvExplorer(
   { db, id, label, href }: {
@@ -27,7 +34,7 @@ export default function KvExplorer(
   const exportOpen = useSignal(false);
   const importOpen = useSignal(false);
   const deleteEntiresOpen = useSignal(false);
-  const list = useSignal<{ key: KvKeyJSON; count: number }[]>([]);
+  const list = useSignal<ListElement[]>([]);
   let keyController: AbortController | undefined;
   const databaseId = db?.databaseId ?? id;
   function loadKeys() {
@@ -57,9 +64,16 @@ export default function KvExplorer(
 
   useSignalEffect(loadKeys);
 
-  const currentEntryKey = useSignal<KvKeyJSON | null>(null);
+  const currentEntryKey = useSignal<
+    { key: KvKeyJSON; isBlob?: boolean } | null
+  >(null);
   const loadingEntry = useSignal(false);
-  const currentEntry = useSignal<{ key: KvKeyJSON } | KvEntryJSON | null>(null);
+  const currentEntry = useSignal<
+    | { key: KvKeyJSON }
+    | KvEntryJSON
+    | { key: KvKeyJSON; meta: BlobMeta }
+    | null
+  >(null);
   let entryController: AbortController | undefined;
 
   function loadValue() {
@@ -68,8 +82,8 @@ export default function KvExplorer(
       return;
     }
     const target = `/api/kv/${databaseId}/${
-      keyJsonToPath(currentEntryKey.value)
-    }?entry`;
+      keyJsonToPath(currentEntryKey.value.key)
+    }?${currentEntryKey.value.isBlob ? "meta" : "entry"}`;
     loadingEntry.value = true;
     if (entryController) {
       entryController.abort();
@@ -82,7 +96,7 @@ export default function KvExplorer(
       }
       if (res.status === 404) {
         if (currentEntryKey.value) {
-          currentEntry.value = { key: [...currentEntryKey.value] };
+          currentEntry.value = { key: [...currentEntryKey.value.key] };
         }
         return;
       }

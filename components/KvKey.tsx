@@ -7,8 +7,8 @@ import { KvKeyPart } from "./KvKeyPart.tsx";
 
 export function KvKey(
   { value, entry, showRoot, noLink }: {
-    value: Signal<KvKeyJSON> | KvKeyJSON;
-    entry?: Signal<KvKeyJSON | null>;
+    value: Signal<KvKeyJSON | undefined> | KvKeyJSON;
+    entry?: Signal<{ key: KvKeyJSON } | null>;
     showRoot?: boolean;
     noLink?: boolean;
   },
@@ -21,6 +21,9 @@ export function KvKey(
     key = value;
   } else {
     isSignal = true;
+    if (!value.value) {
+      return null;
+    }
     key = value.value;
     if (!noLink) {
       onClick = (evt: Event) => {

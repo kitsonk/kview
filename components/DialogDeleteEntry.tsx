@@ -1,3 +1,4 @@
+import { BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
@@ -13,6 +14,7 @@ export function DialogDeleteEntry(
     entry: Signal<
       | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
       | KvEntryJSON
+      | { key: KvKeyJSON; versionstamp?: undefined; meta: BlobMeta }
       | null
     >;
     databaseId?: string;
@@ -74,7 +76,7 @@ export function DialogDeleteEntry(
             assert(entry.value);
             const target = `/api/kv/${databaseId}/${
               keyJsonToPath(entry.value.key)
-            }`;
+            }${"meta" in entry.value ? "?blob" : ""}`;
             const body = JSON.stringify({
               versionstamp: entry.value.versionstamp,
             });

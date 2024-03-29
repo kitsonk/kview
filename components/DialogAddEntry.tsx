@@ -21,7 +21,7 @@ import { KvValueEditor } from "./KvValueEditor.tsx";
 export function DialogAddEntry(
   { open, currentKey, databaseId, loadKeys, subEntry }: {
     open: Signal<boolean>;
-    currentKey: Signal<KvKeyJSON>;
+    currentKey: Signal<KvKeyJSON | undefined>;
     databaseId?: string;
     loadKeys: () => void;
     subEntry?: boolean;
@@ -66,7 +66,7 @@ export function DialogAddEntry(
               typeof expiresIn === "string",
           );
           const key: KvKeyJSON = [
-            ...currentKey.value,
+            ...(currentKey.value ?? []),
             formDataToKvKeyPartJSON(keyPartType, keyPart),
           ];
           const target = `/api/kv/${databaseId}/${keyJsonToPath(key)}`;

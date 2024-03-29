@@ -1,3 +1,4 @@
+import { type BlobJSON } from "@kitsonk/kv-toolbox/blob";
 import { type KeyTree } from "@kitsonk/kv-toolbox/keys";
 import {
   keyPartToJSON,
@@ -29,7 +30,15 @@ export interface KvLocalInfo {
 
 export const LOCAL_STORES = "local_stores";
 
-export function isEditable(value: KvValueJSON | undefined): boolean {
+export function isBlobJSON(value: unknown): value is BlobJSON {
+  return !!(typeof value === "object" && value && "meta" in value &&
+    "parts" in value);
+}
+
+export function isEditable(value: KvValueJSON | BlobJSON | undefined): boolean {
+  if (isBlobJSON(value)) {
+    return false;
+  }
   return !!(value && (!["Error", "Uint8Array"].includes(value.type)));
 }
 
@@ -79,11 +88,11 @@ export function keyJsonToPath(key: KvKeyJSON): string {
 }
 
 export function keyCountToResponse(
-  data: { key: Deno.KvKey; count: number }[],
+  data: { key: Deno.KvKey; count: number; isBlob?: boolean }[],
 ): Response {
-  const body = data.map(({ key, count }) => ({
+  const body = data.map(({ key, ...rest }) => ({
     key: key.map(valueToJSON),
-    count,
+    ...rest,
   }));
   return Response.json(body);
 }

@@ -1,4 +1,5 @@
 import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type UniqueCountElement } from "@kitsonk/kv-toolbox/keys";
 import { type Signal } from "@preact/signals";
 
 import { KvKeyPart } from "./KvKeyPart.tsx";
@@ -6,21 +7,21 @@ import IconExpand from "./icons/Expand.tsx";
 import IconRightArrow from "./icons/RightArrow.tsx";
 
 interface KvKeyItemProps {
-  item: { key: KvKeyJSON; count: number };
-  currentEntryKey: Signal<KvKeyJSON | null>;
+  item: { key: KvKeyJSON; count: number; isBlob?: boolean };
+  currentEntryKey: Signal<{ key: KvKeyJSON; isBlob?: boolean } | null>;
   currentKey: Signal<KvKeyJSON>;
 }
 
 function KvKeyItem(
-  { item: { key, count }, currentEntryKey, currentKey }: KvKeyItemProps,
+  { item: { key, count, isBlob }, currentEntryKey, currentKey }: KvKeyItemProps,
 ) {
   function onClick(evt: Event) {
     evt.preventDefault();
     if (count) {
-      currentEntryKey.value = [...key];
+      currentEntryKey.value = { key, isBlob };
       currentKey.value = [...key];
     } else {
-      currentEntryKey.value = [...key];
+      currentEntryKey.value = { key, isBlob };
     }
   }
   return (
@@ -42,8 +43,8 @@ function KvKeyItem(
 }
 
 interface KvKeyListProps {
-  list: Signal<{ key: KvKeyJSON; count: number }[]>;
-  currentEntryKey: Signal<KvKeyJSON | null>;
+  list: Signal<{ key: KvKeyJSON; count: number; isBlob?: boolean }[]>;
+  currentEntryKey: Signal<{ key: KvKeyJSON; isBlob?: boolean } | null>;
   currentKey: Signal<KvKeyJSON>;
 }
 

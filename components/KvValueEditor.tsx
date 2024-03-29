@@ -1,3 +1,4 @@
+import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvValueJSON } from "@kitsonk/kv-toolbox/json";
 import { useComputed, useSignal } from "@preact/signals";
 
@@ -28,7 +29,12 @@ function kvValueJSONToFormData(
   }
 }
 
-export function KvValueEditor({ value }: { value?: KvValueJSON | undefined }) {
+export function KvValueEditor(
+  { value, meta }: { value?: KvValueJSON | undefined; meta?: BlobMeta },
+) {
+  if (meta) {
+    return null;
+  }
   const [valueTypeValue, v] = value
     ? kvValueJSONToFormData(value)
     : ["string", undefined];
