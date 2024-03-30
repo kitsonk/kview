@@ -1,10 +1,11 @@
 import { type ComponentChildren } from "preact";
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvValueJSON } from "@kitsonk/kv-toolbox/json";
-import { format } from "@std/fmt/bytes";
+import { type KvKeyJSON, type KvValueJSON } from "@kitsonk/kv-toolbox/json";
 import { highlightJson } from "$utils/highlight.ts";
 
+import { BlobViewer } from "./BlobViewer.tsx";
 import { HexViewer } from "./HexViewer.tsx";
+import { gray } from "https://deno.land/std@0.216.0/fmt/colors.ts";
 
 function Display({ children }: { children: ComponentChildren }) {
   return (
@@ -15,103 +16,39 @@ function Display({ children }: { children: ComponentChildren }) {
 }
 
 export function KvValue(
-  { value, meta }: { value?: KvValueJSON; meta?: BlobMeta },
+  { databaseId, currentKey, value, meta }: {
+    databaseId?: string;
+    currentKey?: KvKeyJSON;
+    value?: KvValueJSON;
+    meta?: BlobMeta;
+  },
 ) {
   let color;
   let label;
   let children;
   let border = false;
 
-  if (meta) {
+  if (meta && databaseId && currentKey) {
+    children = (
+      <Display>
+        <BlobViewer
+          databaseId={databaseId}
+          currentKey={currentKey}
+          meta={meta}
+        />
+      </Display>
+    );
+    color = gray;
+    border = true;
     switch (meta.kind) {
       case "blob":
         label = "Blob";
-        color = "gray";
-        border = true;
-        children = (
-          <Display>
-            <table class="w-full">
-              <tbody>
-                <tr>
-                  <td>Type:</td>
-                  <td>
-                    <code>{meta.type}</code>
-                  </td>
-                </tr>
-                {meta.size
-                  ? (
-                    <tr>
-                      <td>Size:</td>
-                      <td>{format(meta.size)}</td>
-                    </tr>
-                  )
-                  : undefined}
-              </tbody>
-            </table>
-          </Display>
-        );
         break;
       case "buffer":
         label = "Uint8Array (blob)";
-        color = "gray";
-        border = true;
-        children = (
-          <Display>
-            <table class="w-full">
-              <tbody>
-                {meta.size
-                  ? (
-                    <tr>
-                      <td>Size:</td>
-                      <td>{format(meta.size)}</td>
-                    </tr>
-                  )
-                  : undefined}
-              </tbody>
-            </table>
-          </Display>
-        );
         break;
       case "file":
         label = "File";
-        color = "gray";
-        border = true;
-        children = (
-          <Display>
-            <table class="w-full">
-              <tbody>
-                <tr>
-                  <td>Type:</td>
-                  <td>
-                    <code>{meta.type}</code>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Filename:</td>
-                  <td>
-                    <code>{meta.name}</code>
-                  </td>
-                </tr>
-                {meta.lastModified
-                  ? (
-                    <tr>
-                      <td>Last modified:</td>
-                      <td>{new Date(meta.lastModified).toISOString()}</td>
-                    </tr>
-                  )
-                  : undefined}
-                {meta.size
-                  ? (
-                    <tr>
-                      <td>Size:</td>
-                      <td>{format(meta.size)}</td>
-                    </tr>
-                  )
-                  : undefined}
-              </tbody>
-            </table>
-          </Display>
-        );
         break;
     }
   } else if (value) {

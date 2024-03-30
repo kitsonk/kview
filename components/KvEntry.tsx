@@ -62,7 +62,7 @@ export function KvEntry(
   if (!entry.value) {
     return null;
   }
-  const { versionstamp, value, meta } = entry.value;
+  const { versionstamp, value, meta, key } = entry.value;
   const editable = isEditable(value);
   const editDialogOpen = useSignal(false);
   const addEntryDialogOpen = useSignal(false);
@@ -100,8 +100,7 @@ export function KvEntry(
               <button
                 type="button"
                 class="flex-none text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-                onClick={() =>
-                  watchEntry(databaseId, entry.value!.key, name, href)}
+                onClick={() => watchEntry(databaseId, key, name, href)}
               >
                 <IconObserve size={4} />
               </button>
@@ -112,7 +111,12 @@ export function KvEntry(
         {value || meta
           ? (
             <>
-              <KvValue value={value} meta={meta} />
+              <KvValue
+                databaseId={databaseId}
+                currentKey={key}
+                value={value}
+                meta={meta}
+              />
               {versionstamp && (
                 <div class="text-sm text-gray(600 dark:400) p-1 italic">
                   Version: {versionstamp}
@@ -128,7 +132,7 @@ export function KvEntry(
             </div>
           )}
         <div class="w-full my-2 md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-          {(!value || editable) && (
+          {(!(value || meta) || editable) && (
             <button
               class="flex items-center justify-center font-bold text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
               type="button"

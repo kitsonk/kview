@@ -6,6 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_500 from "./routes/_500.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $_middleware from "./routes/_middleware.ts";
+import * as $api_blob_download_id_path_ from "./routes/api/blob/download/[id]/[...path].ts";
+import * as $api_blob_serve_id_path_ from "./routes/api/blob/serve/[id]/[...path].ts";
 import * as $api_jobs_id_ from "./routes/api/jobs/[id].ts";
 import * as $api_jobs_index from "./routes/api/jobs/index.ts";
 import * as $api_kv_id_path_ from "./routes/api/kv/[id]/[...path].ts";
@@ -45,6 +47,8 @@ const manifest = {
     "./routes/_500.tsx": $_500,
     "./routes/_app.tsx": $_app,
     "./routes/_middleware.ts": $_middleware,
+    "./routes/api/blob/download/[id]/[...path].ts": $api_blob_download_id_path_,
+    "./routes/api/blob/serve/[id]/[...path].ts": $api_blob_serve_id_path_,
     "./routes/api/jobs/[id].ts": $api_jobs_id_,
     "./routes/api/jobs/index.ts": $api_jobs_index,
     "./routes/api/kv/[id]/[...path].ts": $api_kv_id_path_,
