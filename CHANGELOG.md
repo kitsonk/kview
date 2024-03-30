@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.10.2
+
+_bumped version to ensure latest version is available_
+
 ## Version 0.10.1
 
 - fix: harden `pathToKey()` (5bb3bd2)
