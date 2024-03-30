@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.10.0
+
+- feat: api supports blobs (eb41273)
+- feat: ability to view blob entries (faaef1f)
+- feat: add blob views for audio and video (b1b9046)
+
 ## Version 0.9.1
 
 - feat: correct install manifest (8a7264e)
