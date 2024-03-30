@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.10.1
+
+- fix: harden `pathToKey()` (5bb3bd2)
+- docs: document blob support (5dd0499)
+
 ## Version 0.10.0
 
 - feat: api supports blobs (eb41273)
