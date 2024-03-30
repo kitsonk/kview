@@ -111,6 +111,30 @@ When navigating to a partial key that does not have a value associated with, the
 value display will display _no value_. This different than an actual _null_
 value, which is supported by Deno KV.
 
+## Blobs
+
+Deno KV is limited to values of a max of 64k in size. This can make it
+challenging to manage arbitrary binary data. In addition,
+[currently](https://github.com/denoland/deno/issues/12067) Deno KV does not
+support storing `Blob` or `File` instances, though they are _cloneable_ and
+should be able to be stored.
+
+To work around these challenges,
+[kv-toolbox](https://jsr.io/@kitsonk/kv-toolbox) provides the ability to store
+arbitrarily size blobs and can handle setting values to `Blob`, `File`, array
+buffers, typed arrays, and byte `ReadableStream`s. It accomplishes this by
+storing the binary data into chunks that avoid the 64k value limit along with
+meta data about the original form of the data.
+
+kview integrations kv-toolbox to allow management and viewing of the blobs. The
+user interface detects the blobs and displays them in the way they are intended,
+as a single entry, though they are made up of several component entries in
+reality.
+
+For `File` and `Blob` entries, kview will detect the any associated context type
+and if it is media that is viewable within a browser, it will be displayed as
+part of the view of the entry value.
+
 ## Bulk operations
 
 ### Import
@@ -219,7 +243,6 @@ be great to add to `kview`:
 - More "batch" tooling, like syncing KV stores, etc.
 - Ability to upload binary data as an `Uint8Array`.
 - Ability to download `Uint8Array` as a file.
-- Better integration of `kv-toolbox` blob functionality.
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.
