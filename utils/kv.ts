@@ -48,16 +48,16 @@ export function pathToKey(path: string): Deno.KvKey {
     return key;
   }
   for (const part of path.split("/")) {
-    if (part === "true") {
+    if (part === "__true__") {
       key.push(true);
-    } else if (part === "false") {
+    } else if (part === "__false__") {
       key.push(false);
     } else if (part.startsWith("__u8__")) {
       key.push(decodeBase64Url(part.slice(6)));
-    } else if (part.startsWith("__n__")) {
+    } else if (/^__n__[0-9]+$/.test(part)) {
       key.push(parseInt(part.slice(5), 10));
-    } else if (/[0-9]+n/.test(part)) {
-      key.push(BigInt(part.slice(0, -1)));
+    } else if (/^__b__[0-9]+$/.test(part)) {
+      key.push(BigInt(part.slice(5)));
     } else {
       const maybeNumber = parseInt(part, 10);
       if (maybeNumber.toString() === part) {
@@ -76,9 +76,9 @@ export function keyJsonToPath(key: KvKeyJSON): string {
       case "Uint8Array":
         return `__u8__${keyPart.value}`;
       case "bigint":
-        return `${keyPart.value}n`;
+        return `__b__${keyPart.value}`;
       case "boolean":
-        return String(keyPart.value);
+        return keyPart.value ? "__true__" : "__false__";
       case "number":
         return `__n__${keyPart.value}`;
       case "string":

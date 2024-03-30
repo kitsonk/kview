@@ -27,9 +27,11 @@ Deno.test({
 Deno.test({
   name: "pathToKey - boolean",
   fn() {
-    assertEquals(pathToKey("true/false/True/False"), [
+    assertEquals(pathToKey("__true__/__false__/true/false/True/False"), [
       true,
       false,
+      "true",
+      "false",
       "True",
       "False",
     ]);
@@ -39,7 +41,16 @@ Deno.test({
 Deno.test({
   name: "pathToKey - bigint",
   fn() {
-    assertEquals(pathToKey("100n/__n__100"), [100n, 100]);
+    assertEquals(pathToKey("__b__100/__n__100"), [100n, 100]);
+  },
+});
+
+Deno.test({
+  name: "pathToKey - issue #8",
+  fn() {
+    assertEquals(pathToKey("user_2b8oavU3nky3ec2MeMO82vMlwm"), [
+      "user_2b8oavU3nky3ec2MeMO82vMlwm",
+    ]);
   },
 });
 
