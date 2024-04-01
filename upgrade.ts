@@ -7,8 +7,8 @@
  */
 
 import $ from "jsr:@david/dax@0.39.2";
-import { parseArgs } from "jsr:@std/cli@0.220.1/parse_args";
-import * as JSONC from "jsr:@std/jsonc@0.220.1";
+import { parseArgs } from "jsr:@std/cli@0.221.0/parse-args";
+import * as JSONC from "jsr:@std/jsonc@0.221.0";
 
 interface DenoConfig {
   exclude?: string[];

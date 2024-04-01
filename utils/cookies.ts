@@ -1,4 +1,4 @@
-import { KeyStack } from "@std/crypto/unstable_keystack";
+import { KeyStack } from "@std/crypto/unstable-keystack";
 export { mergeHeaders, SecureCookieMap } from "@oak/commons/cookie_map";
 
 export const ACCESS_TOKEN = "access_token";

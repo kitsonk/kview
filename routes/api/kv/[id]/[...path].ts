@@ -66,10 +66,10 @@ export const handler: Handlers = {
         return notFound();
       }
     } else if (url.searchParams.has("meta")) {
-      const meta = await getMeta(kv, prefix);
-      if (meta) {
+      const maybeMeta = await getMeta(kv, prefix);
+      if (maybeMeta.value) {
         return Response.json({
-          meta,
+          meta: maybeMeta.value,
           key: keyToJSON(prefix),
         });
       } else {

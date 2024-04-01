@@ -4,6 +4,8 @@ import { matches } from "@oak/commons/media_types";
 import { format } from "@std/fmt/bytes";
 import { keyJsonToPath } from "$utils/kv.ts";
 
+import DownloadIcon from "./icons/Download.tsx";
+
 const WEB_IMAGE_MEDIA_TYPES = [
   "image/apng",
   "image/avif",
@@ -185,5 +187,20 @@ export function BlobViewer(
       );
   }
 
-  return <>{preview}{table}</>;
+  return (
+    <>
+      {preview}
+      <div class="relative">
+        {table}
+        <a
+          href={`/api/blob/download/${databaseId}/${keyJsonToPath(currentKey)}`}
+          class="absolute top-1 right-1 hover:text-primary-600 dark:hover:text-primary-400"
+          download
+          aria-label="Download"
+        >
+          <DownloadIcon />
+        </a>
+      </div>
+    </>
+  );
 }

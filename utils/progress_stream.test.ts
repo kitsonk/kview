@@ -1,4 +1,4 @@
-import { assertEquals } from "@std/assert/assert_equals";
+import { assertEquals } from "@std/assert/assert-equals";
 
 import { Progress, ProgressStream } from "./progress_stream.ts";
 

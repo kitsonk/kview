@@ -7,7 +7,7 @@
  */
 
 import $ from "jsr:@david/dax@0.39.2";
-import * as JSONC from "jsr:@std/jsonc@0.220.1";
+import * as JSONC from "jsr:@std/jsonc@0.221.0";
 
 import manifest from "./install.manifest.json" with { type: "json" };
 
