@@ -58,11 +58,14 @@ export function DialogAddEntry(
           const keyPart = data.get("key_part");
           const valueType = data.get("value_type");
           const value = data.get("value");
+          const file = data.get("file");
           const expiresIn = data.get("expires_in");
           const overwrite = data.get("overwrite");
           assert(
             typeof keyPartType === "string" && typeof keyPart === "string" &&
-              typeof valueType === "string" && typeof value === "string" &&
+              typeof valueType === "string" &&
+              (value === null || typeof value === "string") &&
+              (file === null || file instanceof File) &&
               typeof expiresIn === "string",
           );
           const key: KvKeyJSON = [
@@ -70,35 +73,40 @@ export function DialogAddEntry(
             formDataToKvKeyPartJSON(keyPartType, keyPart),
           ];
           const target = `/api/kv/${databaseId}/${keyJsonToPath(key)}`;
-          const body = JSON.stringify(
-            {
-              value: formDataToKvValueJSON(valueType, value),
-              expiresIn: expiresIn ? parseInt(expiresIn, 10) : undefined,
-              overwrite: overwrite === "true",
-            },
-          );
-          fetch(new URL(target, import.meta.url), {
-            body,
-            method: "PUT",
-            headers: { "content-type": "application/json" },
-          }).then((res) => {
-            if (!res.ok) {
-              if (res.status === 409) {
-                alert.value = "Key already exists, overwrite not specified.";
+          formDataToKvValueJSON(valueType, value, file)
+            .then((value) => {
+              const body = JSON.stringify(
+                {
+                  value,
+                  expiresIn: expiresIn ? parseInt(expiresIn, 10) : undefined,
+                  overwrite: overwrite === "true",
+                },
+              );
+              return fetch(new URL(target, import.meta.url), {
+                body,
+                method: "PUT",
+                headers: { "content-type": "application/json" },
+              });
+            })
+            .then((res) => {
+              if (!res.ok) {
+                if (res.status === 409) {
+                  alert.value = "Key already exists, overwrite not specified.";
+                } else {
+                  alert.value = "Error adding entry.";
+                  return res.json().then((err) => console.error(err));
+                }
               } else {
-                alert.value = "Error adding entry.";
-                return res.json().then((err) => console.error(err));
+                addNotification("Entry added successfully.", "success", true);
+                currentTarget.reset();
+                loadKeys();
+                open.value = false;
               }
-            } else {
-              addNotification("Entry added successfully.", "success", true);
-              currentTarget.reset();
-              loadKeys();
-              open.value = false;
-            }
-          }).catch((err) => {
-            alert.value = "Error adding entry.";
-            console.error(err);
-          });
+            })
+            .catch((err) => {
+              alert.value = "Error adding entry.";
+              console.error(err);
+            });
           evt.preventDefault();
         }}
       >

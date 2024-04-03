@@ -71,7 +71,7 @@ export default function KvExplorer(
   const currentEntry = useSignal<
     | { key: KvKeyJSON }
     | KvEntryJSON
-    | { key: KvKeyJSON; meta: BlobMeta }
+    | { key: KvKeyJSON; meta: BlobMeta; versionstamp: string }
     | null
   >(null);
   let entryController: AbortController | undefined;

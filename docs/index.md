@@ -135,6 +135,18 @@ For `File` and `Blob` entries, kview will detect the any associated context type
 and if it is media that is viewable within a browser, it will be displayed as
 part of the view of the entry value.
 
+Each blob value will have a download link associated with it, which will allow
+you to download and save the blob.
+
+### Adding or updating blobs
+
+kview allows adding or updating blobs. When adding an entry or updating the
+value of an entry, the _Value Type_ will allow you to select _Binary Data_,
+_Blob_ or _File_ and the value will be a file selection input. _Binary Data_
+will be stored as the blob type of a buffer which can be retrieved as a
+`Uint8Array` or byte `ReadableStream`, while _Blob_ and _File_ will be stored
+and retrieved as `Blob`s and `File`s.
+
 ## Bulk operations
 
 ### Import

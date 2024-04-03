@@ -14,7 +14,7 @@ export function DialogDeleteEntry(
     entry: Signal<
       | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
       | KvEntryJSON
-      | { key: KvKeyJSON; versionstamp?: undefined; meta: BlobMeta }
+      | { key: KvKeyJSON; versionstamp: string; meta: BlobMeta }
       | null
     >;
     databaseId?: string;

@@ -21,7 +21,7 @@
     "twind": "https://esm.sh/twind@0.16.19",
     "twind/": "https://esm.sh/twind@0.16.19/",
     "@deno/gfm": "jsr:/@deno/gfm@0.8",
-    "@kitsonk/kv-toolbox/": "jsr:/@kitsonk/kv-toolbox@0.16/",
+    "@kitsonk/kv-toolbox/": "jsr:/@kitsonk/kv-toolbox@0.16.2/",
     "@oak/commons/": "jsr:/@oak/commons@0.7/",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",

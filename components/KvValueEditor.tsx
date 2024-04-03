@@ -1,40 +1,54 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvValueJSON } from "@kitsonk/kv-toolbox/json";
 import { useComputed, useSignal } from "@preact/signals";
+import { isBlobMeta } from "$utils/kv.ts";
 
 import { EditorJson } from "./EditorJson.tsx";
 
 function kvValueJSONToFormData(
-  value: KvValueJSON,
+  value: KvValueJSON | BlobMeta,
 ): [type: string, value: string] {
-  switch (value.type) {
-    case "string":
-    case "bigint":
-    case "Uint8Array":
-    case "RegExp":
-    case "Date":
-    case "KvU64":
-      return [value.type, value.value];
-    case "number":
-    case "boolean":
-      return [value.type, String(value.value)];
-    case "null":
-      return [value.type, "null"];
-    case "Map":
-    case "Set":
-    case "object":
-      return [value.type, JSON.stringify(value.value, undefined, "  ")];
-    default:
-      throw new TypeError(`Unexpected type: "${value.type}"`);
+  if (isBlobMeta(value)) {
+    switch (value.kind) {
+      case "blob":
+        return ["Blob", ""];
+      case "buffer":
+        return ["buffer", ""];
+      case "file":
+        return ["File", ""];
+      default:
+        // deno-lint-ignore no-explicit-any
+        throw new TypeError(`Unexpected meta kind: "${(value as any).kind}"`);
+    }
+  } else {
+    switch (value.type) {
+      case "string":
+      case "bigint":
+      case "Uint8Array":
+      case "RegExp":
+      case "Date":
+      case "KvU64":
+        return [value.type, value.value];
+      case "number":
+      case "boolean":
+        return [value.type, String(value.value)];
+      case "null":
+        return [value.type, "null"];
+      case "undefined":
+        return [value.type, "undefined"];
+      case "Map":
+      case "Set":
+      case "object":
+        return [value.type, JSON.stringify(value.value, undefined, "  ")];
+      default:
+        throw new TypeError(`Unexpected type: "${value.type}"`);
+    }
   }
 }
 
 export function KvValueEditor(
-  { value, meta }: { value?: KvValueJSON | undefined; meta?: BlobMeta },
+  { value }: { value?: KvValueJSON | BlobMeta | undefined },
 ) {
-  if (meta) {
-    return null;
-  }
   const [valueTypeValue, v] = value
     ? kvValueJSONToFormData(value)
     : ["string", undefined];
@@ -53,6 +67,7 @@ export function KvValueEditor(
             type="number"
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             placeholder="Provide a number"
+            required
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
             value={valueValue}
           />
@@ -103,6 +118,17 @@ export function KvValueEditor(
             readOnly
           />
         );
+      case "undefined":
+        return (
+          <input
+            id="value"
+            name="value"
+            type="text"
+            class="block p-2.5 w-full text-sm text-gray-600 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            value="undefined"
+            readOnly
+          />
+        );
       case "RegExp":
         return (
           <input
@@ -125,6 +151,7 @@ export function KvValueEditor(
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             pattern="[0-9]{4}-((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])|(0[469]|11)-(0[1-9]|[12][0-9]|30)|(02)-(0[1-9]|[12][0-9]))T(0[0-9]|1[0-9]|2[0-3]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])\.[0-9]{3}Z"
             placeholder="Provide an ISO format Date"
+            required
             value={valueValue}
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           />
@@ -136,9 +163,22 @@ export function KvValueEditor(
               id="value"
               name="value"
               placeholder="Provide a value for the entry"
+              required
               value={valueValue}
             />
           </div>
+        );
+      case "buffer":
+      case "Blob":
+      case "File":
+        return (
+          <input
+            id="file"
+            name="file"
+            type="file"
+            required
+            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          />
         );
       default:
         return (
@@ -149,6 +189,7 @@ export function KvValueEditor(
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             placeholder="Provide a value for the entry"
             value={valueValue}
+            required
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           >
           </textarea>
@@ -185,6 +226,7 @@ export function KvValueEditor(
           <option value="number">Number</option>
           <option value="bigint">BigInt</option>
           <option value="null">Null</option>
+          <option value="undefined">Undefined</option>
           <option value="boolean">Boolean</option>
           <option value="object">JSON</option>
           <option value="Uint8Array">Uint8Array</option>
@@ -193,6 +235,9 @@ export function KvValueEditor(
           <option value="RegExp">RegExp</option>
           <option value="KvU64">KvU64</option>
           <option value="Date">Date</option>
+          <option value="buffer">Binary Data</option>
+          <option value="Blob">Blob</option>
+          <option value="File">File</option>
         </select>
       </div>
     </>

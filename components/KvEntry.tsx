@@ -46,7 +46,7 @@ export function KvEntry(
       | (KvEntryJSON & { meta?: undefined })
       | {
         key: KvKeyJSON;
-        versionstamp?: undefined;
+        versionstamp: string;
         value?: undefined;
         meta: BlobMeta;
       }
@@ -63,7 +63,7 @@ export function KvEntry(
     return null;
   }
   const { versionstamp, value, meta, key } = entry.value;
-  const editable = isEditable(value);
+  const editable = isEditable(value ?? meta);
   const editDialogOpen = useSignal(false);
   const addEntryDialogOpen = useSignal(false);
   const deleteEntryDialogOpen = useSignal(false);
@@ -138,7 +138,7 @@ export function KvEntry(
               type="button"
               onClick={() => editDialogOpen.value = true}
             >
-              {value ? "Edit value" : "Add value"}
+              {value || meta ? "Update value" : "Add value"}
             </button>
           )}
           {value || meta

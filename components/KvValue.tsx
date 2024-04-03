@@ -45,7 +45,7 @@ export function KvValue(
         label = "Blob";
         break;
       case "buffer":
-        label = "Uint8Array (blob)";
+        label = "Binary Data";
         break;
       case "file":
         label = "File";
@@ -175,7 +175,13 @@ export function KvValue(
         children = <Display>{value.value}</Display>;
         break;
       case "Error":
-        label = "Error";
+      case "EvalError":
+      case "RangeError":
+      case "ReferenceError":
+      case "SyntaxError":
+      case "TypeError":
+      case "URIError":
+        label = value.type;
         color = "red";
         children = (
           <Display>

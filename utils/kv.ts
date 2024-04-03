@@ -1,4 +1,4 @@
-import { type BlobJSON } from "@kitsonk/kv-toolbox/blob";
+import { type BlobJSON, type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KeyTree } from "@kitsonk/kv-toolbox/keys";
 import {
   keyPartToJSON,
@@ -30,16 +30,33 @@ export interface KvLocalInfo {
 
 export const LOCAL_STORES = "local_stores";
 
+export function isBlobMeta(value: unknown): value is BlobMeta {
+  return !!(typeof value === "object" && value && "kind" in value &&
+    typeof value.kind === "string");
+}
+
 export function isBlobJSON(value: unknown): value is BlobJSON {
   return !!(typeof value === "object" && value && "meta" in value &&
     "parts" in value);
 }
 
-export function isEditable(value: KvValueJSON | BlobJSON | undefined): boolean {
-  if (isBlobJSON(value)) {
+export function isEditable(value: KvValueJSON | BlobMeta | undefined): boolean {
+  if (!value) {
     return false;
   }
-  return !!(value && (!["Error", "Uint8Array"].includes(value.type)));
+  if (isBlobMeta(value)) {
+    return true;
+  }
+  return ![
+    "Error",
+    "EvalError",
+    "RangeError",
+    "ReferenceError",
+    "SyntaxError",
+    "TypeError",
+    "URIError",
+    "Uint8Array",
+  ].includes(value.type);
 }
 
 export function pathToKey(path: string): Deno.KvKey {

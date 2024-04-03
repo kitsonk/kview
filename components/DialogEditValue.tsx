@@ -1,7 +1,7 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type ComponentChildren } from "preact";
-import { type Signal, useSignal } from "@preact/signals";
+import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { assert } from "@std/assert/assert";
 import { formDataToKvValueJSON } from "$utils/formData.ts";
@@ -18,11 +18,16 @@ export function DialogEditValue(
   { open, entry, databaseId, loadValue }: {
     open: Signal<boolean>;
     entry: Signal<
-      | { key: KvKeyJSON; versionstamp?: undefined; value?: undefined }
-      | KvEntryJSON
       | {
         key: KvKeyJSON;
         versionstamp?: undefined;
+        value?: undefined;
+        meta?: undefined;
+      }
+      | KvEntryJSON & { meta?: undefined }
+      | {
+        key: KvKeyJSON;
+        versionstamp: string;
         value?: undefined;
         meta: BlobMeta;
       }
@@ -38,6 +43,13 @@ export function DialogEditValue(
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
 
+  const entryValue = useComputed(() => entry.value!.value ?? entry.value!.meta);
+  const versionstamp = useComputed(() => entry.value!.versionstamp);
+  const hasValue = useComputed(() =>
+    !!(entry.value!.value || entry.value!.meta)
+  );
+  const key = useComputed(() => entry.value!.key);
+
   return (
     <Dialog
       class="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
@@ -45,7 +57,7 @@ export function DialogEditValue(
     >
       <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-          {entry.value.value ? "Edit value" : "Add value"}
+          {hasValue ? "Edit value" : "Add value"}
         </h3>
         <CloseButton
           onClick={() => {
@@ -65,50 +77,56 @@ export function DialogEditValue(
           const data = new FormData(currentTarget);
           const valueType = data.get("value_type");
           const value = data.get("value");
+          const file = data.get("file");
           const expiresIn = data.get("expires_in");
           const overwrite = data.get("overwrite");
           assert(
-            typeof valueType === "string" && typeof value === "string" &&
-              typeof expiresIn === "string" && entry.value,
+            typeof valueType === "string" &&
+              (!value || typeof value === "string") &&
+              (file === null || file instanceof File) &&
+              typeof expiresIn === "string" && hasValue,
           );
-          const target = `/api/kv/${databaseId}/${
-            keyJsonToPath(entry.value.key)
-          }`;
-          const body = JSON.stringify({
-            value: formDataToKvValueJSON(valueType, value),
-            expiresIn: expiresIn ? parseInt(expiresIn, 10) : undefined,
-            overwrite: overwrite === "true",
-            versionstamp: entry.value.versionstamp,
-          });
-          fetch(new URL(target, import.meta.url), {
-            body,
-            method: "PUT",
-            headers: { "content-type": "application/json" },
-          }).then((res) => {
-            if (!res.ok) {
-              if (res.status === 409) {
-                alert.value =
-                  'Value in the store has changed. To ignore an update anyway, select "overwrite" option.';
+          const target = `/api/kv/${databaseId}/${keyJsonToPath(key.value)}`;
+          formDataToKvValueJSON(valueType, value, file)
+            .then((value) => {
+              const body = JSON.stringify({
+                value,
+                expiresIn: expiresIn ? parseInt(expiresIn, 10) : undefined,
+                overwrite: overwrite === "true",
+                versionstamp: versionstamp.value,
+              });
+              return fetch(new URL(target, import.meta.url), {
+                body,
+                method: "PUT",
+                headers: { "content-type": "application/json" },
+              });
+            })
+            .then((res) => {
+              if (!res.ok) {
+                if (res.status === 409) {
+                  alert.value =
+                    'Value in the store has changed. To ignore an update anyway, select "overwrite" option.';
+                } else {
+                  alert.value = "Error setting value.";
+                  return res.json().then((err) => console.error(err));
+                }
               } else {
-                alert.value = "Error setting value.";
-                return res.json().then((err) => console.error(err));
+                addNotification(
+                  hasValue
+                    ? "Value successfully updated."
+                    : "Value successfully set.",
+                  "success",
+                  true,
+                );
+                currentTarget.reset();
+                loadValue();
+                open.value = false;
               }
-            } else {
-              addNotification(
-                entry.value?.value
-                  ? "Value successfully updated."
-                  : "Value successfully set.",
-                "success",
-                true,
-              );
-              currentTarget.reset();
-              loadValue();
-              open.value = false;
-            }
-          }).catch((err) => {
-            alert.value = "Error setting value.";
-            console.error(err);
-          });
+            })
+            .catch((err) => {
+              alert.value = "Error setting value.";
+              console.error(err);
+            });
           evt.preventDefault();
         }}
       >
@@ -117,9 +135,9 @@ export function DialogEditValue(
             <h2 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Key
             </h2>
-            <KvKey value={entry.value.key} noLink />
+            <KvKey value={key} noLink />
           </div>
-          <KvValueEditor value={entry.value.value} />
+          <KvValueEditor value={entryValue.value} />
           <div>
             <label
               for="expires_in"
@@ -135,7 +153,7 @@ export function DialogEditValue(
               placeholder="in milliseconds (optional)"
             />
           </div>
-          {entry.value.value &&
+          {hasValue &&
             (
               <fieldset>
                 <legend class="block mb-2 test-sm font-medium text-gray-900 dark:text-white">
@@ -177,7 +195,7 @@ export function DialogEditValue(
           class="flex items-center justify-center font-bold text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
           type="submit"
         >
-          {entry.value.value ? "Update value" : "Add value"}
+          {hasValue ? "Update value" : "Add value"}
         </button>
       </form>
     </Dialog>

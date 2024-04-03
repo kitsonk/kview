@@ -70,6 +70,7 @@ export const handler: Handlers = {
       if (maybeMeta.value) {
         return Response.json({
           meta: maybeMeta.value,
+          versionstamp: maybeMeta.versionstamp,
           key: keyToJSON(prefix),
         });
       } else {
@@ -139,8 +140,14 @@ export const handler: Handlers = {
       return Response.json({
         status: 400,
         statusText: "Bad Request",
-        error: JSON.stringify(err),
-      }, { status: 400, statusText: "Bad Request" });
+        error: err instanceof Error
+          ? {
+            name: err.name,
+            message: err.message,
+            stack: err.stack,
+          }
+          : err,
+      }, { status: 400, statusText: "BadRequest" });
     }
   },
   async DELETE(req, { params: { id, path } }) {
@@ -183,7 +190,13 @@ export const handler: Handlers = {
       return Response.json({
         status: 400,
         statusText: "Bad Request",
-        error: JSON.stringify(err),
+        error: err instanceof Error
+          ? {
+            name: err.name,
+            message: err.message,
+            stack: err.stack,
+          }
+          : err,
       }, { status: 400, statusText: "BadRequest" });
     }
   },
