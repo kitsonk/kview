@@ -223,6 +223,66 @@ trashcan icon on the entry card:
 
 <svg width="16" height="16" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m135.53 123.21h243.68c27.379 0 52.02 24.641 52.02 54.758v279.27c0 30.117-24.641 54.758-52.02 54.758h-243.68c-30.117 0-54.758-24.641-54.758-54.758v-279.27c0-30.117 24.641-54.758 54.758-54.758zm73.926-123.21h95.828c30.117 0 27.379 30.117 27.379 52.02h71.188c16.43 0 27.379 13.691 27.379 30.117 0 16.43-10.953 27.379-27.379 27.379h-292.96c-16.43 0-30.117-10.953-30.117-27.379 0-16.43 13.691-30.117 30.117-30.117h68.449c0-21.902-2.7383-52.02 30.117-52.02zm84.879 52.02c-2.7383-8.2148-10.953-16.43-19.164-16.43h-35.594c-10.953 0-19.164 8.2148-21.902 16.43h76.664zm-131.42 128.68c10.953 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-5.4766 16.43-16.43 16.43-8.2148 0-13.691-8.2148-13.691-16.43v-249.16c0-8.2148 5.4766-16.43 13.691-16.43zm93.09 0c8.2148 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-8.2148 16.43-16.43 16.43s-16.43-8.2148-16.43-16.43v-249.16c0-8.2148 8.2148-16.43 16.43-16.43zm93.09 0c8.2148 0 16.43 8.2148 16.43 16.43v249.16c0 8.2148-8.2148 16.43-16.43 16.43s-16.43-8.2148-16.43-16.43v-249.16c0-8.2148 8.2148-16.43 16.43-16.43z" fill-rule="evenodd"/></svg>
 
+## Data Types
+
+### Key Parts
+
+Deno KV supports keys of a size of up to 2k. Each type of key part is supported
+by kview.
+
+| Type       | Supported | Notes                                                                                                |
+| ---------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| String     | ✅        |                                                                                                      |
+| Number     | ✅        | Key parts are entered as digits only                                                                 |
+| Boolean    | ✅        | Key parts are entered as `true` or `false`                                                           |
+| BigInt     | ✅        | Key parts are entered as digits only                                                                 |
+| Uint8Array | ✅        | Key parts are entered as URL safe base64 encoded strings, the value of the key part is not displayed |
+
+### Values
+
+Deno KV supports any JavaScript built-in types that are supported via structured
+clone. The values are limited to 64k in their stored format. kview via
+kv-toolbox add support for three blob types. These have no hard size limit. The
+support table is seen below:
+
+| Type                | View | Add | Update | Notes                                                                                                                                                           |
+| ------------------- | ---- | --- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| String              | ✅   | ✅  | ✅     |                                                                                                                                                                 |
+| Number              | ✅   | ✅  | ✅     | Deno KV stores `NaN` and `Infinity`, but currently kview cannot display them as values or allow you to set or update to those values.                           |
+| Boolean             | ✅   | ✅  | ✅     |                                                                                                                                                                 |
+| BigInt              | ✅   | ✅  | ✅     | Values are entered/edited as number digits                                                                                                                      |
+| Undefined           | ✅   | ✅  |        | Values can be changed to `undefined` but the value itself is not editable intentionally.                                                                        |
+| Null                | ✅   | ✅  |        | Values can be changed to `null` but the value itself is not editable intentionally.                                                                             |
+| `KvU64`             | ✅   | ✅  | ✅     | Values are entered/edited as number digits                                                                                                                      |
+| `Array`             | ✅   | ✅  | ✅     | Values are entered/edited as JSON arrays                                                                                                                        |
+| `Map`               | ✅   | ✅  | ✅     | Values are entered/edited as JSON array tuples of key and values                                                                                                |
+| `Set`               | ✅   | ✅  | ✅     | Values are entered/edited as JSON arrays                                                                                                                        |
+| `Date`              | ✅   | ✅  | ✅     | Values are entered/edited as ISO strings in the format of `YYYY-MM-DDTHH:mm:ss.sssZ` or `±YYYYYY-MM-DDTHH:mm:ss.sssZ`                                           |
+| `RegExp`            | ✅   | ✅  | ✅     | Values are entered/edited as JavaScript regular expression literals (e.g. `/abcd/i`)                                                                            |
+| `Error`             | ✅   |     |        |                                                                                                                                                                 |
+| `EvalError`         | ✅   |     |        |                                                                                                                                                                 |
+| `RangeError`        | ✅   |     |        |                                                                                                                                                                 |
+| `ReferenceError`    | ✅   |     |        |                                                                                                                                                                 |
+| `SyntaxError`       | ✅   |     |        |                                                                                                                                                                 |
+| `TypeError`         | ✅   |     |        |                                                                                                                                                                 |
+| `URIError`          | ✅   |     |        |                                                                                                                                                                 |
+| `ArrayBuffer`       | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Int8Array`         | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Uint8ClampedArray` | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Uint8ClampedArray` | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Int16Array`        | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Uint16Array`       | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Int32Array`        | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Uint32Array`       | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Float32Array`      | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `Float64Array`      | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `BigInt64Array`     | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| `BigUint64Array`    | ✅   | ✅  |        | Values are added as URL safe base64 encoded strings. View is displayed as a hex byte viewer.                                                                    |
+| Binary Data         | ✅   | ✅  | ✅     | Values are added/updated by loading files. Only byte length is available as view. This is stored across multiple keys via kv-toolbox.                           |
+| `Blob`              | ✅   | ✅  | ✅     | Values are added/updated by loading files. If the type can be displayed in a browser, it will be displayed. This is stored across multiple keys via kv-toolbox. |
+| `File`              | ✅   | ✅  | ✅     | Values are added/updated by loading files. If the type can be displayed in a browser, it will be displayed. This is stored across multiple keys via kv-toolbox. |
+| JSON                | ✅   | ✅  | ✅     | Other `object`s use the structured clone algorithm and added/updated by entering a JSON value.                                                                  |
+
 ## Limitations
 
 - Deno KV supports key parts that are Uint8Array. While `kview` properly handles
