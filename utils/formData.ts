@@ -44,6 +44,7 @@ export async function formDataToKvValueJSON(
         return formDataToKvKeyPartJSON(type, value);
       case "null":
         return { type, value: null };
+      case "Array":
       case "Map":
       case "Set":
       case "object":
@@ -51,6 +52,17 @@ export async function formDataToKvValueJSON(
       case "RegExp":
       case "Date":
       case "KvU64":
+      case "ArrayBuffer":
+      case "Int8Array":
+      case "Uint8ClampedArray":
+      case "Int16Array":
+      case "Uint16Array":
+      case "Int32Array":
+      case "Uint32Array":
+      case "Float32Array":
+      case "Float64Array":
+      case "BigInt64Array":
+      case "BigUint64Array":
         return { type, value };
       default:
         throw new TypeError(`Unexpected type: "${type}"`);

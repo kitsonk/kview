@@ -119,8 +119,19 @@ export function KvValue(
           </Display>
         );
         break;
+      case "ArrayBuffer":
+      case "Int8Array":
       case "Uint8Array":
-        label = "Uint8Array";
+      case "Uint8ClampedArray":
+      case "Int16Array":
+      case "Uint16Array":
+      case "Int32Array":
+      case "Uint32Array":
+      case "Float32Array":
+      case "Float64Array":
+      case "BigInt64Array":
+      case "BigUint64Array":
+        label = value.type;
         color = "gray";
         border = true;
         children = (
@@ -208,6 +219,15 @@ export function KvValue(
           </Display>
         );
         break;
+      case "Array":
+        label = value.type;
+        color = "blue";
+        children = (
+          <Display>
+            <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(value.value)}}></code></pre>
+          </Display>
+        );
+        break;
       case "object":
         label = "JSON";
         color = "blue";
@@ -225,6 +245,7 @@ export function KvValue(
             <pre><code>{value.value}</code></pre>
           </Display>
         );
+        break;
     }
   }
 

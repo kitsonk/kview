@@ -24,7 +24,18 @@ function kvValueJSONToFormData(
     switch (value.type) {
       case "string":
       case "bigint":
+      case "ArrayBuffer":
+      case "Int8Array":
       case "Uint8Array":
+      case "Uint8ClampedArray":
+      case "Int16Array":
+      case "Uint16Array":
+      case "Int32Array":
+      case "Uint32Array":
+      case "Float32Array":
+      case "Float64Array":
+      case "BigInt64Array":
+      case "BigUint64Array":
       case "RegExp":
       case "Date":
       case "KvU64":
@@ -36,6 +47,7 @@ function kvValueJSONToFormData(
         return [value.type, "null"];
       case "undefined":
         return [value.type, "undefined"];
+      case "Array":
       case "Map":
       case "Set":
       case "object":
@@ -156,6 +168,7 @@ export function KvValueEditor(
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           />
         );
+      case "Array":
       case "object":
         return (
           <div class="max-h-48 overflow-auto max-w-3xl text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -225,11 +238,9 @@ export function KvValueEditor(
           <option value="string">String</option>
           <option value="number">Number</option>
           <option value="bigint">BigInt</option>
-          <option value="null">Null</option>
-          <option value="undefined">Undefined</option>
           <option value="boolean">Boolean</option>
           <option value="object">JSON</option>
-          <option value="Uint8Array">Uint8Array</option>
+          <option value="Array">Array</option>
           <option value="Map">Map</option>
           <option value="Set">Set</option>
           <option value="RegExp">RegExp</option>
@@ -238,6 +249,20 @@ export function KvValueEditor(
           <option value="buffer">Binary Data</option>
           <option value="Blob">Blob</option>
           <option value="File">File</option>
+          <option value="ArrayBuffer">ArrayBuffer</option>
+          <option value="Int8Array">Int8Array</option>
+          <option value="Uint8Array">Uint8Array</option>
+          <option value="Uint8ClampedArray">Uint8ClampedArray</option>
+          <option value="Int16Array">Int16Array</option>
+          <option value="Uint16Array">Uint16Array</option>
+          <option value="Int32Array">Int32Array</option>
+          <option value="Uint32Array">Uint32Array</option>
+          <option value="Float32Array">Float32Array</option>
+          <option value="Float64Array">Float64Array</option>
+          <option value="BigInt64Array">BigInt64Array</option>
+          <option value="BigUint64Array">BigUint64Array</option>
+          <option value="null">Null</option>
+          <option value="undefined">Undefined</option>
         </select>
       </div>
     </>
