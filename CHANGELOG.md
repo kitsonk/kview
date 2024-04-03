@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.11.0
+
+- feat: add download link to blobs (0af5524)
+- feat: support adding and updating blob entries (7ce889c)
+- fix: support all allowable data types (f2b4177)
+- docs: provide docs on supported data types (912ffe1)
+
 ## Version 0.10.2
 
 _bumped version to ensure latest version is available_
