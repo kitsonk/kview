@@ -1,4 +1,15 @@
 {
+  "tasks": {
+    "start": "deno run -A --unstable-kv main.ts",
+    "upgrade": "deno run -A upgrade.ts"
+  },
+  "mappings": [
+    ["$components/", "./components/"],
+    ["$islands/", "./islands/"],
+    ["$utils/", "./utils/"],
+    ["./islands/", "./islands/"],
+    ["./routes/", "./routes/"]
+  ],
   "dirs": ["docs", "static"],
   "files": [
     "./.env.defaults",

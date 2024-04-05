@@ -11,6 +11,7 @@ import { parseArgs } from "jsr:@std/cli@0.221.0/parse-args";
 import * as JSONC from "jsr:@std/jsonc@0.221.0";
 
 interface DenoConfig {
+  version?: string;
   exclude?: string[];
   imports: Record<string, string>;
   lock?: boolean;
@@ -18,19 +19,13 @@ interface DenoConfig {
 }
 
 interface Manifest {
+  tasks: Record<string, string>;
+  mappings: [string, string][];
   dirs: string[];
   files: string[];
 }
 
 const SRC_DENO_JSON = "https://deno.land/x/kview/deno.json";
-
-const IMPORT_MAP_ENTRIES: [string, string][] = [
-  ["$components/", "./components/"],
-  ["$islands/", "./islands/"],
-  ["$utils/", "./utils/"],
-  ["./islands/", "./islands/"],
-  ["./routes/", "./routes/"],
-];
 
 async function getLatestDenoConfig(): Promise<
   [url: string, config: DenoConfig]
@@ -45,7 +40,7 @@ async function getLatestDenoConfig(): Promise<
 }
 
 async function main() {
-  $.logStep("Upgrading kview...");
+  $.logStep(`Upgrading kview...`);
   const args = parseArgs(Deno.args, {
     boolean: ["dry-run"],
   });
@@ -55,22 +50,24 @@ async function main() {
     Deno.exit(1);
   }
   $.logStep("Fetching latest configuration...");
-  const cwd = $.path(new URL(".", import.meta.url));
   const [url, config] = await getLatestDenoConfig();
-  const match = /@([0-9.]+)\//.exec(url);
-  if (match) {
-    $.logLight(`  upgrading to version: ${match[1]}`);
-  }
+  $.logLight(`  upgrading to version: ${config.version}`);
   $.logStep("Updating config file...");
+  const cwd = $.path(new URL(".", import.meta.url));
   const localConfig = JSONC.parse(
     await cwd.join("deno.json").readText(),
   ) as unknown as DenoConfig;
   for (const [key, value] of Object.entries(config.imports)) {
     localConfig.imports[key] = value;
   }
-  for (const [key, value] of IMPORT_MAP_ENTRIES) {
+  const manifest: Manifest = await $.request(
+    new URL("./install.manifest.json", url),
+  )
+    .json();
+  for (const [key, value] of manifest.mappings) {
     localConfig.imports[key] = new URL(value, url).toString();
   }
+  localConfig.tasks = manifest.tasks;
   if (dryRun) {
     console.log(localConfig);
   } else {
@@ -78,10 +75,6 @@ async function main() {
   }
   $.logLight("  complete.");
   $.logStep("Updating local application files...");
-  const manifest: Manifest = await $.request(
-    new URL("./install.manifest.json", url),
-  )
-    .json();
   const progress = $.progress({
     message: "Updating application files...",
     length: manifest.dirs.length + manifest.files.length,

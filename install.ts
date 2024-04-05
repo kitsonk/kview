@@ -21,19 +21,6 @@ interface DenoConfig {
   tasks?: Record<string, string>;
 }
 
-const TASKS = {
-  "start": "deno run -A --unstable-kv main.ts",
-  "upgrade": "deno run -A upgrade.ts",
-};
-
-const IMPORT_MAP_ENTRIES: [string, string][] = [
-  ["$components/", "./components/"],
-  ["$islands/", "./islands/"],
-  ["$utils/", "./utils/"],
-  ["./islands/", "./islands/"],
-  ["./routes/", "./routes/"],
-];
-
 async function getDenoConfig(): Promise<DenoConfig> {
   const res = await fetch(new URL("./deno.json", import.meta.url));
   if (res.status !== 200) {
@@ -45,7 +32,8 @@ async function getDenoConfig(): Promise<DenoConfig> {
 }
 
 async function main() {
-  $.logStep("Installing kview...");
+  const denoConfig = await getDenoConfig();
+  $.logStep(`Installing kview (v${denoConfig.version})...`);
   const installLocation = await $.prompt({
     message: "Choose the installation path for kview:",
     default: "kview",
@@ -72,9 +60,8 @@ async function main() {
     $.logStep("Created install directory.");
   }
   $.logStep("Generating config file...");
-  const denoConfig = await getDenoConfig();
-  denoConfig.tasks = TASKS;
-  for (const [key, value] of IMPORT_MAP_ENTRIES) {
+  denoConfig.tasks = manifest.tasks;
+  for (const [key, value] of manifest.mappings) {
     denoConfig.imports[key] = new URL(value, import.meta.url).toString();
   }
   delete denoConfig.name;
