@@ -13,7 +13,7 @@ A current version of the Deno CLI is required to install and host `kview`. To
 install, run the following command:
 
 ```
-deno run -A https://kview.deno.dev/install
+deno run -A -r https://kview.deno.dev/install
 ```
 
 You will be prompted for a location to install `kview`.

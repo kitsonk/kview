@@ -2,6 +2,9 @@
   "name": "@kitsonk/kview",
   "version": "0.12.0",
   "exports": { "./install": "./install.ts" },
+  "publish": {
+    "exclude": [".vscode", ".github", "assets", "dev.ts", "minify_svg.ts"]
+  },
   "lock": false,
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check --unstable-kv **/*.ts && deno check --unstable-kv **/*.tsx",

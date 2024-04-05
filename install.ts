@@ -3,6 +3,18 @@
 /**
  * Installation script for kview.
  *
+ * @example Install kview
+ *
+ * ```
+ * deno -A -r https://kview.deno.dev/install
+ * ```
+ *
+ * @example Upgrade an installation
+ *
+ * ```
+ * deno task upgrade
+ * ```
+ *
  * @module
  */
 
