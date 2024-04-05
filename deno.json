@@ -1,6 +1,6 @@
 {
   "name": "@kitsonk/kview",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "exports": { "./install": "./install.ts" },
   "lock": false,
   "tasks": {

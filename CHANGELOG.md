@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.12.0
+
+- feat: rework install and upgrade scripts (5699f2f)
+- feat: add preview option to upgrade (7ff284d)
+
 ## Version 0.11.0
 
 - feat: add download link to blobs (0af5524)
