@@ -26,11 +26,13 @@ interface Manifest {
 }
 
 const SRC_DENO_JSON = "https://deno.land/x/kview/deno.json";
+const PREVIEW_DENO_JSON =
+  "https://raw.githubusercontent.com/kitsonk/kview/main/deno.json";
 
-async function getLatestDenoConfig(): Promise<
+async function getLatestDenoConfig(preview: boolean): Promise<
   [url: string, config: DenoConfig]
 > {
-  const res = await fetch(SRC_DENO_JSON);
+  const res = await fetch(preview ? PREVIEW_DENO_JSON : SRC_DENO_JSON);
   if (!res.ok) {
     throw new Error(
       `Error fetching latest deno.json: ${res.status} ${res.statusText}`,
@@ -42,16 +44,19 @@ async function getLatestDenoConfig(): Promise<
 async function main() {
   $.logStep(`Upgrading kview...`);
   const args = parseArgs(Deno.args, {
-    boolean: ["dry-run"],
+    boolean: ["dry-run", "preview"],
   });
   const dryRun = args["dry-run"];
+  const preview = args["preview"];
   if ($.path(new URL("./dev.ts", import.meta.url)).isFileSync() && !dryRun) {
     $.logError("Development environment detected. Aborting!");
     Deno.exit(1);
   }
   $.logStep("Fetching latest configuration...");
-  const [url, config] = await getLatestDenoConfig();
-  $.logLight(`  upgrading to version: ${config.version}`);
+  const [url, config] = await getLatestDenoConfig(preview);
+  $.logLight(
+    `  upgrading to version: ${config.version} ${preview ? "(preview)" : ""}`,
+  );
   $.logStep("Updating config file...");
   const cwd = $.path(new URL(".", import.meta.url));
   const localConfig = JSONC.parse(
