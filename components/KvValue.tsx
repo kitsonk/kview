@@ -9,7 +9,7 @@ import { gray } from "https://deno.land/std@0.216.0/fmt/colors.ts";
 
 function Display({ children }: { children: ComponentChildren }) {
   return (
-    <div class="rounded p-1 bg-gray(100 dark:800) max-h-64 lg:max-h-96 overflow-y-auto overflow-x-auto">
+    <div class="rounded p-1 bg-gray(100 dark:800) max-h-64 lg:max-h-108 overflow-y-auto overflow-x-auto">
       {children}
     </div>
   );
@@ -137,7 +137,7 @@ export function KvValue(
         children = (
           <HexViewer
             value={value.value}
-            class="max-h-64 lg:max-h-96 overflow-x-auto"
+            class="max-h-64 lg:max-h-108 overflow-x-auto"
           />
         );
         break;
