@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.13.0
+
+- feat: add previews for more blob media types (c6b581f)
+- chore: add publish to jsr (f66c748)
+- chore: actually add github workflow (8e0f8e3)
+- chore: update install entrypoint (5d77d71)
+
 ## Version 0.12.0
 
 - feat: rework install and upgrade scripts (5699f2f)
