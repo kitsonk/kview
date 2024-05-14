@@ -12,15 +12,17 @@ const markdownBody = css({
   // general
   a: apply`underline`,
   h1:
-    apply`font-bold text-xl md:text-2xl lg:text-3xl pb-2 mb-3 text-primary(400 dark:600)`,
+    apply`font-bold text-xl md:text-2xl lg:text-3xl pb-2 mb-3 text-primary(400 dark:600) scroll-mt-16`,
   h2:
-    apply`font-bold text-lg md:text-xl lg:text-2xl pb-2 mb-3 mt-4 text-primary(400 dark:600)`,
+    apply`font-bold text-lg md:text-xl lg:text-2xl pb-2 mb-3 mt-4 text-primary(400 dark:600) scroll-mt-16`,
   h3:
-    apply`font-bold font-bold md:(text-lg font-normal) lg:(text-xl font-normal) mb-3 mt-4`,
+    apply`font-bold font-bold md:(text-lg font-normal) lg:(text-xl font-normal) mb-3 mt-4 scroll-mt-16`,
   h4:
-    apply`font-bold font-semibold md:(font-bold) lg:(text-lg font-normal) mb-2 mt-3`,
-  h5: apply`font-bold font-italic md:(font-semibold) lg:(font-bold) mb-2 mt-3`,
-  h6: apply`font-bold md:(font-italic) lg:(font-semibold) mb-1 mt-2`,
+    apply`font-bold font-semibold md:(font-bold) lg:(text-lg font-normal) mb-2 mt-3 scroll-mt-16`,
+  h5:
+    apply`font-bold font-italic md:(font-semibold) lg:(font-bold) mb-2 mt-3 scroll-mt-16`,
+  h6:
+    apply`font-bold md:(font-italic) lg:(font-semibold) mb-1 mt-2 scroll-mt-16`,
   hr: apply`m-2 border-gray(500 dark:400)`,
   ol: apply`list-decimal lg:list-inside`,
   p: apply`my-2`,
