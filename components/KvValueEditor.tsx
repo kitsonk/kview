@@ -261,6 +261,7 @@ export function KvValueEditor(
           <option value="Float64Array">Float64Array</option>
           <option value="BigInt64Array">BigInt64Array</option>
           <option value="BigUint64Array">BigUint64Array</option>
+          <option value="DataView">DataView</option>
           <option value="null">Null</option>
           <option value="undefined">Undefined</option>
         </select>

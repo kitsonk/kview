@@ -131,6 +131,7 @@ export function KvValue(
       case "Float64Array":
       case "BigInt64Array":
       case "BigUint64Array":
+      case "DataView":
         label = value.type;
         color = "gray";
         border = true;

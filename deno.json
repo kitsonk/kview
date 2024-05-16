@@ -9,7 +9,7 @@
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check --unstable-kv **/*.ts && deno check --unstable-kv **/*.tsx",
     "test": "deno test --unstable-kv",
-    "start": "deno run -A --unstable-kv --reload --watch=static/,routes/ dev.ts",
+    "start": "deno run -A --unstable-kv --watch=static/,routes/ dev.ts",
     "build": "deno task minify && deno run -A --unstable-kv dev.ts build",
     "minify": "deno run -A minify_svg.ts",
     "preview": "deno run -A --unstable-kv main.ts",
@@ -24,7 +24,7 @@
     "twind": "https://esm.sh/twind@0.16.19",
     "twind/": "https://esm.sh/twind@0.16.19/",
     "@deno/gfm": "jsr:/@deno/gfm@0.8",
-    "@kitsonk/kv-toolbox/": "jsr:/@kitsonk/kv-toolbox@0.17/",
+    "@kitsonk/kv-toolbox/": "jsr:/@kitsonk/kv-toolbox@0.18/",
     "@oak/commons/": "jsr:/@oak/commons@0.7/",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",

@@ -63,6 +63,7 @@ export async function formDataToKvValueJSON(
       case "Float64Array":
       case "BigInt64Array":
       case "BigUint64Array":
+      case "DataView":
         return { type, value };
       default:
         throw new TypeError(`Unexpected type: "${type}"`);

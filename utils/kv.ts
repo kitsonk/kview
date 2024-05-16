@@ -67,6 +67,7 @@ export function isEditable(value: KvValueJSON | BlobMeta | undefined): boolean {
     "Float64Array",
     "BigInt64Array",
     "BigUint64Array",
+    "DataView",
   ].includes(value.type);
 }
 
