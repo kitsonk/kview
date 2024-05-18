@@ -119,13 +119,15 @@ export function BlobViewer(
   let preview;
   switch (meta.kind) {
     case "blob":
-      preview = (
-        <Preview
-          contentType={meta.type}
-          databaseId={databaseId}
-          currentKey={currentKey}
-        />
-      );
+      if (!meta.encrypted) {
+        preview = (
+          <Preview
+            contentType={meta.type}
+            databaseId={databaseId}
+            currentKey={currentKey}
+          />
+        );
+      }
       table = (
         <table class="w-full m-2">
           <tbody>
@@ -135,6 +137,14 @@ export function BlobViewer(
                 <code>{meta.type}</code>
               </td>
             </tr>
+            {meta.encrypted
+              ? (
+                <tr>
+                  <td>Encrypted:</td>
+                  <td>True</td>
+                </tr>
+              )
+              : undefined}
             {meta.size
               ? (
                 <tr>
@@ -151,6 +161,14 @@ export function BlobViewer(
       table = (
         <table class="w-full m-2">
           <tbody>
+            {meta.encrypted
+              ? (
+                <tr>
+                  <td>Encrypted:</td>
+                  <td>True</td>
+                </tr>
+              )
+              : undefined}
             {meta.size
               ? (
                 <tr>
@@ -164,13 +182,15 @@ export function BlobViewer(
       );
       break;
     case "file":
-      preview = (
-        <Preview
-          contentType={meta.type}
-          databaseId={databaseId}
-          currentKey={currentKey}
-        />
-      );
+      if (!meta.encrypted) {
+        preview = (
+          <Preview
+            contentType={meta.type}
+            databaseId={databaseId}
+            currentKey={currentKey}
+          />
+        );
+      }
       table = (
         <table class="w-full m-2">
           <tbody>
@@ -186,6 +206,14 @@ export function BlobViewer(
                 <code>{meta.name}</code>
               </td>
             </tr>
+            {meta.encrypted
+              ? (
+                <tr>
+                  <td>Encrypted:</td>
+                  <td>True</td>
+                </tr>
+              )
+              : undefined}
             {meta.lastModified
               ? (
                 <tr>
