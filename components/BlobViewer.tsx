@@ -239,26 +239,30 @@ export function BlobViewer(
     <>
       <div class="relative">
         {table}
-        <div class="absolute top-0 right-2 flex">
-          <a
-            href={`/api/blob/download/${databaseId}/${
-              keyJsonToPath(currentKey)
-            }`}
-            class="hover:text-primary-600 dark:hover:text-primary-400"
-            download
-            aria-label="Download"
-          >
-            <DownloadIcon />
-          </a>
-          <a
-            href={`/api/blob/serve/${databaseId}/${keyJsonToPath(currentKey)}`}
-            class="hover:text-primary-600 dark:hover:text-primary-400"
-            target="_blank"
-            aria-label="Open in new tab"
-          >
-            <ArrowUpRightIcon />
-          </a>
-        </div>
+        {meta.encrypted ? undefined : (
+          <div class="absolute top-0 right-2 flex">
+            <a
+              href={`/api/blob/download/${databaseId}/${
+                keyJsonToPath(currentKey)
+              }`}
+              class="hover:text-primary-600 dark:hover:text-primary-400"
+              download
+              aria-label="Download"
+            >
+              <DownloadIcon />
+            </a>
+            <a
+              href={`/api/blob/serve/${databaseId}/${
+                keyJsonToPath(currentKey)
+              }`}
+              class="hover:text-primary-600 dark:hover:text-primary-400"
+              target="_blank"
+              aria-label="Open in new tab"
+            >
+              <ArrowUpRightIcon />
+            </a>
+          </div>
+        )}
       </div>
       {preview}
     </>
