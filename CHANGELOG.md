@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.14.0
+
+- feat: display encrypted blobs (c08a305)
+- fix: hide links for encrypted blobs (32ae865)
+- chore: update std (5b53ea5)
+- chore: update kv-toolbox (34b95ed)
+
 ## Version 0.13.0
 
 - feat: add previews for more blob media types (c6b581f)
