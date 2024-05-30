@@ -18,6 +18,13 @@ Deno.test({
 });
 
 Deno.test({
+  name: "pathToKey - strings with slashes",
+  fn() {
+    assertEquals(pathToKey("foo/%2Fbar"), ["foo", "/bar"]);
+  },
+});
+
+Deno.test({
   name: "pathToKey - number",
   fn() {
     assertEquals(pathToKey("__n__1000/1abc"), [1000, "1abc"]);
@@ -70,6 +77,16 @@ Deno.test({
     assertEquals(
       keyJsonToPath(keyToJSON([new Uint8Array([1, 2, 3])])),
       "__u8__AQID",
+    );
+  },
+});
+
+Deno.test({
+  name: "keyJsonToPath - string with slashes",
+  fn() {
+    assertEquals(
+      keyJsonToPath(keyToJSON(["foo", "/bar"])),
+      "foo/%2Fbar",
     );
   },
 });
