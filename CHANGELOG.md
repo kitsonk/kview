@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.14.1
+
+- fix: handle key parts with slashes (0af676c)
+- fix: decode path to key strings properly (429251b)
+
 ## Version 0.14.0
 
 - feat: display encrypted blobs (c08a305)
