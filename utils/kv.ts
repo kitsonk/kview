@@ -88,12 +88,7 @@ export function pathToKey(path: string): Deno.KvKey {
     } else if (/^__b__[0-9]+$/.test(part)) {
       key.push(BigInt(part.slice(5)));
     } else {
-      const maybeNumber = parseInt(part, 10);
-      if (maybeNumber.toString() === part) {
-        key.push(maybeNumber);
-      } else {
-        key.push(decodeURIComponent(part));
-      }
+      key.push(decodeURIComponent(part));
     }
   }
   return key;

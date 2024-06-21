@@ -25,6 +25,16 @@ Deno.test({
 });
 
 Deno.test({
+  name: "pathToKey - single char strings",
+  fn() {
+    assertEquals(
+      pathToKey("index/2023/1/__n__4"),
+      ["index", "2023", "1", 4],
+    );
+  },
+});
+
+Deno.test({
   name: "pathToKey - number",
   fn() {
     assertEquals(pathToKey("__n__1000/1abc"), [1000, "1abc"]);
@@ -87,6 +97,16 @@ Deno.test({
     assertEquals(
       keyJsonToPath(keyToJSON(["foo", "/bar"])),
       "foo/%2Fbar",
+    );
+  },
+});
+
+Deno.test({
+  name: "keyJsonToPath - single digit strings",
+  fn() {
+    assertEquals(
+      keyJsonToPath(keyToJSON(["index", "2023", "1", 4])),
+      "index/2023/1/__n__4",
     );
   },
 });
