@@ -6,7 +6,7 @@ import { getKvPath } from "$utils/kv_state.ts";
 import { setAccessToken } from "$utils/dash.ts";
 
 export const handler: Handlers = {
-  async GET(_req, { params: { id, path } }) {
+  async GET(_req, { params: { id, path = "" } }) {
     const prefix = path === "" ? [] : pathToKey(path);
     const info = getKvPath(id);
     if (!info) {
@@ -22,7 +22,7 @@ export const handler: Handlers = {
     const kv = await Deno.openKv(kvPath);
     return exportToResponse(kv, { prefix }, { filename: id, close: true });
   },
-  async POST(req, { params: { id, path } }) {
+  async POST(req, { params: { id, path = "" } }) {
     const prefix = path === "" ? [] : pathToKey(path);
     if (!req.body) {
       return Response.json({ status: 400, statusText: "Bad Request" }, {
