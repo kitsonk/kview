@@ -39,7 +39,7 @@ import * as $LocalKvList from "./islands/LocalKvList.tsx";
 import * as $RemoteControls from "./islands/RemoteControls.tsx";
 import * as $RemoteKvList from "./islands/RemoteKvList.tsx";
 import * as $Watches from "./islands/Watches.tsx";
-import { type Manifest } from "$fresh/server.ts";
+import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
   routes: {
