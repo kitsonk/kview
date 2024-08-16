@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.14.2
+
+- fix: handle when path is empty (b27fe82)
+- chore: update dependencies (ce92334)
+- fix: more spread path fixes (e0eb124)
+
 ## Version 0.14.1
 
 - fix: handle key parts with slashes (0af676c)
