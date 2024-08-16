@@ -44,7 +44,7 @@ function notFound() {
 }
 
 export const handler: Handlers = {
-  async GET(req, { params: { id, path } }) {
+  async GET(req, { params: { id, path = "" } }) {
     const prefix = path === "" ? [] : pathToKey(path);
     const kv = await getKv(id);
     const url = new URL(req.url, import.meta.url);
@@ -84,7 +84,7 @@ export const handler: Handlers = {
       return keyCountToResponse(data);
     }
   },
-  async PUT(req, { params: { id, path } }) {
+  async PUT(req, { params: { id, path = "" } }) {
     try {
       const key = pathToKey(path);
       const kv = await getKv(id);
@@ -150,7 +150,7 @@ export const handler: Handlers = {
       }, { status: 400, statusText: "BadRequest" });
     }
   },
-  async DELETE(req, { params: { id, path } }) {
+  async DELETE(req, { params: { id, path = "" } }) {
     try {
       const kv = await getKv(id);
       const key = pathToKey(path);
