@@ -1,5 +1,5 @@
 import { keyToJSON } from "@kitsonk/kv-toolbox/json";
-import { assertEquals } from "@std/assert/assert-equals";
+import { assertEquals } from "@std/assert/equals";
 
 import { keyJsonToPath, pathToKey } from "./kv.ts";
 

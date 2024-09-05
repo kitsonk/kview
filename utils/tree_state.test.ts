@@ -1,4 +1,4 @@
-import { assertEquals } from "@std/assert/assert-equals";
+import { assertEquals } from "@std/assert/equals";
 
 import { createTreeState, kvTreeToNodes } from "./tree_state.ts";
 
