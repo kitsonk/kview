@@ -6,9 +6,9 @@
  * @module
  */
 
-import $ from "jsr:@david/dax@0.39.2";
-import { parseArgs } from "jsr:@std/cli@0.221.0/parse-args";
-import * as JSONC from "jsr:@std/jsonc@0.221.0";
+import $ from "jsr:@david/dax@0.41.0";
+import { parseArgs } from "jsr:@std/cli@~1/parse-args";
+import * as JSONC from "jsr:@std/jsonc@~1";
 
 interface DenoConfig {
   version?: string;
