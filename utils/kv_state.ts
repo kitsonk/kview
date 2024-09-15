@@ -1,3 +1,4 @@
+import { type KvToolbox, openKvToolbox } from "@kitsonk/kv-toolbox";
 import { encodeBase64Url } from "@std/encoding/base64url";
 
 import { setAccessToken } from "./dash.ts";
@@ -7,9 +8,9 @@ import { state } from "./state.ts";
 const GUID_RE =
   /[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/;
 let currentId = "";
-let p: Promise<Deno.Kv> | undefined;
+let p: Promise<KvToolbox> | undefined;
 
-export function getKv(id: string): Promise<Deno.Kv> {
+export function getKv(id: string): Promise<KvToolbox> {
   if (p && currentId === id) {
     return p;
   }
@@ -24,7 +25,7 @@ export function getKv(id: string): Promise<Deno.Kv> {
   if (accessToken) {
     setAccessToken(accessToken);
   }
-  return p = Deno.openKv(path);
+  return p = openKvToolbox({ path });
 }
 
 export function getKvPath(id: string): {

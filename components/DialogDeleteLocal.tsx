@@ -68,7 +68,7 @@ export function DialogDeleteLocal(
               headers: { "content-type": "application/json" },
             }).then((res) => {
               if (res.ok) {
-                window.location.replace(new URL("/local", import.meta.url));
+                globalThis.location.replace(new URL("/local", import.meta.url));
               } else {
                 addNotification("Error deleting store info.", "error");
                 return res.json().then((err) => console.error(err));

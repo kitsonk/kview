@@ -67,14 +67,14 @@ export function DialogAddUpdateLocal(
               return res.json().then((err) => console.error(err));
             } else {
               if (storeInfo.path && (!store || storeInfo.path !== store.path)) {
-                window.location.replace(
+                globalThis.location.replace(
                   new URL(
                     `/local/${encodeBase64Url(storeInfo.path)}`,
                     import.meta.url,
                   ),
                 );
               } else {
-                window.location.reload();
+                globalThis.location.reload();
               }
             }
           });

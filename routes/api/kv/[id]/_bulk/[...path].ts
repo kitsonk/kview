@@ -1,5 +1,5 @@
 import { type Handlers } from "$fresh/server.ts";
-import { exportToResponse } from "@kitsonk/kv-toolbox/ndjson";
+import { openKvToolbox } from "@kitsonk/kv-toolbox";
 import { pathToKey } from "$utils/kv.ts";
 import { importNdJson } from "$utils/kv_bulk.ts";
 import { getKvPath } from "$utils/kv_state.ts";
@@ -19,8 +19,8 @@ export const handler: Handlers = {
     if (accessToken) {
       setAccessToken(accessToken);
     }
-    const kv = await Deno.openKv(kvPath);
-    return exportToResponse(kv, { prefix }, { filename: id, close: true });
+    const kv = await openKvToolbox({ path: kvPath });
+    return kv.export({ prefix }, { response: true, filename: id, close: true });
   },
   async POST(req, { params: { id, path = "" } }) {
     const prefix = path === "" ? [] : pathToKey(path);

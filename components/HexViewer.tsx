@@ -51,7 +51,7 @@ function hexCounter(
   increment: number,
 ): string[] {
   let hexIndex = 0;
-  return Array.from({ length }, (_v, i) => {
+  return Array.from({ length }, () => {
     const el = hexIndex.toString(16).padStart(padLength, "0");
     hexIndex += increment;
     return el;

@@ -1,14 +1,5 @@
 import { type Handlers } from "$fresh/server.ts";
-import { batchedAtomic } from "@kitsonk/kv-toolbox/batched_atomic";
-import {
-  type BlobJSON,
-  getAsJSON,
-  getMeta,
-  remove,
-  set,
-  toValue as toBlob,
-} from "@kitsonk/kv-toolbox/blob";
-import { tree, uniqueCount } from "@kitsonk/kv-toolbox/keys";
+import { type BlobJSON, toValue as toBlob } from "@kitsonk/kv-toolbox/blob";
 import {
   entryToJSON,
   keyToJSON,
@@ -56,7 +47,7 @@ export const handler: Handlers = {
         return notFound();
       }
     } else if (url.searchParams.has("blob")) {
-      const maybeBlob = await getAsJSON(kv, prefix);
+      const maybeBlob = await kv.getAsBlob(prefix, { json: true });
       if (maybeBlob) {
         return Response.json({
           value: maybeBlob,
@@ -66,7 +57,7 @@ export const handler: Handlers = {
         return notFound();
       }
     } else if (url.searchParams.has("meta")) {
-      const maybeMeta = await getMeta(kv, prefix);
+      const maybeMeta = await kv.getMeta(prefix);
       if (maybeMeta.value) {
         return Response.json({
           meta: maybeMeta.value,
@@ -77,10 +68,10 @@ export const handler: Handlers = {
         return notFound();
       }
     } else if (url.searchParams.has("tree")) {
-      const data = await tree(kv, prefix);
+      const data = await kv.tree(prefix);
       return treeToResponse(data);
     } else {
-      const data = await uniqueCount(kv, prefix);
+      const data = await kv.counts(prefix);
       return keyCountToResponse(data);
     }
   },
@@ -93,7 +84,7 @@ export const handler: Handlers = {
         const { value, versionstamp = null, expireIn, overwrite }: PutBody =
           await req.json();
         if (isBlobJSON(value)) {
-          await set(kv, key, toBlob(value), { expireIn });
+          await kv.setBlob(key, toBlob(value), { expireIn });
           return Response.json({ ok: true });
         } else {
           assert(
@@ -104,19 +95,23 @@ export const handler: Handlers = {
             op = op.check({ key, versionstamp });
           }
           op = op.set(key, toValue(value), { expireIn });
-          const res = await op.commit();
-          if (res.ok) {
-            return Response.json(res);
-          } else {
-            return Response.json(res, { status: 409, statusText: "Conflict" });
+          const results = await op.commit();
+          for (const res of results) {
+            if (!res.ok) {
+              return Response.json(res, {
+                status: 409,
+                statusText: "Conflict",
+              });
+            }
           }
+          return Response.json(results, { status: 200, statusText: "OK" });
         }
       }
       if (matches(contentType, ["multipart/form-data"])) {
         const formData = await req.formData();
         const file = formData.get("file");
         if (file instanceof File) {
-          await set(kv, key, file);
+          await kv.setBlob(key, file);
           return Response.json({ ok: true });
         } else {
           return Response.json({
@@ -128,7 +123,7 @@ export const handler: Handlers = {
       }
       if (contentType) {
         const blob = await req.blob();
-        await set(kv, key, blob);
+        await kv.setBlob(key, blob);
         return Response.json({ ok: true });
       }
       return Response.json({
@@ -156,7 +151,7 @@ export const handler: Handlers = {
       const key = pathToKey(path);
       const body: DeleteBody = await req.json();
       if (Array.isArray(body)) {
-        const op = batchedAtomic(kv);
+        const op = kv.atomic();
         for (const item of body) {
           op.delete([...key, ...toKey(item)]);
         }
@@ -173,17 +168,21 @@ export const handler: Handlers = {
       } else {
         const url = new URL(req.url, import.meta.url);
         if (url.searchParams.has("blob")) {
-          await remove(kv, key);
+          await kv.delete(key, { blob: true });
           return Response.json({ ok: true });
         } else {
           const { versionstamp } = body;
-          const res = await kv
+          const results = await kv
             .atomic().check({ key, versionstamp }).delete(key).commit();
-          if (res.ok) {
-            return Response.json(res);
-          } else {
-            return Response.json(res, { status: 409, statusText: "Conflict" });
+          for (const res of results) {
+            if (!res.ok) {
+              return Response.json(res, {
+                status: 409,
+                statusText: "Conflict",
+              });
+            }
           }
+          return Response.json(results, { status: 200, statusText: "OK" });
         }
       }
     } catch (err) {

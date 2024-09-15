@@ -1,5 +1,4 @@
 import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
-import { type UniqueCountElement } from "@kitsonk/kv-toolbox/keys";
 import { type Signal } from "@preact/signals";
 
 import { KvKeyPart } from "./KvKeyPart.tsx";

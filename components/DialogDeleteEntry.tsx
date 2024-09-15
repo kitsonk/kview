@@ -1,4 +1,4 @@
-import { BlobMeta } from "@kitsonk/kv-toolbox/blob";
+import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";

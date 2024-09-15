@@ -79,9 +79,9 @@ export function DialogAddUpdateRemote(
             } else {
               if (store) {
                 if (store.url === storeInfo.url) {
-                  window.location.reload();
+                  globalThis.location.reload();
                 } else {
-                  window.location.replace(
+                  globalThis.location.replace(
                     new URL(
                       `/remote/${encodeBase64Url(storeInfo.url)}`,
                       import.meta.url,
