@@ -318,3 +318,4 @@ be great to add to `kview`:
 - Improve accessability.
 - Ability to change the cache location for local KV stores.
 - Allow deep linking into KV store keys and values.
+- Integrate the crypto capabilities of kv-toolbox.

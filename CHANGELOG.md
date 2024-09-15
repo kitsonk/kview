@@ -1,5 +1,13 @@
 # kview change log
 
+## Version 0.14.3
+
+- chore: update assert imports (814f063)
+- chore: update to oak/commons v1 (1966af2)
+- chore: update script deps (50bd697)
+- chore: migrate to kv-toolbox 0.19 (ddc6eff)
+- chore: ci against Deno release and canary (63c296f)
+
 ## Version 0.14.2
 
 - fix: handle when path is empty (b27fe82)

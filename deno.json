@@ -1,6 +1,6 @@
 {
   "name": "@kitsonk/kview",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "exports": { "./install": "./install.ts" },
   "publish": {
     "exclude": [".vscode", ".github", "assets", "dev.ts", "minify_svg.ts"]
@@ -46,6 +46,5 @@
     "$utils/": "./utils/"
   },
   "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
-  "exclude": ["**/_fresh/*"],
-  "fmt": { "exclude": ["./README.md"] }
+  "exclude": ["**/_fresh/*"]
 }
