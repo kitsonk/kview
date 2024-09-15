@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["v1.x", canary]
     steps:
       - name: clone repository
         uses: actions/checkout@v3
@@ -12,7 +15,7 @@ jobs:
       - name: install deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.X
+          deno-version: ${{ matrix.version }}
       
       - name: check repo
         run: deno task check
