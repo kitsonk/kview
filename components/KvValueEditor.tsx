@@ -70,6 +70,19 @@ export function KvValueEditor(
   const valueEditor = useComputed(() => {
     switch (valueType.value) {
       case "number":
+        return (
+          <input
+            id="value"
+            name="value"
+            type="text"
+            pattern="-?\d+(\.\d+)?|-?Infinity|NaN"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            placeholder="Provide a number"
+            required
+            onChange={(evt) => valueValue.value = evt.currentTarget.value}
+            value={valueValue}
+          />
+        );
       case "bigint":
       case "KvU64":
         return (

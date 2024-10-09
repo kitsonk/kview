@@ -10,8 +10,19 @@ export function formDataToKvKeyPartJSON(
     case "bigint":
     case "Uint8Array":
       return { type, value };
-    case "number":
-      return { type, value: parseInt(value, 10) };
+    case "number": {
+      const parsed = parseFloat(value);
+      return {
+        type,
+        value: Number.isNaN(parsed)
+          ? "NaN"
+          : parsed === Infinity
+          ? "Infinity"
+          : parsed === -Infinity
+          ? "-Infinity"
+          : parsed,
+      };
+    }
     case "boolean":
       return { type, value: value === "true" ? true : false };
     default:
