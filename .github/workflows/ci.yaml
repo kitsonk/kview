@@ -11,12 +11,12 @@ jobs:
     steps:
       - name: clone repository
         uses: actions/checkout@v3
-      
+
       - name: install deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: ${{ matrix.version }}
-      
+
       - name: check repo
         run: deno task check
 

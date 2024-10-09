@@ -6,7 +6,7 @@
  * @module
  */
 
-import $ from "jsr:@david/dax@0.41.0";
+import $ from "jsr:@david/dax@0.42.0";
 import { parseArgs } from "jsr:@std/cli@~1/parse-args";
 import * as JSONC from "jsr:@std/jsonc@~1";
 
