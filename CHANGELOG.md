@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.14.4
+
+- fix: properly handle number values (327bdd7)
+- chore: update deps (ed00f0d)
+- chore: migrate from twind to tailwind (e124c95)
+
 ## Version 0.14.3
 
 - chore: update assert imports (814f063)
