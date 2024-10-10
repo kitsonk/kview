@@ -8,7 +8,7 @@ export function Project({ project: { name, type } }: { project: DashProject }) {
     <li>
       <a
         href={`/projects/${name}`}
-        class="flex items-center border rounded p-4 hover:bg-gray(200 dark:800)"
+        class="flex items-center border rounded p-4 hover:bg-gray-200 dark:bg-gray-800"
       >
         {type === "git" ? <IconGit size={10} /> : <IconPlayground size={10} />}
         <div class="px-4 text-lg">{name}</div>

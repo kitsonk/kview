@@ -18,7 +18,9 @@ export function Db(
               ? <span class="italic">preview</span>
               : <span class="font-bold">{branch}</span>}
           </div>
-          <div class="text-gray(600 dark:400) text-sm">{format(sizeBytes)}</div>
+          <div class="text-gray-600 dark:text-gray-400 text-sm">
+            {format(sizeBytes)}
+          </div>
         </div>
       </a>
     </li>

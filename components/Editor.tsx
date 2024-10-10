@@ -2,8 +2,6 @@ import { type ComponentChildren, type JSX } from "preact";
 import { useEffect } from "preact/hooks";
 import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
-import { tw } from "twind";
-import { css } from "twind/css";
 import { asSignal } from "$utils/signals.ts";
 
 interface Record {
@@ -48,58 +46,6 @@ const RE_LAST_WORD = /[^a-z0-9]([a-z0-9]+)$/i;
 const IS_MAC_LIKE = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 const IS_WINDOWS = /Win/i.test(navigator.platform);
 
-const containerCss = css({
-  position: "relative",
-  textAlign: "left",
-  boxSizing: "border-box",
-  padding: 0,
-  overflow: "hidden",
-});
-
-const editorCss = css({
-  margin: 0,
-  border: 0,
-  background: "none",
-  boxSizing: "inherit",
-  display: "inherit",
-  fontFamily: "inherit",
-  fontSize: "inherit",
-  fontStyle: "inherit",
-  fontVariantLigatures: "inherit",
-  fontWeight: "inherit",
-  letterSpacing: "inherit",
-  lineHeight: "inherit",
-  tabSize: "inherit",
-  textIndent: "inherit",
-  textRendering: "inherit",
-  textTransform: "inherit",
-  whiteSpace: "pre-wrap",
-  wordBreak: "keep-all",
-  overflowWrap: "break-word",
-});
-
-const highlightCss = css({
-  position: "relative",
-  pointerEvents: "none",
-  padding: "0.5rem",
-});
-
-const textAreaCss = css({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  height: "100%",
-  width: "100%",
-  resize: "none",
-  color: "inherit",
-  overflow: "hidden",
-  padding: "0.5rem",
-  WebkitTextFillColor: "transparent",
-  "&:placeholder-shown": {
-    WebkitTextFillColor: "inherit !important",
-  },
-});
-
 function getLines(text: string, position: number) {
   return text.substring(0, position).split("\n");
 }
@@ -111,7 +57,7 @@ function Highlighted({ value }: { value: Signal<ComponentChildren> }) {
       {...(typeof value.value === "string"
         ? { dangerouslySetInnerHTML: { __html: `${value.value}<br />` } }
         : { children: value })}
-      class={tw`${editorCss} ${highlightCss}`}
+      class="editArea highlight"
     />
   );
 }
@@ -437,14 +383,14 @@ export function Editor(
   };
 
   return (
-    <div {...props} class={tw`${containerCss} font-mono ${className}`}>
+    <div {...props} class={`editor font-mono ${className}`}>
       <textarea
         ref={textArea}
         value={value}
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         {...textAreaProps}
-        class={tw`${textAreaCss} ${editorCss}`}
+        class="editArea"
       >
       </textarea>
       <Highlighted value={highlighted}></Highlighted>

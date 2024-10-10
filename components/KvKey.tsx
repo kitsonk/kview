@@ -51,7 +51,7 @@ export function KvKey(
   }
   if (showRoot) {
     children.unshift(
-      <li class="bg-gray-100 text-gray-800 font-medium w-fit inline-block mx-1 px-2 rounded dark:(bg-gray-900 text-gray-300) align-middle">
+      <li class="bg-gray-100 text-gray-800 font-medium w-fit inline-block mx-1 px-2 rounded dark:bg-gray-900 dark:text-gray-300 align-middle">
         {onClick
           ? (
             <a href="#" onClick={onClick}>

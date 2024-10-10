@@ -35,7 +35,7 @@ export default function RemoteKvList(
           )
           : (
             <div class="w-auto p-8 flex justify-center">
-              <div class="italic text-gray(600 dark:400)">
+              <div class="italic text-gray-600 dark:text-gray-400">
                 no remote stores
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { type Options } from "$fresh/plugins/twind.ts";
+import { type Config } from "tailwindcss";
 
 const colors = {
   candlelight: {
@@ -71,6 +71,20 @@ const colors = {
     900: "#043776",
     950: "#032A5B",
   },
+  "magenta-/-fuchsia": {
+    DEFAULT: "#FF00FF",
+    50: "#FFB8FF",
+    100: "#FFA3FF",
+    200: "#FF7AFF",
+    300: "#FF52FF",
+    400: "#FF29FF",
+    500: "#FF00FF",
+    600: "#C700C7",
+    700: "#8F008F",
+    800: "#570057",
+    900: "#1F001F",
+    950: "#030003",
+  },
   "neon-carrot": {
     DEFAULT: "#FB923C",
     50: "#FFF7F0",
@@ -102,7 +116,53 @@ const colors = {
 };
 
 export default {
-  selfURL: import.meta.url,
+  content: [
+    "{routes,islands,components}/**/*.{ts,tsx}",
+  ],
+  safelist: [
+    // these are dynamically assigned to kv value types
+    "bg-blue-100",
+    "bg-gray-100",
+    "bg-green-100",
+    "bg-indigo-100",
+    "bg-orange-100",
+    "bg-pink-100",
+    "bg-purple-100",
+    "bg-red-100",
+    "bg-yellow-100",
+    "text-blue-100",
+    "text-gray-100",
+    "text-green-100",
+    "text-indigo-100",
+    "text-orange-100",
+    "text-pink-800",
+    "text-purple-800",
+    "text-red-800",
+    "text-yellow-800",
+    "dark:bg-blue-900",
+    "dark:bg-gray-900",
+    "dark:bg-green-900",
+    "dark:bg-indigo-900",
+    "dark:bg-orange-900",
+    "dark:bg-pink-900",
+    "dark:bg-purple-900",
+    "dark:bg-red-900",
+    "dark:bg-yellow-900",
+    "dark:text-blue-300",
+    "dark:text-gray-300",
+    "dark:text-green-300",
+    "dark:text-indigo-300",
+    "dark:text-orange-300",
+    "dark:text-pink-300",
+    "dark:text-purple-300",
+    "dark:text-red-300",
+    "dark:text-yellow-300",
+    // these are dynamically assigned to some icons
+    "w-10",
+    "w-12",
+    "h-10",
+    "h-12",
+  ],
   theme: {
     extend: {
       colors: {
@@ -113,6 +173,7 @@ export default {
         yellow: colors.candlelight,
         green: colors.shamrock,
         purple: colors.heliotrope,
+        magenta: colors["magenta-/-fuchsia"],
         gray: colors["gray-chateau"],
       },
       spacing: {
@@ -167,8 +228,4 @@ export default {
       ],
     },
   },
-  preflight: {
-    "@import":
-      "url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Nanum+Gothic&display=swap')",
-  },
-} as Options;
+} satisfies Config;

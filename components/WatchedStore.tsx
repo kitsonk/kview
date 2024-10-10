@@ -32,14 +32,14 @@ function WatchedEntry(
         ? (
           <>
             <KvValue value={value} />
-            <div class="text-sm text-gray(600 dark:400) p-1 italic">
+            <div class="text-sm text-gray-600 dark:text-gray-400 p-1 italic">
               Version: {versionstamp}
             </div>
           </>
         )
         : (
           <div class="w-auto p-8 flex justify-center">
-            <div class="italic text-gray(600 dark:400)">
+            <div class="italic text-gray-600 dark:text-gray-400">
               no value
             </div>
           </div>

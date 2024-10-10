@@ -18,7 +18,7 @@ export function User(
       />
       <div class="px-4">
         <div class="text-xl font-bold">{name}</div>
-        <div class="text-gray(600 dark:400) flex items-center">
+        <div class="text-gray-600 dark:text-gray-400 flex items-center">
           <IconGitHub />
           <span class="mx-2 block">{login}</span>
         </div>
@@ -32,7 +32,7 @@ export function User(
     return (
       <a
         href={`/orgs/${id}`}
-        class="flex items-center border rounded p-2 hover:bg-gray(200 dark:800)"
+        class="flex items-center border rounded p-2 hover:bg-gray-200 dark:bg-gray-800"
       >
         {children}
       </a>

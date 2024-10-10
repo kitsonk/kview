@@ -11,7 +11,7 @@ function Org(
       <li>
         <a
           href={`/orgs/${id}`}
-          class="flex items-center border rounded p-2 hover:bg-gray(200 dark:800)"
+          class="flex items-center border rounded p-2 hover:bg-gray-200 dark:bg-gray-800"
         >
           <IconOrganization size={16} />
           <div class="px-4 font-semibold">{name}</div>

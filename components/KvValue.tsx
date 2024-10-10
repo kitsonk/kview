@@ -9,7 +9,7 @@ import { gray } from "https://deno.land/std@0.216.0/fmt/colors.ts";
 
 function Display({ children }: { children: ComponentChildren }) {
   return (
-    <div class="rounded p-1 bg-gray(100 dark:800) max-h-64 lg:max-h-108 overflow-y-auto overflow-x-auto">
+    <div class="rounded p-1 bg-gray-100 dark:bg-gray-800 max-h-64 lg:max-h-108 overflow-y-auto overflow-x-auto">
       {children}
     </div>
   );
@@ -72,7 +72,7 @@ export function KvValue(
               </thead>
               <tbody>
                 {value.value.map(([key, value]) => (
-                  <tr class="odd:bg-gray(50 dark:900)">
+                  <tr class="odd:bg-gray-50 dark:bg-gray-900">
                     <td>
                       <pre><code>{JSON.stringify(key, undefined, "  ")}</code></pre>
                     </td>
@@ -108,7 +108,7 @@ export function KvValue(
               </thead>
               <tbody>
                 {value.value.map((item) => (
-                  <tr class="odd:bg-gray(50 dark:900)">
+                  <tr class="odd:bg-gray-50 dark:bg-gray-900">
                     <td>
                       <pre><code>{JSON.stringify(item, undefined, "  ")}</code></pre>
                     </td>
@@ -255,7 +255,7 @@ export function KvValue(
       <h2 class="font-bold my-2">Type</h2>
       <div>
         <div
-          class={`bg-${color}-100 text-${color}-800 px-2.5 py-0.5 m-1 inline-block rounded dark:(bg-${color}-900 text-${color}-300) ${
+          class={`bg-${color}-100 text-${color}-800 px-2.5 py-0.5 m-1 inline-block rounded dark:bg-${color}-900 dark:text-${color}-300 ${
             border ? "border" : ""
           }`}
         >

@@ -95,7 +95,7 @@ export default function Watches() {
       <>
         <Toaster />
         <div class="col-span-3 p-8 flex justify-center">
-          <div class="italic text-gray(600 dark:400)">no watches</div>
+          <div class="italic text-gray-600 dark:text-gray-400">no watches</div>
         </div>
       </>
     );

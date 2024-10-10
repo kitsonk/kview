@@ -36,8 +36,7 @@ Changes are accepted through GitHub Pull Requests. Creating your own fork of the
 repository and cloning it locally is recommended for making changes.
 
 `kview` is built using [Fresh](https://fresh.deno.dev) and leverages Fresh's
-support for (twind)(https://twind.dev/) which provides support for Tailwind for
-styling purposes.
+support for [Tailwind](https://tailwindcss.com/) for styling purposes.
 
 Once your change is made, submit it as a pull request. The automated CI will do
 initial checks and your PR will be reviewed. Expect feedback on your PR, or even

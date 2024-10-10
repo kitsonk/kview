@@ -79,7 +79,7 @@ function ColumnCounter(
 ) {
   const highlightValue = highlight.value;
   return (
-    <div class="flex flex-row bg-primary-700 text-primary-100 dark:(bg-primary-300 text-primary-900) rounded-t-lg">
+    <div class="flex flex-row bg-primary-700 text-primary-100 dark:bg-primary-300 dark:text-primary-900 rounded-t-lg">
       <div class="lg:px-2 lg:py-1 text-primary-700 dark:text-primary-300 select-none">
         00000000
       </div>
@@ -107,7 +107,7 @@ function RowCounter(
 ) {
   const highlightValue = highlight.value;
   return (
-    <div class="lg:px-2 lg:py-1 bg-primary-800 text-primary-100 dark:(bg-primary-200 text-primary-900)">
+    <div class="lg:px-2 lg:py-1 bg-primary-800 text-primary-100 dark:bg-primary-200 dark:text-primary-900">
       <div class="flex flex-row">
         <div class="flex-auto text-center">
           {data.map((row, i) => (
@@ -141,7 +141,7 @@ function HexViewerContent(
     <div
       class={`px-2 py-1 ${
         type === "hex" ? "min-w-108" : "min-w-72"
-      } bg-gray-100 dark:(bg-gray-800 text-white)`}
+      } bg-gray-100 dark:bg-gray-800 dark:text-white`}
     >
       {data.map((row, i) => (
         <div key={i} class="flex flex-row text-center">

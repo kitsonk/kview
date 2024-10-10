@@ -124,11 +124,11 @@ export function DialogDeleteEntries(
           also select the children. The arrows can be used to expand or collapse
           children.
         </p>
-        <div class="h(48 md:64 lg:72 xl:96) rounded p-2 bg-gray-50 dark:bg-gray-900 overflow-auto mb-6">
+        <div class="h-48 md:h-64 lg:h-72 xl:h-96 rounded p-2 bg-gray-50 dark:bg-gray-900 overflow-auto mb-6">
           <TreeState.Provider value={state}>
             {loading.value
               ? (
-                <div class="bg-gray(100 dark:800) flex items-center justify-center">
+                <div class="bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                   <Loader />
                 </div>
               )
@@ -136,7 +136,7 @@ export function DialogDeleteEntries(
           </TreeState.Provider>
         </div>
         <button
-          class="flex items-center justify-center font-bold text-white bg-red-700 disabled:bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:disabled:bg-gray-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
+          class="flex items-center justify-center font-bold text-white bg-red-700 disabled:bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:disabled:bg-gray-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"
           type="submit"
           disabled={disabled}
         >

@@ -42,7 +42,7 @@ export default function KeyTree(
       <TreeState.Provider value={state}>
         {loadingTree.value
           ? (
-            <div class="h(48 md:64 lg:72 xl:96) bg-gray(100 dark:800) rounded flex items-center justify-center">
+            <div class="h-48 md:h-64 lg:h-72 xl:h-96 bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center">
               <Loader />
             </div>
           )

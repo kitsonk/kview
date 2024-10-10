@@ -29,7 +29,7 @@ export default function Login({ data: { error } }: PageProps<Data>) {
               Provide an access token
             </h1>
             {error && (
-              <h2 class="text-lg font-bold p-2 bg-red(500 dark:800) text-center">
+              <h2 class="text-lg font-bold p-2 bg-red-500 dark:bg-red-800 text-center">
                 Previous request was invalid.
               </h2>
             )}

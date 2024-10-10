@@ -19,7 +19,7 @@
     "./LICENSE",
     "./main.ts",
     "./README.md",
-    "./twind.config.ts",
+    "./tailwind.config.ts",
     "./upgrade.ts",
     "./docs/index.md",
     "./static/android-chrome-192x192.png",
@@ -30,6 +30,7 @@
     "./static/favicon.ico",
     "./static/logo.svg",
     "./static/site.webmanifest",
-    "./static/sprites.svg"
+    "./static/sprites.svg",
+    "./static/styles.css"
   ]
 }
