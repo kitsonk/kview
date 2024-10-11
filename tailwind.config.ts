@@ -159,9 +159,11 @@ export default {
     "dark:text-yellow-300",
     // these are dynamically assigned to some icons
     "w-6",
+    "w-7",
     "w-10",
     "w-12",
     "h-6",
+    "h-7",
     "h-10",
     "h-12",
   ],
