@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.14.7
+
+- fix: upgrade uses deno.land versus jsr (f4d3bd5)
+
 ## Version 0.14.6
 
 - fix: don't depend on import map on install (40f316b)
