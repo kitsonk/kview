@@ -7,7 +7,7 @@ export function RemoteKv({ db: { name, url } }: { db: RemoteStoreInfo }) {
   return (
     <li>
       <a
-        class="flex items-center border rounded p-2 hover:bg-gray-200 dark:bg-gray-800"
+        class="flex items-center border rounded p-2 hover:bg-gray-200 hover:dark:bg-gray-800"
         href={`/remote/${encodeBase64Url(url)}`}
       >
         <div class="p-2">

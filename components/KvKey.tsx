@@ -63,7 +63,7 @@ export function KvKey(
     );
   }
   return (
-    <ul class="whitespace-nowrap no-scrollbar overflow(x-scroll y-hidden)">
+    <ul class="whitespace-nowrap no-scrollbar overflow-x-scroll overflow-y-hidden">
       {children}
     </ul>
   );

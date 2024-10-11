@@ -51,10 +51,10 @@ export function KvKeyList(
   { list, currentEntryKey, currentKey }: KvKeyListProps,
 ) {
   if (!list.value.length) {
-    return <div class="h(48 md:64 lg:72 xl:96)"></div>;
+    return <div class="h-48 md:h-64 lg:h-72 xl:h-96"></div>;
   }
   return (
-    <ul class="divide-y bg-gray-100 dark:bg-gray-800 rounded divide-gray-200 dark:divide-gray-700 h(48 md:64 lg:72 xl:96) overflow-y-auto">
+    <ul class="divide-y bg-gray-100 dark:bg-gray-800 rounded divide-gray-200 dark:divide-gray-700 h-48 md:h-64 lg:h-72 xl:h-96 overflow-y-auto">
       {list.value.map((item) => (
         <KvKeyItem
           currentEntryKey={currentEntryKey}

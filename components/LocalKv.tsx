@@ -21,7 +21,7 @@ export function LocalKv({ db: { name, id, size, path } }: { db: KvLocalInfo }) {
   });
 
   return (
-    <li class="flex items-center border rounded p-2 hover:bg-gray-200 dark:bg-gray-800">
+    <li class="flex items-center border rounded p-2 hover:bg-gray-200 hover:dark:bg-gray-800">
       <a
         href={`/local/${href}`}
       >

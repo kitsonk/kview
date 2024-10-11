@@ -9,7 +9,7 @@ export function Db(
     <li>
       <a
         href={`/projects/${project}/kv/${branch === "*" ? "preview" : branch}`}
-        class="flex items-center border rounded p-4"
+        class="flex items-center border rounded p-4 hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         <IconKV size={12} />
         <div class="px-4">

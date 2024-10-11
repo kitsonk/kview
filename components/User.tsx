@@ -32,7 +32,7 @@ export function User(
     return (
       <a
         href={`/orgs/${id}`}
-        class="flex items-center border rounded p-2 hover:bg-gray-200 dark:bg-gray-800"
+        class="flex items-center border rounded p-2 hover:bg-gray-200 hover:dark:bg-gray-800"
       >
         {children}
       </a>
