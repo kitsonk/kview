@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.14.6
+
+- fix: don't depend on import map on install (40f316b)
+
 ## Version 0.14.5
 
 - fix: properly handle build files on install and upgrade (41d3f6c)
