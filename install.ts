@@ -16,8 +16,10 @@
  * @module
  */
 
-import $ from "jsr:@david/dax@0.42.0";
+import $, { type Path } from "jsr:@david/dax@0.42.0";
+import { assert } from "@std/assert/assert";
 import * as JSONC from "jsr:@std/jsonc@~1";
+import { ZipReader } from "jsr:@zip-js/zip-js@2.7.52";
 
 import manifest from "./install.manifest.json" with { type: "json" };
 
@@ -29,6 +31,45 @@ interface DenoConfig {
   imports: Record<string, string>;
   lock?: boolean;
   tasks?: Record<string, string>;
+}
+
+const EXTRACT_PATH = "./_fresh";
+
+async function extract(installPath: Path) {
+  $.logStep("Extracting build files...");
+  const zipFilePath = installPath.join("_fresh.zip");
+  const zipFile = await zipFilePath.open({ read: true });
+  const reader = new ZipReader(zipFile);
+  const extractPath = installPath.join(EXTRACT_PATH);
+  if (await extractPath.exists()) {
+    await extractPath.emptyDir();
+  }
+  const entries = await reader.getEntries();
+  const progress = $.progress({
+    message: "Extracting build files...",
+    length: entries.length,
+  });
+  await progress.with(async () => {
+    for (const entry of entries) {
+      if (entry.getData) {
+        const file = extractPath.join(entry.filename);
+        await file.parent()?.mkdir({ recursive: true });
+        try {
+          const outFile = await file.open({ create: true, write: true });
+          await entry.getData(outFile.writable);
+        } catch (error) {
+          assert(error instanceof Error);
+          console.error(
+            `  error: ${error.message}, file: ${await file.realPath()}`,
+          );
+        }
+      }
+      progress.increment();
+    }
+  });
+  await reader.close();
+  await zipFilePath.remove();
+  $.logLight("  complete.");
 }
 
 async function getDenoConfig(): Promise<DenoConfig> {
@@ -97,6 +138,7 @@ async function main() {
     }
   });
   $.logLight("  complete.");
+  await extract(installPath);
   $.logStep("Done.");
   console.log(
     `\n\nInstallation of %ckview%c is complete.\n\nTo start the server, make %c"${installPath}"%c your current directory and execute:\n\n  %cdeno task start\n`,

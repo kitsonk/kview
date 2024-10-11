@@ -6,9 +6,11 @@
  * @module
  */
 
-import $ from "jsr:@david/dax@0.42.0";
+import $, { type Path } from "jsr:@david/dax@0.42.0";
+import { assert } from "@std/assert/assert";
 import { parseArgs } from "jsr:@std/cli@~1/parse-args";
 import * as JSONC from "jsr:@std/jsonc@~1";
+import { ZipReader } from "jsr:@zip-js/zip-js@2.7.52";
 
 interface DenoConfig {
   version?: string;
@@ -25,14 +27,63 @@ interface Manifest {
   files: string[];
 }
 
-const SRC_DENO_JSON = "https://deno.land/x/kview/deno.json";
+const JSR_REPO = "https://jsr.io/@kitsonk/kview/";
+const META_JSON = `${JSR_REPO}meta.json`;
+const DENO_JSON = "/deno.json";
 const PREVIEW_DENO_JSON =
   "https://raw.githubusercontent.com/kitsonk/kview/main/deno.json";
+const EXTRACT_PATH = "./_fresh";
+
+async function extract(installPath: Path) {
+  $.logStep("Extracting build files...");
+  const zipFile = await installPath.join("_fresh.zip").open({ read: true });
+  const reader = new ZipReader(zipFile);
+  const extractPath = installPath.join(EXTRACT_PATH);
+  if (await extractPath.exists()) {
+    await extractPath.emptyDir();
+  }
+  const entries = await reader.getEntries();
+  const progress = $.progress({
+    message: "Extracting build files...",
+    length: entries.length,
+  });
+  await progress.with(async () => {
+    for (const entry of entries) {
+      if (entry.getData) {
+        const file = extractPath.join(entry.filename);
+        await file.parent()?.mkdir({ recursive: true });
+        try {
+          const outFile = await file.open({ create: true, write: true });
+          await entry.getData(outFile.writable);
+        } catch (error) {
+          assert(error instanceof Error);
+          console.error(
+            `  error: ${error.message}, file: ${await file.realPath()}`,
+          );
+        }
+      }
+      progress.increment();
+    }
+  });
+  $.logLight("  complete.");
+  await reader.close();
+}
 
 async function getLatestDenoConfig(preview: boolean): Promise<
   [url: string, config: DenoConfig]
 > {
-  const res = await fetch(preview ? PREVIEW_DENO_JSON : SRC_DENO_JSON);
+  let url = PREVIEW_DENO_JSON;
+  if (!preview) {
+    const metaRes = await fetch(META_JSON);
+    if (!metaRes.ok) {
+      throw new Error(
+        `Error fetching latest meta.json: ${metaRes.status} ${metaRes.statusText}`,
+      );
+    }
+    const { latest } = await metaRes.json();
+    url = `${JSR_REPO}${latest}${DENO_JSON}`;
+  }
+  const res = await fetch(url);
   if (!res.ok) {
     throw new Error(
       `Error fetching latest deno.json: ${res.status} ${res.statusText}`,
@@ -102,6 +153,7 @@ async function main() {
     }
   });
   $.logLight("  complete.");
+  await extract(cwd);
   $.logStep("Done.");
   console.log(
     `\n\nUpgrade of %ckview%c is complete.`,
