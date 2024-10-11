@@ -32,7 +32,7 @@ export function LocalKv({ db: { name, id, size, path } }: { db: KvLocalInfo }) {
       <div class="flex-grow-0 overflow-hidden px-2">
         <EditLabel
           value={value}
-          labelClass="block font-semibold cursor-text w-full hover:bg-gray-300 dark:bg-gray-700 rounded select-none"
+          labelClass="block font-semibold cursor-text w-full hover:bg-gray-300 hover:dark:bg-gray-700 rounded select-none"
           inputClass="bg-gray-50 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 px-2 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           emptyDisplay="[unnamed]"
         />
