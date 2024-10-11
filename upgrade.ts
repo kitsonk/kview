@@ -27,9 +27,7 @@ interface Manifest {
   files: string[];
 }
 
-const JSR_REPO = "https://jsr.io/@kitsonk/kview/";
-const META_JSON = `${JSR_REPO}meta.json`;
-const DENO_JSON = "/deno.json";
+const LATEST_DENO_JSON = "https://deno.land/x/kview/deno.json";
 const PREVIEW_DENO_JSON =
   "https://raw.githubusercontent.com/kitsonk/kview/main/deno.json";
 const EXTRACT_PATH = "./_fresh";
@@ -72,18 +70,7 @@ async function extract(installPath: Path) {
 async function getLatestDenoConfig(preview: boolean): Promise<
   [url: string, config: DenoConfig]
 > {
-  let url = PREVIEW_DENO_JSON;
-  if (!preview) {
-    const metaRes = await fetch(META_JSON);
-    if (!metaRes.ok) {
-      throw new Error(
-        `Error fetching latest meta.json: ${metaRes.status} ${metaRes.statusText}`,
-      );
-    }
-    const { latest } = await metaRes.json();
-    url = `${JSR_REPO}${latest}${DENO_JSON}`;
-  }
-  const res = await fetch(url);
+  const res = await fetch(preview ? PREVIEW_DENO_JSON : LATEST_DENO_JSON);
   if (!res.ok) {
     throw new Error(
       `Error fetching latest deno.json: ${res.status} ${res.statusText}`,
