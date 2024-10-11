@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.14.8
+
+- fix: upgrade script removes zip file (5cd9c05)
+- fix: styling fixups (ba2849f)
+- refactor: fully use svg sprites (6aec3b0)
+
 ## Version 0.14.7
 
 - fix: upgrade uses deno.land versus jsr (f4d3bd5)
