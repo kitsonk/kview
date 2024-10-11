@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.14.5
+
+- fix: properly handle build files on install and upgrade (41d3f6c)
+
 ## Version 0.14.4
 
 - fix: properly handle number values (327bdd7)
