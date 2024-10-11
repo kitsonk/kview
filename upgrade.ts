@@ -34,7 +34,8 @@ const EXTRACT_PATH = "./_fresh";
 
 async function extract(installPath: Path) {
   $.logStep("Extracting build files...");
-  const zipFile = await installPath.join("_fresh.zip").open({ read: true });
+  const zipFilePath = installPath.join("_fresh.zip");
+  const zipFile = await zipFilePath.open({ read: true });
   const reader = new ZipReader(zipFile);
   const extractPath = installPath.join(EXTRACT_PATH);
   if (await extractPath.exists()) {
@@ -63,8 +64,9 @@ async function extract(installPath: Path) {
       progress.increment();
     }
   });
-  $.logLight("  complete.");
   await reader.close();
+  await zipFilePath.remove();
+  $.logLight("  complete.");
 }
 
 async function getLatestDenoConfig(preview: boolean): Promise<
