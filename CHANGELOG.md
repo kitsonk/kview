@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.14.9
+
+- fix: minor styling fixes (86045a8)
+- refactor: more svg sprites (e0dadf8)
+
 ## Version 0.14.8
 
 - fix: upgrade script removes zip file (5cd9c05)
