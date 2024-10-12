@@ -33,7 +33,7 @@ function KvKeyItem(
         <div class="flex-grow">
           <KvKeyPart part={key[key.length - 1]} />
         </div>
-        <div class="flex-none mx-2 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 group-hover:dark:white">
+        <div class="flex-none mx-2 text-gray-500 dark:text-gray-400 group-hover:text-gray-900 group-hover:dark:text-white">
           {count ? <IconExpand size={4} /> : <IconRightArrow size={4} />}
         </div>
       </a>

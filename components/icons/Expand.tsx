@@ -8,9 +8,7 @@ export default function IconExpand({ size = 6 }: { size?: number }) {
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"
     >
-      <use
-        href={`${asset("/sprites.svg")}#expand`}
-      />
+      <use href={`${asset("/sprites.svg")}#expand`} />
     </svg>
   );
 }
