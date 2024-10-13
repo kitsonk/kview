@@ -72,7 +72,7 @@ export function KvValue(
               </thead>
               <tbody>
                 {value.value.map(([key, value]) => (
-                  <tr class="odd:bg-gray-50 dark:bg-gray-900">
+                  <tr class="odd:bg-gray-50 odd:dark:bg-gray-900">
                     <td>
                       <pre><code>{JSON.stringify(key, undefined, "  ")}</code></pre>
                     </td>
@@ -108,7 +108,7 @@ export function KvValue(
               </thead>
               <tbody>
                 {value.value.map((item) => (
-                  <tr class="odd:bg-gray-50 dark:bg-gray-900">
+                  <tr class="odd:bg-gray-50 odd:dark:bg-gray-900">
                     <td>
                       <pre><code>{JSON.stringify(item, undefined, "  ")}</code></pre>
                     </td>
