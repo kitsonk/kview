@@ -138,7 +138,7 @@ export function KvEntry(
               type="button"
               onClick={() => editDialogOpen.value = true}
             >
-              {value || meta ? "Update value" : "Add value"}
+              {value || meta ? "Update value..." : "Add value..."}
             </button>
           )}
           {value || meta
@@ -149,7 +149,7 @@ export function KvEntry(
                   type="button"
                   onClick={() => addEntryDialogOpen.value = true}
                 >
-                  Add sub-entry
+                  Add sub-entry...
                 </button>
                 <button
                   class="flex items-center justify-center font-bold text-white bg-primary-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800"

@@ -255,7 +255,7 @@ export function KvValue(
       <h2 class="font-bold my-2">Type</h2>
       <div>
         <div
-          class={`bg-${color}-100 text-${color}-800 px-2.5 py-0.5 m-1 inline-block rounded dark:bg-${color}-900 dark:text-${color}-300 ${
+          class={`bg-${color}-200 text-${color}-800 px-2.5 py-0.5 m-1 inline-block rounded dark:bg-${color}-900 dark:text-${color}-300 ${
             border ? "border" : ""
           }`}
         >

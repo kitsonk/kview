@@ -31,7 +31,7 @@ function JobState({ state }: { state: JobState }) {
   }
   return (
     <div
-      class={`bg-${color}-100 dark:bg-${color}-900 text-${color}-800 dark:text-${color}-300 font-medium w-fit inline-block mx-1 px-2.5 py-0.5 rounded`}
+      class={`bg-${color}-200 dark:bg-${color}-900 text-${color}-800 dark:text-${color}-300 font-medium w-fit inline-block mx-1 px-2.5 py-0.5 rounded`}
     >
       {label}
     </div>
