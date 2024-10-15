@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.14.10
+
+- fix: styling issue on maps and sets (7de6098)
+- fix: minor styling fixes (b5e8a33)
+
 ## Version 0.14.9
 
 - fix: minor styling fixes (86045a8)
