@@ -1,7 +1,7 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvValueJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvValueJSON, toValue } from "@kitsonk/kv-toolbox/json";
 import { useComputed, useSignal } from "@preact/signals";
-import { isBlobMeta } from "$utils/kv.ts";
+import { isBlobMeta, replacer } from "$utils/kv.ts";
 
 import { EditorJson } from "./EditorJson.tsx";
 
@@ -47,11 +47,22 @@ function kvValueJSONToFormData(
         return [value.type, "null"];
       case "undefined":
         return [value.type, "undefined"];
-      case "Array":
-      case "Map":
-      case "Set":
-      case "object":
-        return [value.type, JSON.stringify(value.value, undefined, "  ")];
+      case "json_map":
+      case "json_set":
+        return [
+          value.type,
+          JSON.stringify(
+            [...(toValue(value) as Map<unknown, unknown> | Set<unknown>)],
+            replacer,
+            "  ",
+          ),
+        ];
+      case "json_array":
+      case "json_object":
+        return [
+          value.type,
+          JSON.stringify(toValue(value), replacer, "  "),
+        ];
       default:
         throw new TypeError(`Unexpected type: "${value.type}"`);
     }
@@ -181,8 +192,8 @@ export function KvValueEditor(
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           />
         );
-      case "Array":
-      case "object":
+      case "json_array":
+      case "json_object":
         return (
           <div class="max-h-48 overflow-auto max-w-3xl text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
             <EditorJson
@@ -252,10 +263,10 @@ export function KvValueEditor(
           <option value="number">Number</option>
           <option value="bigint">BigInt</option>
           <option value="boolean">Boolean</option>
-          <option value="object">JSON</option>
-          <option value="Array">Array</option>
-          <option value="Map">Map</option>
-          <option value="Set">Set</option>
+          <option value="json_object">JSON</option>
+          <option value="json_array">Array</option>
+          <option value="json_map">Map</option>
+          <option value="json_set">Set</option>
           <option value="RegExp">RegExp</option>
           <option value="KvU64">KvU64</option>
           <option value="Date">Date</option>

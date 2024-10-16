@@ -1,5 +1,8 @@
 import { render } from "@deno/gfm";
 
+import "prismjs/components/prism-json.js";
+import "prismjs/components/prism-typescript.js";
+
 export function Markdown(
   { children: markdown, baseUrl, class: classCss = "" }: {
     children: string;

@@ -9,6 +9,7 @@ import {
 } from "@kitsonk/kv-toolbox/json";
 import { decodeBase64Url } from "@std/encoding/base64url";
 import { join } from "@std/path/join";
+import inspect from "object-inspect";
 
 export interface KvKeyTreeNodeJSON {
   part: KvKeyPartJSON;
@@ -40,12 +41,43 @@ export function isBlobJSON(value: unknown): value is BlobJSON {
     "parts" in value);
 }
 
+function containsComplex(value: KvValueJSON): boolean {
+  switch (value.type) {
+    case "json_array":
+    case "json_set":
+      return value.value.some(containsComplex);
+    case "json_map":
+      return value.value.some(([key, value]) =>
+        containsComplex(key) || containsComplex(value)
+      );
+    case "json_object":
+      return Object.entries(value.value).some(([_, value]) =>
+        containsComplex(value)
+      );
+    case "string":
+    case "number":
+    case "boolean":
+    case "undefined":
+    case "null":
+      return false;
+    default:
+      return true;
+  }
+}
+
 export function isEditable(value: KvValueJSON | BlobMeta | undefined): boolean {
   if (!value) {
     return false;
   }
   if (isBlobMeta(value)) {
     return true;
+  }
+  switch (value.type) {
+    case "json_array":
+    case "json_map":
+    case "json_object":
+    case "json_set":
+      return !containsComplex(value);
   }
   return ![
     "Error",
@@ -71,6 +103,31 @@ export function isEditable(value: KvValueJSON | BlobMeta | undefined): boolean {
   ].includes(value.type);
 }
 
+export function replacer(_key: string, value: unknown) {
+  if (typeof value === "bigint") {
+    return `BigInt {${inspect(value)}}`;
+  }
+  if ("Deno" in globalThis && value instanceof Deno.KvU64) {
+    return `Deno.KvU64 {${value.value}nkv}`;
+  }
+  if (value instanceof RegExp) {
+    return `RegExp {${value.toString()}}`;
+  }
+  if (value instanceof Error) {
+    return value.stack;
+  }
+  if (value instanceof Date) {
+    return `Date {${value.toISOString()}}`;
+  }
+  if (
+    value instanceof Set || value instanceof Map || ArrayBuffer.isView(value) ||
+    value instanceof ArrayBuffer
+  ) {
+    return inspect(value);
+  }
+  return value;
+}
+
 export function pathToKey(path: string): Deno.KvKey {
   const key: Deno.KvKeyPart[] = [];
   if (path === "") {
@@ -85,6 +142,12 @@ export function pathToKey(path: string): Deno.KvKey {
       key.push(decodeBase64Url(part.slice(6)));
     } else if (/^__n__[0-9]+$/.test(part)) {
       key.push(parseInt(part.slice(5), 10));
+    } else if (part === "__n__Infinity") {
+      key.push(Infinity);
+    } else if (part === "__n__-Infinity") {
+      key.push(-Infinity);
+    } else if (part === "__n__NaN") {
+      key.push(NaN);
     } else if (/^__b__[0-9]+$/.test(part)) {
       key.push(BigInt(part.slice(5)));
     } else {

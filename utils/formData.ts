@@ -1,5 +1,10 @@
 import { type BlobJSON, toJSON } from "@kitsonk/kv-toolbox/blob";
-import { type KvKeyPartJSON, type KvValueJSON } from "@kitsonk/kv-toolbox/json";
+import {
+  type KvKeyPartJSON,
+  type KvValueJSON,
+  valueToJSON,
+} from "@kitsonk/kv-toolbox/json";
+import { assert } from "@std/assert/assert";
 
 export function formDataToKvKeyPartJSON(
   type: string,
@@ -55,11 +60,35 @@ export async function formDataToKvValueJSON(
         return formDataToKvKeyPartJSON(type, value);
       case "null":
         return { type, value: null };
-      case "Array":
-      case "Map":
-      case "Set":
-      case "object":
-        return { type, value: JSON.parse(value) };
+      case "json_map": {
+        const parsedValue = JSON.parse(value);
+        assert(Array.isArray(parsedValue), "Expected an array.");
+        return valueToJSON(new Map(parsedValue));
+      }
+      case "json_set": {
+        const parsedValue = JSON.parse(value);
+        assert(Array.isArray(parsedValue), "Expected an array.");
+        return valueToJSON(new Set(parsedValue));
+      }
+      case "json_array": {
+        const parsedValue = JSON.parse(value);
+        assert(Array.isArray(parsedValue), "Expected an array.");
+        return { type, value: parsedValue.map(valueToJSON) };
+      }
+      case "json_object": {
+        const parsedValue = JSON.parse(value);
+        assert(
+          typeof parsedValue === "object" && parsedValue !== null,
+          "Expected an object.",
+        );
+        return {
+          type,
+          value: Object.fromEntries(
+            Object.entries(parsedValue)
+              .map(([key, value]) => [key, valueToJSON(value)]),
+          ),
+        };
+      }
       case "RegExp":
       case "Date":
       case "KvU64":

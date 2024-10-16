@@ -16,6 +16,7 @@ import { CloseButton } from "./CloseButton.tsx";
 import { Dialog } from "./Dialog.tsx";
 import { Label } from "./Label.tsx";
 import { KvKey } from "./KvKey.tsx";
+import { KvKeyPartEditor } from "./KvKeyPartEditor.tsx";
 import { KvValueEditor } from "./KvValueEditor.tsx";
 
 export function DialogAddEntry(
@@ -117,31 +118,7 @@ export function DialogAddEntry(
             </h2>
             <KvKey value={currentKey} showRoot noLink />
           </div>
-          <div>
-            <Label for="key_part">Key Part</Label>
-            <input
-              type="text"
-              name="key_part"
-              id="key_part"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Key part name"
-              required
-            />
-          </div>
-          <div>
-            <Label for="key_part_type">Key Part Type</Label>
-            <select
-              id="key_part_type"
-              name="key_part_type"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            >
-              <option selected value="string">String</option>
-              <option value="number">Number</option>
-              <option value="bigint">BigInt</option>
-              <option value="boolean">Boolean</option>
-              <option value="Uint8Array">Uint8Array</option>
-            </select>
-          </div>
+          <KvKeyPartEditor />
           <KvValueEditor />
           <div>
             <Label for="expires_in">Expires In</Label>

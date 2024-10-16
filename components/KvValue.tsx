@@ -1,6 +1,10 @@
 import { type ComponentChildren } from "preact";
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvKeyJSON, type KvValueJSON } from "@kitsonk/kv-toolbox/json";
+import {
+  type KvKeyJSON,
+  type KvValueJSON,
+  toValue,
+} from "@kitsonk/kv-toolbox/json";
 import { highlightJson } from "$utils/highlight.ts";
 
 import { BlobViewer } from "./BlobViewer.tsx";
@@ -58,7 +62,7 @@ export function KvValue(
         color = "pink";
         children = <Display>{value.value}n</Display>;
         break;
-      case "Map":
+      case "json_map":
         label = "Map";
         color = "red";
         children = (
@@ -74,10 +78,10 @@ export function KvValue(
                 {value.value.map(([key, value]) => (
                   <tr class="odd:bg-gray-50 odd:dark:bg-gray-900">
                     <td>
-                      <pre><code>{JSON.stringify(key, undefined, "  ")}</code></pre>
+                      <pre><code>{JSON.stringify(toValue(key), undefined, "  ")}</code></pre>
                     </td>
                     <td>
-                      <pre><code>{JSON.stringify(value, undefined, "  ")}</code></pre>
+                      <pre><code>{JSON.stringify(toValue(value), undefined, "  ")}</code></pre>
                     </td>
                   </tr>
                 ))}
@@ -95,7 +99,7 @@ export function KvValue(
           </Display>
         );
         break;
-      case "Set":
+      case "json_set":
         label = "Set";
         color = "red";
         children = (
@@ -110,7 +114,7 @@ export function KvValue(
                 {value.value.map((item) => (
                   <tr class="odd:bg-gray-50 odd:dark:bg-gray-900">
                     <td>
-                      <pre><code>{JSON.stringify(item, undefined, "  ")}</code></pre>
+                      <pre><code>{JSON.stringify(toValue(item), undefined, "  ")}</code></pre>
                     </td>
                   </tr>
                 ))}
@@ -220,21 +224,21 @@ export function KvValue(
           </Display>
         );
         break;
-      case "Array":
-        label = value.type;
+      case "json_array":
+        label = "Array";
         color = "blue";
         children = (
           <Display>
-            <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(value.value)}}></code></pre>
+            <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(toValue(value))}}></code></pre>
           </Display>
         );
         break;
-      case "object":
-        label = "JSON";
+      case "json_object":
+        label = "Object";
         color = "blue";
         children = (
           <Display>
-            <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(value.value) }}></code></pre>
+            <pre><code dangerouslySetInnerHTML={{ __html: highlightJson(toValue(value)) }}></code></pre>
           </Display>
         );
         break;
