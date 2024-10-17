@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.15.0
+
+- feat: better support for complex values (32accbe)
+- feat: add invalid styles when editing (97c1693)
+
 ## Version 0.14.10
 
 - fix: styling issue on maps and sets (7de6098)

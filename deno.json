@@ -1,6 +1,6 @@
 {
   "name": "@kitsonk/kview",
-  "version": "0.14.10",
+  "version": "0.15.0",
   "exports": { "./install": "./install.ts" },
   "publish": {
     "exclude": [".vscode", ".github", "assets", "dev.ts", "minify_svg.ts"]
