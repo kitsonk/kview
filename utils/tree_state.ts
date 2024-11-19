@@ -1,4 +1,4 @@
-import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON } from "@deno/kv-utils/json";
 import { createContext } from "preact";
 import { computed, type Signal, signal } from "@preact/signals";
 

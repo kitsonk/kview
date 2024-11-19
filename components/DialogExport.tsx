@@ -1,4 +1,4 @@
-import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON } from "@deno/kv-utils/json";
 import { type Signal, useComputed } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
 

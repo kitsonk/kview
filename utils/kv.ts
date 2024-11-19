@@ -6,7 +6,7 @@ import {
   type KvKeyPartJSON,
   type KvValueJSON,
   valueToJSON,
-} from "@kitsonk/kv-toolbox/json";
+} from "@deno/kv-utils/json";
 import { decodeBase64Url } from "@std/encoding/base64url";
 import { join } from "@std/path/join";
 import inspect from "object-inspect";
@@ -43,14 +43,14 @@ export function isBlobJSON(value: unknown): value is BlobJSON {
 
 function containsComplex(value: KvValueJSON): boolean {
   switch (value.type) {
-    case "json_array":
-    case "json_set":
+    case "Array":
+    case "Set":
       return value.value.some(containsComplex);
-    case "json_map":
+    case "Map":
       return value.value.some(([key, value]) =>
         containsComplex(key) || containsComplex(value)
       );
-    case "json_object":
+    case "object":
       return Object.entries(value.value).some(([_, value]) =>
         containsComplex(value)
       );
@@ -73,10 +73,10 @@ export function isEditable(value: KvValueJSON | BlobMeta | undefined): boolean {
     return true;
   }
   switch (value.type) {
-    case "json_array":
-    case "json_map":
-    case "json_object":
-    case "json_set":
+    case "Array":
+    case "Map":
+    case "object":
+    case "Set":
       return !containsComplex(value);
   }
   return ![

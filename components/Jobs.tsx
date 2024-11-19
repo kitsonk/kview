@@ -1,7 +1,7 @@
 import { KvKey } from "./KvKey.tsx";
 import { format } from "@std/fmt/duration";
 
-import { keyToJSON } from "@kitsonk/kv-toolbox/json";
+import { keyToJSON } from "@deno/kv-utils/json";
 import { getJobs, type Job, type JobState } from "$utils/kv_bulk.ts";
 
 function JobState({ state }: { state: JobState }) {

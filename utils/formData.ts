@@ -3,7 +3,7 @@ import {
   type KvKeyPartJSON,
   type KvValueJSON,
   valueToJSON,
-} from "@kitsonk/kv-toolbox/json";
+} from "@deno/kv-utils/json";
 import { assert } from "@std/assert/assert";
 
 export function formDataToKvKeyPartJSON(
@@ -60,22 +60,22 @@ export async function formDataToKvValueJSON(
         return formDataToKvKeyPartJSON(type, value);
       case "null":
         return { type, value: null };
-      case "json_map": {
+      case "Map": {
         const parsedValue = JSON.parse(value);
         assert(Array.isArray(parsedValue), "Expected an array.");
         return valueToJSON(new Map(parsedValue));
       }
-      case "json_set": {
+      case "Set": {
         const parsedValue = JSON.parse(value);
         assert(Array.isArray(parsedValue), "Expected an array.");
         return valueToJSON(new Set(parsedValue));
       }
-      case "json_array": {
+      case "Array": {
         const parsedValue = JSON.parse(value);
         assert(Array.isArray(parsedValue), "Expected an array.");
         return { type, value: parsedValue.map(valueToJSON) };
       }
-      case "json_object": {
+      case "object": {
         const parsedValue = JSON.parse(value);
         assert(
           typeof parsedValue === "object" && parsedValue !== null,

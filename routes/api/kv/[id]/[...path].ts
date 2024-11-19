@@ -7,7 +7,7 @@ import {
   type KvValueJSON,
   toKey,
   toValue,
-} from "@kitsonk/kv-toolbox/json";
+} from "@deno/kv-utils/json";
 import { matches } from "@oak/commons/media_types";
 import { assert } from "@std/assert/assert";
 import {

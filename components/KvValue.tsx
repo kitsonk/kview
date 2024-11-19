@@ -1,10 +1,6 @@
 import { type ComponentChildren } from "preact";
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import {
-  type KvKeyJSON,
-  type KvValueJSON,
-  toValue,
-} from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON, type KvValueJSON, toValue } from "@deno/kv-utils/json";
 import { highlightJson } from "$utils/highlight.ts";
 
 import { BlobViewer } from "./BlobViewer.tsx";

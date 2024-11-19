@@ -1,4 +1,4 @@
-import { keyToJSON } from "@kitsonk/kv-toolbox/json";
+import { keyToJSON } from "@deno/kv-utils/json";
 import { assertEquals } from "@std/assert/equals";
 
 import { isEditable, keyJsonToPath, pathToKey } from "./kv.ts";
@@ -123,10 +123,10 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_object",
+        type: "object",
         value: {
           "a": {
-            type: "json_object",
+            type: "object",
             value: { "b": { type: "string", value: "string" } },
           },
         },
@@ -141,7 +141,7 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_object",
+        type: "object",
         value: { "a": { type: "bigint", value: "100" } },
       }),
       false,
@@ -154,11 +154,11 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_array",
+        type: "Array",
         value: [
           { type: "string", value: "string" },
           {
-            type: "json_object",
+            type: "object",
             value: { "b": { type: "string", value: "string" } },
           },
         ],
@@ -173,11 +173,11 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_array",
+        type: "Array",
         value: [
           { type: "bigint", value: "100" },
           {
-            type: "json_object",
+            type: "object",
             value: { "b": { type: "string", value: "string" } },
           },
         ],
@@ -192,11 +192,11 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_map",
+        type: "Map",
         value: [
           [
             {
-              type: "json_object",
+              type: "object",
               value: { a: { type: "string", value: "string" } },
             },
             { type: "string", value: "string" },
@@ -213,13 +213,13 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_map",
+        type: "Map",
         value: [
           [{
-            type: "json_object",
+            type: "object",
             value: { a: { type: "string", value: "string" } },
           }, {
-            type: "json_object",
+            type: "object",
             value: { b: { type: "RegExp", value: "/1234/i" } },
           }],
         ],
@@ -234,7 +234,7 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_set",
+        type: "Set",
         value: [{ type: "string", value: "string" }],
       }),
       true,
@@ -247,7 +247,7 @@ Deno.test({
   fn() {
     assertEquals(
       isEditable({
-        type: "json_set",
+        type: "Set",
         value: [{ type: "string", value: "string" }, {
           type: "Date",
           value: "2021-01-01",

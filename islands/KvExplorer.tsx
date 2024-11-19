@@ -12,7 +12,7 @@ import { useSignal, useSignalEffect } from "@preact/signals";
 import { DashDb } from "$utils/dash.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvEntryJSON, type KvKeyJSON } from "@deno/kv-utils/json";
 
 interface ListElement {
   key: KvKeyJSON;

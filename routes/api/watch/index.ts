@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON } from "@deno/kv-utils/json";
 import { state } from "$utils/state.ts";
 import { addWatch, deleteWatch, serialize } from "$utils/watches.ts";
 

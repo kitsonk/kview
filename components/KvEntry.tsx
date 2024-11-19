@@ -1,5 +1,5 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvEntryJSON, type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvEntryJSON, type KvKeyJSON } from "@deno/kv-utils/json";
 import { type Signal, useComputed, useSignal } from "@preact/signals";
 import { isEditable } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";

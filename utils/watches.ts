@@ -1,5 +1,5 @@
 import { equals } from "@kitsonk/kv-toolbox/keys";
-import { keyToJSON, type KvKeyJSON, toKey } from "@kitsonk/kv-toolbox/json";
+import { keyToJSON, type KvKeyJSON, toKey } from "@deno/kv-utils/json";
 
 export type Watches = Record<
   string,

@@ -1,4 +1,4 @@
-import { type KvKeyJSON, type KvKeyPartJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON, type KvKeyPartJSON } from "@deno/kv-utils/json";
 import { type Signal } from "@preact/signals";
 
 export function KvKeyPart(

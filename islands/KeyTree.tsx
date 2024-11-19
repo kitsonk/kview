@@ -1,7 +1,7 @@
 import { type Signal, useSignal, useSignalEffect } from "@preact/signals";
 import { Loader } from "$components/Loader.tsx";
 import { TreeView } from "$components/TreeView.tsx";
-import { type KvKeyJSON } from "@kitsonk/kv-toolbox/json";
+import { type KvKeyJSON } from "@deno/kv-utils/json";
 import { keyJsonToPath } from "$utils/kv.ts";
 import { kvTreeToNodes, state, TreeState } from "$utils/tree_state.ts";
 

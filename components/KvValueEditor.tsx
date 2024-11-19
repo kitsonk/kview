@@ -1,5 +1,5 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvValueJSON, toValue } from "@kitsonk/kv-toolbox/json";
+import { type KvValueJSON, toValue } from "@deno/kv-utils/json";
 import { useComputed, useSignal } from "@preact/signals";
 import { isBlobMeta, replacer } from "$utils/kv.ts";
 

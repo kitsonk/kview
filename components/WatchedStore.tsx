@@ -1,7 +1,4 @@
-import {
-  type KvEntryMaybeJSON,
-  type KvKeyJSON,
-} from "@kitsonk/kv-toolbox/json";
+import { type KvEntryMaybeJSON, type KvKeyJSON } from "@deno/kv-utils/json";
 import { type Signal } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
 

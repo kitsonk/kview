@@ -5,7 +5,7 @@ import { formDataToKvValueJSON } from "./formData.ts";
 Deno.test({
   name: "formDataToKvValueJSON - object",
   async fn() {
-    const type = "json_object";
+    const type = "object";
     const value = JSON.stringify({ a: 1, b: 2 });
     assertEquals(await formDataToKvValueJSON(type, value, null), {
       type,
@@ -20,7 +20,7 @@ Deno.test({
 Deno.test({
   name: "formDataToKvValueJSON - array",
   async fn() {
-    const type = "json_array";
+    const type = "Array";
     const value = JSON.stringify([1, 2]);
     assertEquals(await formDataToKvValueJSON(type, value, null), {
       type,
@@ -35,7 +35,7 @@ Deno.test({
 Deno.test({
   name: "formDataToKvValueJSON - set",
   async fn() {
-    const type = "json_set";
+    const type = "Set";
     const value = JSON.stringify([1, 2]);
     assertEquals(await formDataToKvValueJSON(type, value, null), {
       type,
@@ -50,7 +50,7 @@ Deno.test({
 Deno.test({
   name: "formDataToKvValueJSON - map",
   async fn() {
-    const type = "json_map";
+    const type = "Map";
     const value = JSON.stringify([["a", 1], ["b", 2]]);
     assertEquals(await formDataToKvValueJSON(type, value, null), {
       type,
