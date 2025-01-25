@@ -25,6 +25,7 @@ function kvValueJSONToFormData(
       case "string":
       case "bigint":
       case "ArrayBuffer":
+      case "DataView":
       case "Int8Array":
       case "Uint8Array":
       case "Uint8ClampedArray":
@@ -47,8 +48,8 @@ function kvValueJSONToFormData(
         return [value.type, "null"];
       case "undefined":
         return [value.type, "undefined"];
-      case "json_map":
-      case "json_set":
+      case "Map":
+      case "Set":
         return [
           value.type,
           JSON.stringify(
@@ -57,12 +58,9 @@ function kvValueJSONToFormData(
             "  ",
           ),
         ];
-      case "json_array":
-      case "json_object":
-        return [
-          value.type,
-          JSON.stringify(toValue(value), replacer, "  "),
-        ];
+      case "Array":
+      case "object":
+        return [value.type, JSON.stringify(toValue(value), replacer, "  ")];
       default:
         throw new TypeError(`Unexpected type: "${value.type}"`);
     }
@@ -192,8 +190,8 @@ export function KvValueEditor(
             onChange={(evt) => valueValue.value = evt.currentTarget.value}
           />
         );
-      case "json_array":
-      case "json_object":
+      case "Array":
+      case "object":
         return (
           <div class="max-h-48 overflow-auto max-w-3xl text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 invalid:border-red-700">
             <EditorJson
@@ -263,10 +261,10 @@ export function KvValueEditor(
           <option value="number">Number</option>
           <option value="bigint">BigInt</option>
           <option value="boolean">Boolean</option>
-          <option value="json_object">JSON</option>
-          <option value="json_array">Array</option>
-          <option value="json_map">Map</option>
-          <option value="json_set">Set</option>
+          <option value="object">JSON</option>
+          <option value="Array">Array</option>
+          <option value="Map">Map</option>
+          <option value="Set">Set</option>
           <option value="RegExp">RegExp</option>
           <option value="KvU64">KvU64</option>
           <option value="Date">Date</option>

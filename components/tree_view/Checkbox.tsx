@@ -24,6 +24,7 @@ export function Checkbox(
   return (
     <input
       name={name}
+      id={name}
       ref={ref}
       type="checkbox"
       checked={checked}

@@ -13,6 +13,7 @@ import { assert } from "@std/assert/assert";
 import {
   isBlobJSON,
   keyCountToResponse,
+  parseQuery,
   pathToKey,
   treeToResponse,
 } from "$utils/kv.ts";
@@ -68,10 +69,14 @@ export const handler: Handlers = {
         return notFound();
       }
     } else if (url.searchParams.has("tree")) {
-      const data = await kv.tree(prefix);
+      const q = url.searchParams.get("q");
+      const data =
+        await (q ? parseQuery(kv, prefix, q).tree() : kv.tree(prefix));
       return treeToResponse(data);
     } else {
-      const data = await kv.counts(prefix);
+      const q = url.searchParams.get("q");
+      const data =
+        await (q ? parseQuery(kv, prefix, q).counts() : kv.counts(prefix));
       return keyCountToResponse(data);
     }
   },

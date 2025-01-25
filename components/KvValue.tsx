@@ -58,7 +58,7 @@ export function KvValue(
         color = "pink";
         children = <Display>{value.value}n</Display>;
         break;
-      case "json_map":
+      case "Map":
         label = "Map";
         color = "red";
         children = (
@@ -95,7 +95,7 @@ export function KvValue(
           </Display>
         );
         break;
-      case "json_set":
+      case "Set":
         label = "Set";
         color = "red";
         children = (
@@ -220,7 +220,7 @@ export function KvValue(
           </Display>
         );
         break;
-      case "json_array":
+      case "Array":
         label = "Array";
         color = "blue";
         children = (
@@ -229,7 +229,7 @@ export function KvValue(
           </Display>
         );
         break;
-      case "json_object":
+      case "object":
         label = "Object";
         color = "blue";
         children = (

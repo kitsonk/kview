@@ -1,9 +1,13 @@
-import { type KvKeyJSON } from "@deno/kv-utils/json";
+import { type KvKeyJSON, KvKeyPartJSON } from "@deno/kv-utils/json";
 import { type ComponentChildren } from "preact";
 import { type Signal } from "@preact/signals";
 
 import IconHome from "./icons/Home.tsx";
 import { KvKeyPart } from "./KvKeyPart.tsx";
+
+function isKvKeyJSON(value: unknown): value is KvKeyJSON {
+  return Array.isArray(value);
+}
 
 export function KvKey(
   { value, entry, showRoot, noLink }: {
@@ -16,7 +20,7 @@ export function KvKey(
   let key: KvKeyJSON;
   let isSignal;
   let onClick;
-  if (Array.isArray(value)) {
+  if (isKvKeyJSON(value)) {
     isSignal = false;
     key = value;
   } else {
@@ -38,7 +42,7 @@ export function KvKey(
   key = [...key];
   const children: ComponentChildren[] = [];
   let part;
-  while ((part = key.pop())) {
+  while ((part = (key as KvKeyPartJSON[]).pop())) {
     children.unshift(
       <KvKeyPart
         part={part}

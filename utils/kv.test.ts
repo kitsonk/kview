@@ -1,7 +1,9 @@
 import { keyToJSON } from "@deno/kv-utils/json";
+import { openKvToolbox } from "@kitsonk/kv-toolbox";
 import { assertEquals } from "@std/assert/equals";
 
-import { isEditable, keyJsonToPath, pathToKey } from "./kv.ts";
+import { isEditable, keyJsonToPath, parseQuery, pathToKey } from "./kv.ts";
+import { encodeBase64Url } from "@std/encoding/base64url";
 
 Deno.test({
   name: "pathToKey - single string",
@@ -255,5 +257,36 @@ Deno.test({
       }),
       false,
     );
+  },
+});
+
+Deno.test({
+  name: "parseQuery - empty",
+  async fn() {
+    const kv = await openKvToolbox({ path: ":memory:" });
+    await kv
+      .atomic()
+      .set(["a", "b"], { age: 10 })
+      .set(["a", "b", "c"], { age: 10 })
+      .set(["a", "d", "e"], { age: 10 })
+      .set(["a", "d", "f"], { age: 10 })
+      .set(["a", "g"], { age: 20 })
+      .set(["b", "h"], { age: 10 })
+      .commit();
+    const q = encodeBase64Url(JSON.stringify([{
+      kind: "where",
+      property: "age",
+      operation: "==",
+      value: { type: "number", value: 10 },
+    }]));
+    const query = parseQuery(kv, ["a"], q);
+    const result = await query.keys();
+    assertEquals(result, [
+      ["a", "b"],
+      ["a", "b", "c"],
+      ["a", "d", "e"],
+      ["a", "d", "f"],
+    ]);
+    kv.close();
   },
 });

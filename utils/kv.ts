@@ -1,7 +1,10 @@
-import { type BlobJSON, type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KeyTree } from "@kitsonk/kv-toolbox/keys";
+import { KvToolbox } from "@kitsonk/kv-toolbox";
+import type { BlobJSON, BlobMeta } from "@kitsonk/kv-toolbox/blob";
+import type { KeyTree } from "@kitsonk/kv-toolbox/keys";
+import { Query } from "@kitsonk/kv-toolbox/query";
 import {
   keyPartToJSON,
+  keyToJSON,
   type KvKeyJSON,
   type KvKeyPartJSON,
   type KvValueJSON,
@@ -286,4 +289,17 @@ function homeDir(): string | undefined {
     Deno.permissions.request({ name: "env", variable: "HOME" });
     return Deno.env.get("HOME");
   }
+}
+
+const decoder = new TextDecoder();
+
+export function parseQuery(
+  kv: KvToolbox,
+  prefix: Deno.KvKey,
+  filtersString: string,
+): Query {
+  return Query.parse(kv.db, {
+    selector: { prefix: keyToJSON(prefix) },
+    filters: JSON.parse(decoder.decode(decodeBase64Url(filtersString))),
+  });
 }

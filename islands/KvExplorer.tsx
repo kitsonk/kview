@@ -3,16 +3,21 @@ import { DialogAddEntry } from "$components/DialogAddEntry.tsx";
 import { DialogDeleteEntries } from "$components/DialogDeleteEntries.tsx";
 import { DialogExport } from "$components/DialogExport.tsx";
 import { DialogImport } from "$components/DialogImport.tsx";
+import { DialogQuery } from "$components/DialogQuery.tsx";
 import { KvKey } from "$components/KvKey.tsx";
 import { KvKeyList } from "$components/KvKeyList.tsx";
 import { KvEntry } from "$components/KvEntry.tsx";
 import { Loader } from "$components/Loader.tsx";
 import { Toaster } from "$components/Toaster.tsx";
+import IconFilter from "$components/icons/Filter.tsx";
+import type { KvEntryJSON, KvKeyJSON } from "@deno/kv-utils/json";
+import type { BlobMeta } from "@kitsonk/kv-toolbox/blob";
+import type { KvFilterJSON } from "@kitsonk/kv-toolbox/query";
 import { useSignal, useSignalEffect } from "@preact/signals";
+import { encodeBase64Url } from "@std/encoding/base64url";
 import { DashDb } from "$utils/dash.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
-import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
-import { type KvEntryJSON, type KvKeyJSON } from "@deno/kv-utils/json";
+import { addNotification } from "$utils/state.ts";
 
 interface ListElement {
   key: KvKeyJSON;
@@ -31,8 +36,11 @@ export default function KvExplorer(
   const currentKey = useSignal<KvKeyJSON>([]);
   const loadingKeys = useSignal(false);
   const addDialogOpen = useSignal(false);
+  const filters = useSignal<KvFilterJSON[]>([]);
+  const filterActive = useSignal(false);
   const exportOpen = useSignal(false);
   const importOpen = useSignal(false);
+  const queryOpen = useSignal(false);
   const deleteEntiresOpen = useSignal(false);
   const list = useSignal<ListElement[]>([]);
   let keyController: AbortController | undefined;
@@ -45,7 +53,11 @@ export default function KvExplorer(
     }
     keyController = new AbortController();
     const { signal } = keyController;
-    fetch(new URL(target, import.meta.url), { signal })
+    const url = new URL(target, import.meta.url);
+    if (filterActive.value) {
+      url.searchParams.set("q", encodeBase64Url(JSON.stringify(filters.value)));
+    }
+    fetch(url, { signal })
       .then((res) => {
         if (res.ok) {
           return res.json().then((data) => list.value = data);
@@ -139,10 +151,30 @@ export default function KvExplorer(
         prefix={currentKey}
         loadKeys={loadKeys}
       />
+      <DialogQuery open={queryOpen} filters={filters} active={filterActive} />
       <div class="border rounded p-2">
         <h2 class="font-bold mb-2">Path</h2>
         <KvKey value={currentKey} entry={currentEntryKey} showRoot />
-        <h2 class="font-bold my-2">Keys</h2>
+        <div class="flex items-center">
+          <h2 class="font-bold my-2">Keys</h2>
+          <button
+            type="button"
+            class={filterActive.value
+              ? "text-primary-700 dark:text-primary-500 bg-transparent hover:bg-gray-200 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600"
+              : "text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"}
+            onClick={() => {
+              if (filterActive.value) {
+                filterActive.value = false;
+                addNotification("Filter removed", "success", true, 5);
+              } else {
+                queryOpen.value = true;
+              }
+            }}
+          >
+            <IconFilter size={5} />
+            <span class="sr-only">Filter</span>
+          </button>
+        </div>
         {loadingKeys.value
           ? (
             <div class="h-48 md:h-64 lg:h-72 xl:h-96 bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center">

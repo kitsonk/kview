@@ -166,6 +166,18 @@ export default {
     "h-7",
     "h-10",
     "h-12",
+    // these are dynamically assigned to some tree objects
+    "ml-4",
+    "ml-8",
+    "ml-12",
+    "ml-16",
+    "ml-20",
+    "ml-24",
+    "ml-28",
+    "ml-32",
+    "ml-36",
+    "ml-40",
+    "ml-44",
   ],
   theme: {
     extend: {

@@ -1,4 +1,5 @@
-import { importEntries } from "@kitsonk/kv-toolbox/ndjson";
+import { importEntries } from "@deno/kv-utils/import-export";
+
 import { setAccessToken } from "./dash.ts";
 import { getKvPath } from "./kv_state.ts";
 

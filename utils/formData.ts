@@ -5,6 +5,15 @@ import {
   valueToJSON,
 } from "@deno/kv-utils/json";
 import { assert } from "@std/assert/assert";
+import { decodeBase64Url } from "@std/encoding/base64url";
+
+export function getByteLength(value: string): number {
+  try {
+    return decodeBase64Url(value).byteLength;
+  } catch {
+    return 0;
+  }
+}
 
 export function formDataToKvKeyPartJSON(
   type: string,
@@ -13,8 +22,9 @@ export function formDataToKvKeyPartJSON(
   switch (type) {
     case "string":
     case "bigint":
-    case "Uint8Array":
       return { type, value };
+    case "Uint8Array":
+      return { type, value, byteLength: getByteLength(value) };
     case "number": {
       const parsed = parseFloat(value);
       return {
@@ -92,6 +102,7 @@ export async function formDataToKvValueJSON(
       case "RegExp":
       case "Date":
       case "KvU64":
+        return { type, value };
       case "ArrayBuffer":
       case "Int8Array":
       case "Uint8ClampedArray":
@@ -104,7 +115,7 @@ export async function formDataToKvValueJSON(
       case "BigInt64Array":
       case "BigUint64Array":
       case "DataView":
-        return { type, value };
+        return { type, value, byteLength: getByteLength(value) };
       default:
         throw new TypeError(`Unexpected type: "${type}"`);
     }

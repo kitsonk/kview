@@ -20,7 +20,11 @@ export const handler: Handlers = {
       setAccessToken(accessToken);
     }
     const kv = await openKvToolbox({ path: kvPath });
-    return kv.export({ prefix }, { response: true, filename: id, close: true });
+    return kv.export({ prefix }, {
+      type: "response",
+      filename: id,
+      close: true,
+    });
   },
   async POST(req, { params: { id, path = "" } }) {
     const prefix = path === "" ? [] : pathToKey(path);
