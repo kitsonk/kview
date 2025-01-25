@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.16.0
+
+- feat: support filtering (fec0bb0)
+- refactor: update to use kv-utils (bfc38a2)
+- chore: update build (902bc6c)
+
 ## Version 0.15.0
 
 - feat: better support for complex values (32accbe)
