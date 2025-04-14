@@ -137,7 +137,9 @@ export function pathToKey(path: string): Deno.KvKey {
     return key;
   }
   for (const part of path.split("/")) {
-    if (part === "__true__") {
+    if (part === "__empty_string__") {
+      key.push("");
+    } else if (part === "__true__") {
       key.push(true);
     } else if (part === "__false__") {
       key.push(false);
@@ -172,6 +174,9 @@ export function keyJsonToPath(key: KvKeyJSON): string {
       case "number":
         return `__n__${keyPart.value}`;
       case "string":
+        if (keyPart.value === "") {
+          return "__empty_string__";
+        }
         return encodeURIComponent(keyPart.value);
     }
   }).join("/");
