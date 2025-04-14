@@ -179,7 +179,7 @@ export async function getRootData(): Promise<DashRootData> {
   const req = await fetch(`${DASH_BASE_URL}_app?_data_`, {
     method: "GET",
     headers: {
-      "Cookie": `token=${state.accessToken.value}`,
+      "Cookie": `token=${state.accessToken.value}; deno_auth_ghid=0`,
     },
   });
   if (req.status !== 200) {
@@ -196,7 +196,7 @@ export async function getUserProjects(): Promise<DashProject> {
   const req = await fetch(`${DASH_BASE_URL}projects/index?_data_`, {
     method: "GET",
     headers: {
-      "Cookie": `token=${state.accessToken.value}`,
+      "Cookie": `token=${state.accessToken.value}; deno_auth_ghid=0`,
     },
   });
   if (req.status !== 200) {
@@ -212,7 +212,7 @@ export async function getProjectDetails(name: string): Promise<DashProject> {
   const req = await fetch(`${DASH_BASE_URL}projects/${name}?_data_`, {
     method: "GET",
     headers: {
-      "Cookie": `token=${state.accessToken.value}`,
+      "Cookie": `token=${state.accessToken.value}; deno_auth_ghid=0`,
     },
   });
   if (!req.ok) {
@@ -230,7 +230,7 @@ export async function getOrganizationDetail(
   const req = await fetch(`${DASH_BASE_URL}orgs/${id}?_data_`, {
     method: "GET",
     headers: {
-      "Cookie": `token=${state.accessToken.value}`,
+      "Cookie": `token=${state.accessToken.value}; deno_auth_ghid=0`,
     },
   });
   if (req.status !== 200) {
@@ -246,7 +246,7 @@ export async function getProjectDbs(name: string): Promise<DashDb[]> {
   const req = await fetch(`${DASH_BASE_URL}projects/${name}/kv?_data_`, {
     method: "GET",
     headers: {
-      "Cookie": `token=${state.accessToken.value}`,
+      "Cookie": `token=${state.accessToken.value}; deno_auth_ghid=0`,
     },
   });
   if (!req.ok) {
