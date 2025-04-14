@@ -31,11 +31,13 @@ import * as $projects_name_kv_branch_ from "./routes/projects/[name]/kv/[branch]
 import * as $remote_id_ from "./routes/remote/[id].tsx";
 import * as $remote_index from "./routes/remote/index.tsx";
 import * as $user from "./routes/user.ts";
+import * as $viewer from "./routes/viewer.tsx";
 import * as $watch from "./routes/watch.tsx";
 import * as $KeyTree from "./islands/KeyTree.tsx";
 import * as $KvExplorer from "./islands/KvExplorer.tsx";
 import * as $LocalControls from "./islands/LocalControls.tsx";
 import * as $LocalKvList from "./islands/LocalKvList.tsx";
+import * as $ObjectEditor from "./islands/ObjectEditor.tsx";
 import * as $RemoteControls from "./islands/RemoteControls.tsx";
 import * as $RemoteKvList from "./islands/RemoteKvList.tsx";
 import * as $Watches from "./islands/Watches.tsx";
@@ -72,6 +74,7 @@ const manifest = {
     "./routes/remote/[id].tsx": $remote_id_,
     "./routes/remote/index.tsx": $remote_index,
     "./routes/user.ts": $user,
+    "./routes/viewer.tsx": $viewer,
     "./routes/watch.tsx": $watch,
   },
   islands: {
@@ -79,6 +82,7 @@ const manifest = {
     "./islands/KvExplorer.tsx": $KvExplorer,
     "./islands/LocalControls.tsx": $LocalControls,
     "./islands/LocalKvList.tsx": $LocalKvList,
+    "./islands/ObjectEditor.tsx": $ObjectEditor,
     "./islands/RemoteControls.tsx": $RemoteControls,
     "./islands/RemoteKvList.tsx": $RemoteKvList,
     "./islands/Watches.tsx": $Watches,

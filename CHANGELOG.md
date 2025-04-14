@@ -1,5 +1,11 @@
 # kview change log
 
+## Version 0.17.0
+
+- fix: handle empty string key parts (3062947)
+- fix: handle changes to dash API (5c7b2fa)
+- chore: migrate to svg-minify plugin (26c8813)
+
 ## Version 0.16.0
 
 - feat: support filtering (fec0bb0)
