@@ -1,5 +1,10 @@
 # kview change log
 
+## Version 0.17.1
+
+- chore: update deps (969f18b)
+- chore: fix linting errors (362ac6e)
+
 ## Version 0.17.0
 
 - fix: handle empty string key parts (3062947)
