@@ -19,16 +19,16 @@ export function DialogImport(
     href?: string;
   },
 ) {
-  if (!databaseId) {
-    return null;
-  }
-
   const target = useComputed(() =>
     `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`
   );
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
   const uploading = useSignal(false);
+
+  if (!databaseId) {
+    return null;
+  }
 
   return (
     <Dialog

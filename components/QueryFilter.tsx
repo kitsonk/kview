@@ -185,9 +185,9 @@ function SubFilters(
     onChange: (index: number, value: KvFilterJSON) => void;
   },
 ) {
-  const localFilters = filter.filters.length
-    ? useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>(filter.filters)
-    : useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>([{ kind: "" }]);
+  const localFilters = useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>(
+    filter.filters.length ? filter.filters : [{ kind: "" }],
+  );
   const handleFilterOnChange = (localIndex: number, value: KvFilterJSON) => {
     localFilters.value = localFilters.value.map((filter, i) =>
       i === localIndex ? value : filter
@@ -457,6 +457,7 @@ export function QueryFilter(
           {valueEditor}
         </div>
         <button
+          type="button"
           class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           onClick={() => onRemove(index)}
         >

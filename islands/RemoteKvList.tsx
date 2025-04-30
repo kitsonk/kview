@@ -30,7 +30,9 @@ export default function RemoteKvList(
         {remoteStores.value.length
           ? (
             <ul class="space-y-2">
-              {remoteStores.value.map((db) => <RemoteKv db={db} />)}
+              {remoteStores.value.map((db, idx) => (
+                <RemoteKv key={idx} db={db} />
+              ))}
             </ul>
           )
           : (

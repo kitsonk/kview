@@ -10,7 +10,12 @@ export function ProjectList({ projects }: { projects: DashProject[] }) {
     <>
       <h1 class="text-xl font-bold py-2">Projects</h1>
       <ul class="space-y-2">
-        {projects.map((project) => <Project project={project} />)}
+        {projects.map((project, idx) => (
+          <Project
+            key={idx}
+            project={project}
+          />
+        ))}
       </ul>
     </>
   );

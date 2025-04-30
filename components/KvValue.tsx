@@ -1,3 +1,4 @@
+// deno-lint-ignore-file react-no-danger
 import { type ComponentChildren } from "preact";
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvKeyJSON, type KvValueJSON, toValue } from "@deno/kv-utils/json";

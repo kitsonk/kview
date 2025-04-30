@@ -37,9 +37,6 @@ export function DialogEditValue(
     loadValue(): void;
   },
 ) {
-  if (!entry.value) {
-    return null;
-  }
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
 
@@ -49,6 +46,10 @@ export function DialogEditValue(
     !!(entry.value!.value || entry.value!.meta)
   );
   const key = useComputed(() => entry.value!.key);
+
+  if (!entry.value) {
+    return null;
+  }
 
   return (
     <Dialog

@@ -30,9 +30,6 @@ export function DialogDeleteEntries(
     loadKeys(): void;
   },
 ) {
-  if (!databaseId) {
-    return null;
-  }
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
   const loading = useSignal(false);
@@ -66,6 +63,10 @@ export function DialogDeleteEntries(
   }
 
   useSignalEffect(loadTree);
+
+  if (!databaseId) {
+    return null;
+  }
 
   return (
     <Dialog

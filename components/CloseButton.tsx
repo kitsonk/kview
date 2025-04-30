@@ -6,7 +6,7 @@ export function CloseButton(
     class: className,
     type = "button",
     ...props
-  }: JSX.HTMLAttributes<HTMLButtonElement>,
+  }: JSX.ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
   return (
     <button

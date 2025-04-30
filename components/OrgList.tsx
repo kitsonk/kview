@@ -32,7 +32,7 @@ export function OrgList(
     <div>
       <h1 class="text-xl font-bold py-2">Organizations</h1>
       <ul class="space-y-2">
-        {organizations.map((org) => <Org data={org} />)}
+        {organizations.map((org, idx) => <Org key={idx} data={org} />)}
       </ul>
     </div>
   );

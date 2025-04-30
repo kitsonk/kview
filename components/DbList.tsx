@@ -10,7 +10,7 @@ export function DbList({ project, dbs }: { project: string; dbs: DashDb[] }) {
     <div>
       <h1 class="text-xl font-bold py-2">KV Databases</h1>
       <ul class="space-y-2">
-        {dbs.map((db) => <Db project={project} db={db} />)}
+        {dbs.map((db, idx) => <Db key={idx} project={project} db={db} />)}
       </ul>
     </div>
   );

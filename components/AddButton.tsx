@@ -6,7 +6,7 @@ export function AddButton(
     type = "submit",
     children,
     ...props
-  }: JSX.HTMLAttributes<HTMLButtonElement>,
+  }: JSX.ButtonHTMLAttributes<HTMLButtonElement>,
 ) {
   return (
     <button

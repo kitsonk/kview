@@ -59,15 +59,17 @@ export function KvEntry(
     loadKeys(): void;
   },
 ) {
+  const editDialogOpen = useSignal(false);
+  const addEntryDialogOpen = useSignal(false);
+  const deleteEntryDialogOpen = useSignal(false);
+  const currentKey = useComputed(() => entry.value?.key);
+
   if (!entry.value) {
     return null;
   }
   const { versionstamp, value, meta, key } = entry.value;
   const editable = isEditable(value ?? meta);
-  const editDialogOpen = useSignal(false);
-  const addEntryDialogOpen = useSignal(false);
-  const deleteEntryDialogOpen = useSignal(false);
-  const currentKey = useComputed(() => entry.value?.key);
+
   return (
     <>
       {editable && (

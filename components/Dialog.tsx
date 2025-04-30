@@ -3,7 +3,7 @@ import { useSignalEffect } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { asSignal } from "$utils/signals.ts";
 
-interface DialogProps extends JSX.HTMLAttributes<HTMLDialogElement> {
+interface DialogProps extends JSX.DialogHTMLAttributes<HTMLDialogElement> {
   returnValue?: JSX.SignalLike<string>;
 }
 

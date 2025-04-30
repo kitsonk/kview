@@ -10,5 +10,6 @@ export function isSignalLike<T>(value: unknown): value is JSX.SignalLike<T> {
 }
 
 export function asSignal<T>(value: JSX.Signalish<T>): JSX.SignalLike<T> {
+  // deno-lint-ignore react-rules-of-hooks
   return isSignalLike(value) ? value : useSignal(value);
 }

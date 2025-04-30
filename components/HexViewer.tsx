@@ -1,3 +1,4 @@
+// deno-lint-ignore-file react-no-danger
 import { type Signal, useSignal } from "@preact/signals";
 import { decodeBase64Url } from "@std/encoding/base64url";
 

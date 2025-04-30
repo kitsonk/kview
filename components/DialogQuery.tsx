@@ -16,11 +16,9 @@ export function DialogQuery(
   },
 ) {
   const form = useRef<HTMLFormElement>(null);
-  const localFilters = filters.peek().length
-    ? useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>(
-      [...filters.value],
-    )
-    : useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>([{ kind: "" }]);
+  const localFilters = useSignal<(KvFilterJSON | KvFilterIndeterminateJSON)[]>(
+    filters.peek().length ? [...filters.value] : [{ kind: "" }],
+  );
 
   const handleFilterOnChange = (index: number, value: KvFilterJSON) =>
     localFilters.value = localFilters.value.map((filter, i) =>

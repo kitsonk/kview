@@ -93,8 +93,7 @@ export function DialogAddUpdateLocal(
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 md:w-96"
                 placeholder="Path (on server) to local store"
                 required
-              >
-              </input>
+              />
             </div>
           )}
           <div class="sm:col-span-2">
@@ -107,8 +106,7 @@ export function DialogAddUpdateLocal(
               value={store?.name}
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 md:w-96"
               placeholder="Friendly name (optional)"
-            >
-            </input>
+            />
           </div>
         </div>
         <div class="w-full my-2 md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center md:space-x-3 flex-shrink-0">

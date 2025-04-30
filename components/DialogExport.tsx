@@ -13,13 +13,13 @@ export function DialogExport(
     prefix: Signal<KvKeyJSON>;
   },
 ) {
-  if (!databaseId) {
-    return null;
-  }
-
   const href = useComputed(() =>
     `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`
   );
+
+  if (!databaseId) {
+    return null;
+  }
 
   return (
     <Dialog

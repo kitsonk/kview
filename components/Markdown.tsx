@@ -1,3 +1,4 @@
+// deno-lint-ignore-file react-no-danger
 import { render } from "@deno/gfm";
 
 import "prismjs/components/prism-json.js";

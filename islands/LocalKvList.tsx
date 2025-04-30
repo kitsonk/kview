@@ -7,11 +7,11 @@ import { type KvLocalInfo } from "$utils/kv.ts";
 export default function LocalKvList(
   { stores }: { stores?: KvLocalInfo[] | undefined },
 ) {
+  const addDialogOpen = useSignal(false);
+
   if (!stores) {
     return null;
   }
-
-  const addDialogOpen = useSignal(false);
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function LocalKvList(
       <div>
         <h1 class="text-xl font-bold py-2">Local</h1>
         <ul class="space-y-2">
-          {stores.map((db) => <LocalKv db={db} />)}
+          {stores.map((db, idx) => <LocalKv key={idx} db={db} />)}
         </ul>
         <div class="w-full my-2 md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
           <AddButton onClick={() => addDialogOpen.value = true}>
