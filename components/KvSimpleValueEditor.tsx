@@ -185,9 +185,7 @@ export function KvSimpleValueEditor(
       >
         {TYPE_OPTIONS
           .filter(([type]) => only ? only.includes(type) : true)
-          .map(([type, label], idx) => (
-            <option key={idx} value={type}>{label}</option>
-          ))}
+          .map(([type, label], idx) => <option key={idx} value={type}>{label}</option>)}
       </select>
       <Editor
         id={id}

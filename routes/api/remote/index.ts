@@ -1,11 +1,6 @@
 import { type Handlers } from "$fresh/server.ts";
 import { assert } from "@std/assert/assert";
-import {
-  deleteRemoteStore,
-  type RemoteStoreInfo,
-  replaceRemoteStore,
-  upsertRemoteStore,
-} from "$utils/remoteStores.ts";
+import { deleteRemoteStore, type RemoteStoreInfo, replaceRemoteStore, upsertRemoteStore } from "$utils/remoteStores.ts";
 import { state } from "$utils/state.ts";
 
 export const handler: Handlers = {
@@ -14,8 +9,7 @@ export const handler: Handlers = {
   },
   async PUT(req) {
     try {
-      const { oldUrl, ...item }: RemoteStoreInfo & { oldUrl?: string } =
-        await req.json();
+      const { oldUrl, ...item }: RemoteStoreInfo & { oldUrl?: string } = await req.json();
       assert(
         typeof item === "object" && "url" in item && "accessToken" in item,
       );

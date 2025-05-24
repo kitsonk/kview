@@ -42,9 +42,7 @@ export default async function Remote(
               <td class="font-bold">Access Token</td>
               <td>
                 {store.accessToken.length > 9
-                  ? `${store.accessToken.slice(0, 3)}...${
-                    store.accessToken.slice(-3)
-                  }`
+                  ? `${store.accessToken.slice(0, 3)}...${store.accessToken.slice(-3)}`
                   : `${store.accessToken.slice(0, 3)}...`}
               </td>
             </tr>

@@ -50,13 +50,9 @@ function containsComplex(value: KvValueJSON): boolean {
     case "Set":
       return value.value.some(containsComplex);
     case "Map":
-      return value.value.some(([key, value]) =>
-        containsComplex(key) || containsComplex(value)
-      );
+      return value.value.some(([key, value]) => containsComplex(key) || containsComplex(value));
     case "object":
-      return Object.entries(value.value).some(([_, value]) =>
-        containsComplex(value)
-      );
+      return Object.entries(value.value).some(([_, value]) => containsComplex(value));
     case "string":
     case "number":
     case "boolean":

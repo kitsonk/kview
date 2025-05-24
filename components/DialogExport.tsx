@@ -13,9 +13,7 @@ export function DialogExport(
     prefix: Signal<KvKeyJSON>;
   },
 ) {
-  const href = useComputed(() =>
-    `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`
-  );
+  const href = useComputed(() => `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`);
 
   if (!databaseId) {
     return null;
@@ -36,8 +34,7 @@ export function DialogExport(
         ? (
           <>
             <p class="mb-4 font-light text-gray-500 dark:text-gray-400">
-              This will download entries as new line delimitated JSON with a
-              prefix of:
+              This will download entries as new line delimitated JSON with a prefix of:
             </p>
             <div class="border rounded p-2 dark:bg-gray-900 m-2">
               <KvKey value={prefix} noLink />

@@ -3,10 +3,7 @@ import { type ComponentChildren } from "preact";
 import { type Signal, useSignal } from "@preact/signals";
 import { useRef } from "preact/hooks";
 import { assert } from "@std/assert/assert";
-import {
-  formDataToKvKeyPartJSON,
-  formDataToKvValueJSON,
-} from "$utils/formData.ts";
+import { formDataToKvKeyPartJSON, formDataToKvValueJSON } from "$utils/formData.ts";
 import { keyJsonToPath } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";
 
@@ -151,9 +148,8 @@ export function DialogAddEntry(
                   id="overwrite-text"
                   class="text-xs font-normal text-gray-500 dark:text-gray-300 max-w-xs"
                 >
-                  If the key already exists, replace the value with the supplied
-                  value. Otherwise, if the key already exists, attempting to add
-                  the entry will fail.
+                  If the key already exists, replace the value with the supplied value. Otherwise, if the key already
+                  exists, attempting to add the entry will fail.
                 </p>
               </div>
             </div>

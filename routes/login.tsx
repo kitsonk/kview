@@ -1,10 +1,5 @@
 import { type Handlers, type PageProps } from "$fresh/server.ts";
-import {
-  ACCESS_TOKEN,
-  keys,
-  mergeHeaders,
-  SecureCookieMap,
-} from "$utils/cookies.ts";
+import { ACCESS_TOKEN, keys, mergeHeaders, SecureCookieMap } from "$utils/cookies.ts";
 
 type Data = { error?: true };
 

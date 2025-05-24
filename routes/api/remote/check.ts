@@ -19,17 +19,13 @@ export const handler: Handlers = {
       return deadline<Response>(
         Deno.openKv(storeInfo.url).then((k) => {
           kv = k;
-          return kv.get(["check"]).then(() =>
-            Response.json({ result: "success" })
-          );
+          return kv.get(["check"]).then(() => Response.json({ result: "success" }));
         }),
         2000,
       ).catch((err) =>
         Response.json({
           result: "failure",
-          reason: err instanceof Error
-            ? `${err.name}: ${err.message}\n\n${err.stack}`
-            : JSON.stringify(err),
+          reason: err instanceof Error ? `${err.name}: ${err.message}\n\n${err.stack}` : JSON.stringify(err),
         })
       ).finally(() => {
         if (oldValue) {

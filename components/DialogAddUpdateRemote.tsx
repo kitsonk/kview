@@ -72,9 +72,7 @@ export function DialogAddUpdateRemote(
             headers: { "content-type": "application/json" },
           }).then((res) => {
             if (!res.ok) {
-              alert.value = store
-                ? "Error updating remote store."
-                : "Error adding remote store.";
+              alert.value = store ? "Error updating remote store." : "Error adding remote store.";
               return res.json().then((err) => console.error(err));
             } else {
               if (store) {
@@ -174,13 +172,11 @@ export function DialogAddUpdateRemote(
                       if (result === "success") {
                         success.value = "Able to connect to remote store.";
                       } else if (reason && reason.includes("DeadlineError")) {
-                        alert.value =
-                          "Unable to connect: Timeout. Check connection information.";
+                        alert.value = "Unable to connect: Timeout. Check connection information.";
                       } else if (
                         reason && reason.includes("Invalid access token")
                       ) {
-                        alert.value =
-                          "Unable to connect: Invalid access token.";
+                        alert.value = "Unable to connect: Invalid access token.";
                       } else {
                         alert.value = "Unable to connect to remote store.";
                         console.error(reason);

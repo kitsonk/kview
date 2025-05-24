@@ -21,9 +21,7 @@ export function Toggle(
       onClick={() => toggleExpanded(tree, id)}
       aria-hidden
     >
-      {expanded
-        ? <IconExpandDownArrow size={7} />
-        : <IconExpandRightArrow size={7} />}
+      {expanded ? <IconExpandDownArrow size={7} /> : <IconExpandRightArrow size={7} />}
     </div>
   );
 }

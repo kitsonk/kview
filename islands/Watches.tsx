@@ -1,11 +1,7 @@
 import { Toaster } from "$components/Toaster.tsx";
 import { WatchedStore } from "$components/WatchedStore.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import {
-  type KvEntryMaybeJSON,
-  type KvKeyJSON,
-  toKey,
-} from "@deno/kv-utils/json";
+import { type KvEntryMaybeJSON, type KvKeyJSON, toKey } from "@deno/kv-utils/json";
 import { equals } from "@kitsonk/kv-toolbox/keys";
 import { batch, type Signal, signal } from "@preact/signals";
 import { addNotification } from "$utils/state.ts";

@@ -1,20 +1,10 @@
 import { type KvKeyJSON } from "@deno/kv-utils/json";
 import { type ComponentChildren } from "preact";
 import { useRef } from "preact/hooks";
-import {
-  type Signal,
-  useComputed,
-  useSignal,
-  useSignalEffect,
-} from "@preact/signals";
+import { type Signal, useComputed, useSignal, useSignalEffect } from "@preact/signals";
 import { keyJsonToPath } from "$utils/kv.ts";
 import { addNotification } from "$utils/state.ts";
-import {
-  kvTreeToNodes,
-  resetSelected,
-  state,
-  TreeState,
-} from "$utils/tree_state.ts";
+import { kvTreeToNodes, resetSelected, state, TreeState } from "$utils/tree_state.ts";
 
 import { ErrorAlert } from "./Alert.tsx";
 import { CloseButton } from "./CloseButton.tsx";
@@ -34,15 +24,11 @@ export function DialogDeleteEntries(
   const alert = useSignal<ComponentChildren>(undefined);
   const loading = useSignal(false);
   const deleting = useSignal(false);
-  const disabled = useComputed(() =>
-    !state.selectedCount.value || deleting.value
-  );
+  const disabled = useComputed(() => !state.selectedCount.value || deleting.value);
 
   function loadTree() {
     loading.value = true;
-    const target = `/api/kv/${databaseId}/${
-      keyJsonToPath(prefix?.value ?? [])
-    }?tree`;
+    const target = `/api/kv/${databaseId}/${keyJsonToPath(prefix?.value ?? [])}?tree`;
     fetch(new URL(target, import.meta.url))
       .then((res) => {
         if (res.ok) {
@@ -53,9 +39,7 @@ export function DialogDeleteEntries(
         console.error(
           `Unable to fetch tree: ${res.status} ${res.statusText}`,
         );
-        return res.text().then((data) =>
-          console.error(`Response body:\n\n${data}`)
-        );
+        return res.text().then((data) => console.error(`Response body:\n\n${data}`));
       })
       .finally(() => {
         loading.value = false;
@@ -92,9 +76,7 @@ export function DialogDeleteEntries(
         onSubmit={(evt) => {
           alert.value = undefined;
           deleting.value = true;
-          const target = `/api/kv/${databaseId}/${
-            prefix?.value ? keyJsonToPath(prefix.value) : ""
-          }`;
+          const target = `/api/kv/${databaseId}/${prefix?.value ? keyJsonToPath(prefix.value) : ""}`;
           const body = JSON.stringify(state.selected.value);
           fetch(new URL(target, import.meta.url), {
             body,
@@ -121,9 +103,8 @@ export function DialogDeleteEntries(
         }}
       >
         <p class="mb-4 font-light text-gray-500 dark:text-gray-400">
-          Select keys of entries to be deleted. Selecting a parent key part will
-          also select the children. The arrows can be used to expand or collapse
-          children.
+          Select keys of entries to be deleted. Selecting a parent key part will also select the children. The arrows
+          can be used to expand or collapse children.
         </p>
         <div class="h-48 md:h-64 lg:h-72 xl:h-96 rounded p-2 bg-gray-50 dark:bg-gray-900 overflow-auto mb-6">
           <TreeState.Provider value={state}>
@@ -141,8 +122,7 @@ export function DialogDeleteEntries(
           type="submit"
           disabled={disabled}
         >
-          Delete {state.selectedCount}{" "}
-          {state.selectedCount.value === 1 ? "entry" : "entires"}
+          Delete {state.selectedCount} {state.selectedCount.value === 1 ? "entry" : "entires"}
         </button>
       </form>
     </Dialog>

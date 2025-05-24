@@ -98,8 +98,7 @@ async function main() {
     installPath = await installPath.realPath();
     if (
       !(await $.confirm({
-        message:
-          `Install path "${installPath}" already exists. Contents will be removed first. Continue?`,
+        message: `Install path "${installPath}" already exists. Contents will be removed first. Continue?`,
       }))
     ) {
       $.logWarn("Aborting.");

@@ -146,8 +146,7 @@ export async function importNdJson(
     href: string | null;
   },
 ): Promise<Job> {
-  const total =
-    new Uint8Array(await blob.arrayBuffer()).filter((b) => b === LF).length;
+  const total = new Uint8Array(await blob.arrayBuffer()).filter((b) => b === LF).length;
   const job = new Job(id, prefix, total, name, href);
   jobs.set(job.id, job);
   const info = getKvPath(id);

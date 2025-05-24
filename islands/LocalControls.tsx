@@ -11,9 +11,7 @@ export default function LocalControls({ store }: { store: KvLocalInfo }) {
   return (
     <>
       <DialogAddUpdateLocal open={updateOpen} store={store} />
-      {isSpecified
-        ? <DialogDeleteLocal open={deleteOpen} store={store} />
-        : undefined}
+      {isSpecified ? <DialogDeleteLocal open={deleteOpen} store={store} /> : undefined}
       <div class="flex flex-col md:px-16">
         <button
           type="button"

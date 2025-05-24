@@ -21,11 +21,8 @@ export function DialogQuery(
   );
 
   const handleFilterOnChange = (index: number, value: KvFilterJSON) =>
-    localFilters.value = localFilters.value.map((filter, i) =>
-      i === index ? value : filter
-    );
-  const handleFilterOnRemove = (index: number) =>
-    localFilters.value = localFilters.value.filter((_, i) => i !== index);
+    localFilters.value = localFilters.value.map((filter, i) => i === index ? value : filter);
+  const handleFilterOnRemove = (index: number) => localFilters.value = localFilters.value.filter((_, i) => i !== index);
   const handleAddOnClick = () => {
     localFilters.value = [...localFilters.value, { kind: "" }];
   };
@@ -53,9 +50,7 @@ export function DialogQuery(
         <CloseButton
           onClick={() => {
             form.current?.reset();
-            localFilters.value = filters.value.length
-              ? [...filters.value]
-              : [{ kind: "" }];
+            localFilters.value = filters.value.length ? [...filters.value] : [{ kind: "" }];
             open.value = false;
           }}
         />

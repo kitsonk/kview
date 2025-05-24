@@ -82,9 +82,7 @@ export function deleteWatch(
   const w = structuredClone(watches);
   const kvKey = toKey(key);
   if (databaseId in w) {
-    w[databaseId].keys = w[databaseId].keys.filter((k: Deno.KvKey) =>
-      !equals(kvKey, k)
-    );
+    w[databaseId].keys = w[databaseId].keys.filter((k: Deno.KvKey) => !equals(kvKey, k));
     if (!w[databaseId].keys.length) {
       delete w[databaseId];
     }

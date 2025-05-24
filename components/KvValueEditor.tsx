@@ -70,9 +70,7 @@ function kvValueJSONToFormData(
 export function KvValueEditor(
   { value }: { value?: KvValueJSON | BlobMeta | undefined },
 ) {
-  const [valueTypeValue, v] = value
-    ? kvValueJSONToFormData(value)
-    : ["string", undefined];
+  const [valueTypeValue, v] = value ? kvValueJSONToFormData(value) : ["string", undefined];
 
   const valueType = useSignal(valueTypeValue);
   const valueValue = useSignal(v);

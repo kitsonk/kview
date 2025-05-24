@@ -10,8 +10,7 @@ interface Record {
   selectionEnd: number;
 }
 
-export interface EditorProps
-  extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onKeyDown"> {
+export interface EditorProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onKeyDown"> {
   highlight(value: string): string;
   insertSpaces?: boolean;
   ignoreTabKey?: boolean;
@@ -265,9 +264,7 @@ export function Editor(
         applyEdits({
           value: value
             .split("\n")
-            .map((line, i) =>
-              i >= startLine && i <= endLine ? `${tabCharacter}${line}` : line
-            )
+            .map((line, i) => i >= startLine && i <= endLine ? `${tabCharacter}${line}` : line)
             .join("\n"),
           selectionStart: startLineText && /\S/.test(startLineText)
             ? selectionStart + tabCharacter.length
@@ -279,9 +276,7 @@ export function Editor(
         const updatedSelection = selectionStart + tabCharacter.length;
 
         applyEdits({
-          value: `${value.substring(0, selectionStart)}${tabCharacter}${
-            value.substring(selectionEnd)
-          }`,
+          value: `${value.substring(0, selectionStart)}${tabCharacter}${value.substring(selectionEnd)}`,
           selectionStart: updatedSelection,
           selectionEnd: updatedSelection,
         });
@@ -294,9 +289,7 @@ export function Editor(
         evt.preventDefault();
         const updatedSelection = selectionStart - tabCharacter.length;
         applyEdits({
-          value: `${value.substring(0, selectionStart - tabCharacter.length)}${
-            value.substring(selectionEnd)
-          }`,
+          value: `${value.substring(0, selectionStart - tabCharacter.length)}${value.substring(selectionEnd)}`,
           selectionStart: updatedSelection,
           selectionEnd: updatedSelection,
         });
@@ -312,9 +305,7 @@ export function Editor(
           const updatedSelection = selectionStart + indent.length;
 
           applyEdits({
-            value: `${value.substring(0, selectionStart)}${indent}${
-              value.substring(selectionEnd)
-            }`,
+            value: `${value.substring(0, selectionStart)}${indent}${value.substring(selectionEnd)}`,
             selectionStart: updatedSelection,
             selectionEnd: updatedSelection,
           });
@@ -348,17 +339,15 @@ export function Editor(
         evt.preventDefault();
 
         applyEdits({
-          value: `${value.substring(0, selectionStart)}${chars[0]}${
-            value.substring(selectionStart, selectionEnd)
-          }${chars[1]}${value.substring(selectionEnd)}`,
+          value: `${value.substring(0, selectionStart)}${chars[0]}${value.substring(selectionStart, selectionEnd)}${
+            chars[1]
+          }${value.substring(selectionEnd)}`,
           selectionStart,
           selectionEnd: selectionEnd + 2,
         });
       }
     } else if (
-      (IS_MAC_LIKE
-        ? evt.metaKey && evt.key === "z"
-        : evt.ctrlKey && evt.key === "z") && !evt.shiftKey && !evt.altKey
+      (IS_MAC_LIKE ? evt.metaKey && evt.key === "z" : evt.ctrlKey && evt.key === "z") && !evt.shiftKey && !evt.altKey
     ) {
       evt.preventDefault();
 

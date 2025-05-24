@@ -1,11 +1,5 @@
 import { type MiddlewareHandler } from "$fresh/server.ts";
-import {
-  ACCESS_TOKEN,
-  keys,
-  mergeHeaders,
-  SecureCookieMap,
-  STORE_NAMES,
-} from "$utils/cookies.ts";
+import { ACCESS_TOKEN, keys, mergeHeaders, SecureCookieMap, STORE_NAMES } from "$utils/cookies.ts";
 import { clearAccessToken, setAccessToken } from "$utils/dash.ts";
 import { localStores } from "$utils/kv.ts";
 import { state } from "$utils/state.ts";

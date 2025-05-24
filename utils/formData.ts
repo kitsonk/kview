@@ -1,9 +1,5 @@
 import { type BlobJSON, toJSON } from "@kitsonk/kv-toolbox/blob";
-import {
-  type KvKeyPartJSON,
-  type KvValueJSON,
-  valueToJSON,
-} from "@deno/kv-utils/json";
+import { type KvKeyPartJSON, type KvValueJSON, valueToJSON } from "@deno/kv-utils/json";
 import { assert } from "@std/assert/assert";
 import { decodeBase64Url } from "@std/encoding/base64url";
 

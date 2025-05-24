@@ -38,9 +38,7 @@ export function NavItem(
       <a
         href={href}
         class={`flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white ${
-          selected
-            ? "dark:bg-gray-700 bg-gray-100"
-            : "hover:dark:bg-gray-700 hover:bg-gray-100"
+          selected ? "dark:bg-gray-700 bg-gray-100" : "hover:dark:bg-gray-700 hover:bg-gray-100"
         } group`}
       >
         <span class="text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">

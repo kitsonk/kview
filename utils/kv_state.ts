@@ -5,8 +5,7 @@ import { setAccessToken } from "./dash.ts";
 import { findById } from "./remoteStores.ts";
 import { state } from "./state.ts";
 
-const GUID_RE =
-  /[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/;
+const GUID_RE = /[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/;
 let currentId = "";
 let p: Promise<KvToolbox> | undefined;
 
@@ -44,9 +43,7 @@ export function getKvPath(id: string): {
     return { path: url, accessToken };
   }
   if (state.localStores.value) {
-    const store = state.localStores.value.find(({ id: i }) =>
-      id === i || id === encodeBase64Url(i)
-    );
+    const store = state.localStores.value.find(({ id: i }) => id === i || id === encodeBase64Url(i));
     if (store) {
       const { path } = store;
       return { path };
@@ -64,9 +61,7 @@ export function getKvName(id: string): string | undefined {
     return name ?? url;
   }
   if (state.localStores.value) {
-    const store = state.localStores.value.find(({ id: i }) =>
-      id === i || id === encodeBase64Url(i)
-    );
+    const store = state.localStores.value.find(({ id: i }) => id === i || id === encodeBase64Url(i));
     if (store) {
       const { name } = store;
       return name;

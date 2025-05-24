@@ -28,8 +28,7 @@ interface Manifest {
 }
 
 const LATEST_DENO_JSON = "https://deno.land/x/kview/deno.json";
-const PREVIEW_DENO_JSON =
-  "https://raw.githubusercontent.com/kitsonk/kview/main/deno.json";
+const PREVIEW_DENO_JSON = "https://raw.githubusercontent.com/kitsonk/kview/main/deno.json";
 const EXTRACT_PATH = "./_fresh";
 
 async function extract(installPath: Path) {

@@ -14,9 +14,7 @@ export function Db(
         <IconKV size={12} />
         <div class="px-4">
           <div class="text-xl">
-            {branch === "*"
-              ? <span class="italic">preview</span>
-              : <span class="font-bold">{branch}</span>}
+            {branch === "*" ? <span class="italic">preview</span> : <span class="font-bold">{branch}</span>}
           </div>
           <div class="text-gray-600 dark:text-gray-400 text-sm">
             {format(sizeBytes)}

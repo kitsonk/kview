@@ -38,8 +38,7 @@ export function DialogDeleteLocal(
         Are you sure you want to delete the local info?
       </p>
       <p class="mb-4 font-light text-gray-500 dark:text-gray-400">
-        This will not delete the local store, just the connection information in
-        kview.
+        This will not delete the local store, just the connection information in kview.
       </p>
       <div class="flex items-center space-x-4">
         <button

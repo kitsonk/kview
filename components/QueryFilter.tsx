@@ -1,16 +1,5 @@
-import {
-  type KvStringJSON,
-  type KvValueJSON,
-  toValue,
-  valueToJSON,
-} from "@deno/kv-utils/json";
-import type {
-  Kinds,
-  KvFilterAndJSON,
-  KvFilterJSON,
-  KvFilterOrJSON,
-  Operation,
-} from "@kitsonk/kv-toolbox/query";
+import { type KvStringJSON, type KvValueJSON, toValue, valueToJSON } from "@deno/kv-utils/json";
+import type { Kinds, KvFilterAndJSON, KvFilterJSON, KvFilterOrJSON, Operation } from "@kitsonk/kv-toolbox/query";
 import type { ComponentChildren } from "preact";
 import { useSignal } from "@preact/signals";
 import { assert } from "@std/assert/assert";
@@ -189,9 +178,7 @@ function SubFilters(
     filter.filters.length ? filter.filters : [{ kind: "" }],
   );
   const handleFilterOnChange = (localIndex: number, value: KvFilterJSON) => {
-    localFilters.value = localFilters.value.map((filter, i) =>
-      i === localIndex ? value : filter
-    );
+    localFilters.value = localFilters.value.map((filter, i) => i === localIndex ? value : filter);
     onChange(index, {
       kind: filter.kind,
       filters: [...localFilters.peek() as KvFilterJSON[]],
@@ -377,16 +364,12 @@ export function QueryFilter(
                 placeholder="Property"
                 required
                 class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                value={Array.isArray(filter.property)
-                  ? filter.property.join(".")
-                  : filter.property}
+                value={Array.isArray(filter.property) ? filter.property.join(".") : filter.property}
                 onChange={(event) => {
                   const property = event.currentTarget.value;
                   onChange(index, {
                     ...filter,
-                    property: property.includes(".")
-                      ? property.split(".")
-                      : property,
+                    property: property.includes(".") ? property.split(".") : property,
                   });
                 }}
               />

@@ -19,9 +19,7 @@ export function DialogImport(
     href?: string;
   },
 ) {
-  const target = useComputed(() =>
-    `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`
-  );
+  const target = useComputed(() => `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`);
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
   const uploading = useSignal(false);
@@ -144,9 +142,8 @@ export function DialogImport(
               id="overwrite-text"
               class="text-xs font-normal text-gray-500 dark:text-gray-300 max-w-xs"
             >
-              By default, any imported entries which have a key that matches a
-              key of an existing entry will be skipped. By selecting to
-              overwrite, the import process will not check if keys exist.
+              By default, any imported entries which have a key that matches a key of an existing entry will be skipped.
+              By selecting to overwrite, the import process will not check if keys exist.
             </p>
           </div>
         </div>

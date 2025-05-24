@@ -42,9 +42,7 @@ export function DialogEditValue(
 
   const entryValue = useComputed(() => entry.value!.value ?? entry.value!.meta);
   const versionstamp = useComputed(() => entry.value!.versionstamp);
-  const hasValue = useComputed(() =>
-    !!(entry.value!.value || entry.value!.meta)
-  );
+  const hasValue = useComputed(() => !!(entry.value!.value || entry.value!.meta));
   const key = useComputed(() => entry.value!.key);
 
   if (!entry.value) {
@@ -113,9 +111,7 @@ export function DialogEditValue(
                 }
               } else {
                 addNotification(
-                  hasValue
-                    ? "Value successfully updated."
-                    : "Value successfully set.",
+                  hasValue ? "Value successfully updated." : "Value successfully set.",
                   "success",
                   true,
                 );
@@ -182,10 +178,8 @@ export function DialogEditValue(
                       id="overwrite-text"
                       class="text-xs font-normal text-gray-500 dark:text-gray-300 max-w-xs"
                     >
-                      By default, the version of the value will be checked
-                      against what is currently stored, and the update will fail
-                      if it is different. Checking this value will skip this
-                      validation.
+                      By default, the version of the value will be checked against what is currently stored, and the
+                      update will fail if it is different. Checking this value will skip this validation.
                     </p>
                   </div>
                 </div>

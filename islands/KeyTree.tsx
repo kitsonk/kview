@@ -15,9 +15,7 @@ export default function KeyTree(
 
   useSignalEffect(() => {
     loadingTree.value = true;
-    const target = `/api/kv/${databaseId}/${
-      keyJsonToPath(prefix?.value ?? [])
-    }?tree`;
+    const target = `/api/kv/${databaseId}/${keyJsonToPath(prefix?.value ?? [])}?tree`;
     fetch(new URL(target, import.meta.url))
       .then((res) => {
         if (res.ok) {
@@ -28,9 +26,7 @@ export default function KeyTree(
         console.error(
           `Unable to fetch tree: ${res.status} ${res.statusText}`,
         );
-        return res.text().then((data) =>
-          console.error(`Response body:\n\n${data}`)
-        );
+        return res.text().then((data) => console.error(`Response body:\n\n${data}`));
       })
       .finally(() => {
         loadingTree.value = false;

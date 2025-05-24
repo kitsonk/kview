@@ -17,16 +17,13 @@ interface Data {
 const VIEWER_COLUMNS = 16;
 
 function toDisplay(value: number): string {
-  return value > 0x1f && value < 0x7f
-    ? value === 0x20 ? "&nbsp;" : String.fromCharCode(value)
-    : ".";
+  return value > 0x1f && value < 0x7f ? value === 0x20 ? "&nbsp;" : String.fromCharCode(value) : ".";
 }
 
 function prepareRows(arr: string[]) {
   return Array.from(
     { length: Math.ceil(arr.length / VIEWER_COLUMNS) },
-    (_v, i) =>
-      arr.slice(i * VIEWER_COLUMNS, i * VIEWER_COLUMNS + VIEWER_COLUMNS),
+    (_v, i) => arr.slice(i * VIEWER_COLUMNS, i * VIEWER_COLUMNS + VIEWER_COLUMNS),
   );
 }
 
@@ -89,9 +86,7 @@ function ColumnCounter(
           {data.map((col, i) => (
             <div
               key={i}
-              class={highlightValue?.col === i
-                ? "rounded-sm bg-primary-200 font-bold px-1"
-                : "px-1"}
+              class={highlightValue?.col === i ? "rounded-sm bg-primary-200 font-bold px-1" : "px-1"}
             >
               {col}
             </div>
@@ -114,9 +109,7 @@ function RowCounter(
           {data.map((row, i) => (
             <pre
               key={i}
-              class={highlightValue?.row === i
-                ? "rounded-sm bg-primary-300 font-bold"
-                : undefined}
+              class={highlightValue?.row === i ? "rounded-sm bg-primary-300 font-bold" : undefined}
             >{row}</pre>
           ))}
         </div>
@@ -140,18 +133,14 @@ function HexViewerContent(
 
   return (
     <div
-      class={`px-2 py-1 ${
-        type === "hex" ? "min-w-108" : "min-w-72"
-      } bg-gray-100 dark:bg-gray-800 dark:text-white`}
+      class={`px-2 py-1 ${type === "hex" ? "min-w-108" : "min-w-72"} bg-gray-100 dark:bg-gray-800 dark:text-white`}
     >
       {data.map((row, i) => (
         <div key={i} class="flex flex-row text-center">
           {row.map((cell, j) => (
             <div
               key={j}
-              class={isHighlighted(i, j)
-                ? "rounded-sm bg-white text-black px-1"
-                : "px-1"}
+              class={isHighlighted(i, j) ? "rounded-sm bg-white text-black px-1" : "px-1"}
               dangerouslySetInnerHTML={{ __html: cell }}
             />
           ))}

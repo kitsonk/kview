@@ -65,9 +65,7 @@ export default function KvExplorer(
         console.error(
           `Unable to fetch keys: ${res.status} ${res.statusText}`,
         );
-        return res.text().then((data) =>
-          console.error(`Response body:\n\n${data}`)
-        );
+        return res.text().then((data) => console.error(`Response body:\n\n${data}`));
       }).finally(() => {
         loadingKeys.value = false;
         keyController = undefined;
@@ -93,9 +91,9 @@ export default function KvExplorer(
     if (currentEntryKey.value === null) {
       return;
     }
-    const target = `/api/kv/${databaseId}/${
-      keyJsonToPath(currentEntryKey.value.key)
-    }?${currentEntryKey.value.isBlob ? "meta" : "entry"}`;
+    const target = `/api/kv/${databaseId}/${keyJsonToPath(currentEntryKey.value.key)}?${
+      currentEntryKey.value.isBlob ? "meta" : "entry"
+    }`;
     loadingEntry.value = true;
     if (entryController) {
       entryController.abort();
@@ -113,9 +111,7 @@ export default function KvExplorer(
         return;
       }
       console.error(`Unable to fetch entry: ${res.status} ${res.statusText}`);
-      return res.text().then((data) =>
-        console.error(`Response body:\n\n${data}`)
-      );
+      return res.text().then((data) => console.error(`Response body:\n\n${data}`));
     }).finally(() => {
       loadingEntry.value = false;
       keyController = undefined;

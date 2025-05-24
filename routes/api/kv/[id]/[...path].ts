@@ -1,22 +1,9 @@
 import { type Handlers } from "$fresh/server.ts";
 import { type BlobJSON, toValue as toBlob } from "@kitsonk/kv-toolbox/blob";
-import {
-  entryToJSON,
-  keyToJSON,
-  type KvKeyJSON,
-  type KvValueJSON,
-  toKey,
-  toValue,
-} from "@deno/kv-utils/json";
+import { entryToJSON, keyToJSON, type KvKeyJSON, type KvValueJSON, toKey, toValue } from "@deno/kv-utils/json";
 import { matches } from "@oak/commons/media_types";
 import { assert } from "@std/assert/assert";
-import {
-  isBlobJSON,
-  keyCountToResponse,
-  parseQuery,
-  pathToKey,
-  treeToResponse,
-} from "$utils/kv.ts";
+import { isBlobJSON, keyCountToResponse, parseQuery, pathToKey, treeToResponse } from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
 
 interface PutBody {
@@ -70,13 +57,11 @@ export const handler: Handlers = {
       }
     } else if (url.searchParams.has("tree")) {
       const q = url.searchParams.get("q");
-      const data =
-        await (q ? parseQuery(kv, prefix, q).tree() : kv.tree(prefix));
+      const data = await (q ? parseQuery(kv, prefix, q).tree() : kv.tree(prefix));
       return treeToResponse(data);
     } else {
       const q = url.searchParams.get("q");
-      const data =
-        await (q ? parseQuery(kv, prefix, q).counts() : kv.counts(prefix));
+      const data = await (q ? parseQuery(kv, prefix, q).counts() : kv.counts(prefix));
       return keyCountToResponse(data);
     }
   },
@@ -86,8 +71,7 @@ export const handler: Handlers = {
       const kv = await getKv(id);
       const contentType = req.headers.get("content-type") ?? "";
       if (matches(contentType, ["application/json"])) {
-        const { value, versionstamp = null, expireIn, overwrite }: PutBody =
-          await req.json();
+        const { value, versionstamp = null, expireIn, overwrite }: PutBody = await req.json();
         if (isBlobJSON(value)) {
           await kv.setBlob(key, toBlob(value), { expireIn });
           return Response.json({ ok: true });

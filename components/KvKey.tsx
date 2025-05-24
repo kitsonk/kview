@@ -47,9 +47,7 @@ export function KvKey(
       <KvKeyPart
         part={part}
         entry={entry}
-        link={!noLink && isSignal
-          ? [[...key, part], value as Signal<KvKeyJSON>]
-          : undefined}
+        link={!noLink && isSignal ? [[...key, part], value as Signal<KvKeyJSON>] : undefined}
       />,
     );
   }

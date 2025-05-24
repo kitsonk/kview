@@ -17,9 +17,7 @@ export default async function Local(
   _req: Request,
   { params: { id }, renderNotFound }: RouteContext,
 ) {
-  const store = state.localStores.value?.find(({ id: i }) =>
-    i === id || encodeBase64Url(i) === id
-  );
+  const store = state.localStores.value?.find(({ id: i }) => i === id || encodeBase64Url(i) === id);
 
   if (!store) {
     return renderNotFound();
