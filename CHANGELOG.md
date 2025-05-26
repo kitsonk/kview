@@ -1,5 +1,12 @@
 # kview change log
 
+## Version 0.17.2
+
+- fix: handle bulk import of large files and deletes of many entries (8435021)
+- chore: reformat to 120 column (09ce7f3)
+- chore: update dependencies (311eacf)
+- chore: update install, upgrade scripts (44e7bbb)
+
 ## Version 0.17.1
 
 - chore: update deps (969f18b)
