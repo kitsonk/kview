@@ -10,7 +10,7 @@ import $, { type Path } from "jsr:@david/dax@0.42.0";
 import { assert } from "jsr:/@std/assert@~1/assert";
 import { parseArgs } from "jsr:@std/cli@~1/parse-args";
 import * as JSONC from "jsr:@std/jsonc@~1";
-import { ZipReader } from "jsr:@zip-js/zip-js@2.7.52";
+import { ZipReader } from "jsr:@zip-js/zip-js@2.7.62";
 
 interface DenoConfig {
   version?: string;

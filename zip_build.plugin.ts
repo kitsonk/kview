@@ -1,7 +1,7 @@
 import { type Plugin } from "$fresh/server.ts";
 import { assert } from "@std/assert/assert";
 import { relative, resolve } from "jsr:@std/path@~1";
-import { terminateWorkers, ZipWriter } from "jsr:@zip-js/zip-js@2.7.52";
+import { terminateWorkers, ZipWriter } from "jsr:@zip-js/zip-js@2.7.62";
 
 let buildDir: string = "./_fresh";
 const zipFilename = "./_fresh.zip";
