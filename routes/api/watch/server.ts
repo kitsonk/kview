@@ -3,6 +3,7 @@ import { entryMaybeToJSON } from "@deno/kv-utils/json";
 import { effect } from "@preact/signals";
 import { setAccessToken } from "$utils/dash.ts";
 import { getKvName, getKvPath } from "$utils/kv_state.ts";
+import { getLogger } from "$utils/logs.ts";
 import { state } from "$utils/state.ts";
 import { type Watches } from "$utils/watches.ts";
 
@@ -17,6 +18,8 @@ interface WatchNotification {
   href?: string;
   entries: Deno.KvEntryMaybe<unknown>[];
 }
+
+const logger = getLogger(["kview", "api", "watch"]);
 
 async function watchKv(
   databaseId: string,
@@ -70,6 +73,7 @@ function dispatch(
 
 export const handler: Handlers = {
   GET(req, _ctx) {
+    logger.debug("GET");
     if (req.headers.get("upgrade") != "websocket") {
       return new Response(null, { status: 501 });
     }
@@ -93,6 +97,7 @@ export const handler: Handlers = {
     });
 
     socket.addEventListener("open", async () => {
+      logger.info("WebSocket connection established");
       for await (const { databaseId, entries, name, href } of messages) {
         socket.send(
           JSON.stringify({
@@ -105,6 +110,7 @@ export const handler: Handlers = {
       }
     });
     socket.addEventListener("close", () => {
+      logger.info("WebSocket connection closed");
       dispose?.();
     });
 

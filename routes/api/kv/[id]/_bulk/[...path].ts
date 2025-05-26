@@ -45,15 +45,21 @@ export const handler: Handlers = {
     const name = req.headers.get("kview-name");
     const href = req.headers.get("kview-href");
     const data = await req.bytes();
-    logger.debug("Importing: {id}:{path}", { id, path });
+    logger.debug("start: {id}:{path} overwrite: {overwrite}, name: {name}, href: {href}", {
+      id,
+      path,
+      overwrite,
+      name,
+      href,
+    });
     const job = await importNdJson(id, prefix, data, { overwrite, name, href });
     if (!job) {
+      logger.info("Not Found: {id}:{path}, name: {name}, href: {href}", { id, path, name, href });
       return Response.json({ status: 404, statusText: "Not Found" }, {
         status: 404,
         statusText: "Not Found",
       });
     }
-    logger.info("Created job: {id}", { id: job.id });
     return Response.json({ status: 201, statusText: "Created", id: job.id }, {
       status: 201,
       statusText: "Created",

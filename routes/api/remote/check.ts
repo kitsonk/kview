@@ -4,12 +4,16 @@ import { deadline } from "@std/async/deadline";
 import { type RemoteStoreInfo } from "$utils/remoteStores.ts";
 import { state } from "$utils/state.ts";
 import { setAccessToken } from "$utils/dash.ts";
+import { getLogger } from "$utils/logs.ts";
+
+const logger = getLogger(["kview", "remote", "check"]);
 
 export const handler: Handlers = {
   async POST(res) {
     try {
       const storeInfo: RemoteStoreInfo = await res.json();
       assert(storeInfo.url && storeInfo.accessToken);
+      logger.debug("POST: {url}", { url: storeInfo.url });
       let oldValue: string | undefined;
       if (state.accessToken.peek() !== storeInfo.accessToken) {
         oldValue = state.accessToken.peek();
@@ -36,6 +40,9 @@ export const handler: Handlers = {
         }
       });
     } catch (err) {
+      logger.warn("Error checking remote store: {error}", {
+        error: err instanceof Error ? `${err.name}: ${err.message}` : JSON.stringify(err),
+      });
       return Response.json({
         status: 400,
         statusText: "Bad Request",

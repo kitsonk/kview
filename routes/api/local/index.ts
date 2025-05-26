@@ -2,6 +2,9 @@ import { type Handlers } from "$fresh/server.ts";
 import { keys, mergeHeaders, SecureCookieMap, STORE_NAMES } from "$utils/cookies.ts";
 import { LOCAL_STORES, localStores } from "$utils/kv.ts";
 import { state } from "$utils/state.ts";
+import { getLogger } from "$utils/logs.ts";
+
+const logger = getLogger(["kview", "api", "local"]);
 
 async function setName(
   value: string,
@@ -24,6 +27,7 @@ async function setName(
 export const handler: Handlers = {
   async POST(req) {
     const [id, value]: [string, string] = await req.json();
+    logger.debug("POST: {id} = {value}", { id, value });
     const cookies = await setName(value, id, req);
     return new Response(null, {
       status: 204,
@@ -39,6 +43,12 @@ export const handler: Handlers = {
         previousPath?: string;
         name?: string;
       } = await req.json();
+      logger.debug("PUT: {id} = {name}, path: {path}, previousPath: {previousPath}", {
+        id,
+        name,
+        path,
+        previousPath,
+      });
       if (path) {
         const { isFile } = await Deno.stat(path);
         if (isFile) {
@@ -75,6 +85,7 @@ export const handler: Handlers = {
   async DELETE(req) {
     try {
       const { path }: { path: string } = await req.json();
+      logger.debug("DELETE: {path}", { path });
       const localStoresString = localStorage.getItem(LOCAL_STORES);
       if (localStoresString) {
         const stores: string[] = JSON.parse(localStoresString);

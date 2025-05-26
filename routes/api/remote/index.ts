@@ -1,15 +1,20 @@
 import { type Handlers } from "$fresh/server.ts";
 import { assert } from "@std/assert/assert";
+import { getLogger } from "$utils/logs.ts";
 import { deleteRemoteStore, type RemoteStoreInfo, replaceRemoteStore, upsertRemoteStore } from "$utils/remoteStores.ts";
 import { state } from "$utils/state.ts";
 
+const logger = getLogger(["kview", "remote", "check"]);
+
 export const handler: Handlers = {
   GET() {
+    logger.debug("GET");
     return Response.json(state.remoteStores.value);
   },
   async PUT(req) {
     try {
       const { oldUrl, ...item }: RemoteStoreInfo & { oldUrl?: string } = await req.json();
+      logger.debug("PUT: {url}", { url: item.url });
       assert(
         typeof item === "object" && "url" in item && "accessToken" in item,
       );
@@ -35,6 +40,7 @@ export const handler: Handlers = {
     try {
       const store: RemoteStoreInfo = await req.json();
       assert(typeof store === "object" && "url" in store);
+      logger.debug("DELETE: {url}", { url: store.url });
       state.remoteStores.value = deleteRemoteStore(
         store,
         state.remoteStores.value,

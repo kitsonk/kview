@@ -73,6 +73,7 @@ export const handler: Handlers = {
     }
   },
   async PUT(req, { params: { id, path = "" } }) {
+    logger.debug("PUT: {id}:{path}", { id, path });
     try {
       const key = pathToKey(path);
       const kv = await getKv(id);
