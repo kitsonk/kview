@@ -2,6 +2,7 @@ import { importEntries } from "@deno/kv-utils/import-export";
 
 import { setAccessToken } from "./dash.ts";
 import { getKvPath } from "./kv_state.ts";
+import { getLogger } from "./logs.ts";
 
 export type JobState =
   | "pending"
@@ -19,8 +20,9 @@ interface JobJSON {
   name?: string;
   skipped: number;
   state: JobState;
-  total: number;
 }
+
+const logger = getLogger(["kview", "utils", "kv_bulk"]);
 
 export class Job {
   #measure?: PerformanceMeasure;
@@ -63,19 +65,16 @@ export class Job {
   path?: string;
   prefix: Deno.KvKey;
   skipped = 0;
-  total: number;
 
   constructor(
     databaseId: string,
     prefix: Deno.KvKey,
-    total: number,
     name: string | null,
     href: string | null,
   ) {
     this.id = ++jobUid;
     this.databaseId = databaseId;
     this.prefix = prefix;
-    this.total = total;
     if (name) {
       this.name = name;
     }
@@ -94,7 +93,6 @@ export class Job {
       state,
       duration,
       error,
-      total,
     } = this;
     const json: JobJSON = {
       id,
@@ -103,7 +101,6 @@ export class Job {
       count,
       skipped,
       state,
-      total,
       duration,
     };
     if (error) {
@@ -134,20 +131,18 @@ export function getJobs(): Job[] {
   return [...jobs.values()];
 }
 
-const LF = 0x0a;
-
 export async function importNdJson(
   id: string,
   prefix: Deno.KvKey,
-  blob: Blob,
+  data: Uint8Array,
   { overwrite, name, href }: {
     overwrite: boolean;
     name: string | null;
     href: string | null;
   },
 ): Promise<Job> {
-  const total = new Uint8Array(await blob.arrayBuffer()).filter((b) => b === LF).length;
-  const job = new Job(id, prefix, total, name, href);
+  logger.debug("Start Importing: {id}", { id });
+  const job = new Job(id, prefix, name, href);
   jobs.set(job.id, job);
   const info = getKvPath(id);
   if (!info) {
@@ -162,7 +157,7 @@ export async function importNdJson(
     setAccessToken(accessToken);
   }
   const kv = await Deno.openKv(path);
-  importEntries(kv, blob, {
+  importEntries(kv, data, {
     prefix,
     overwrite,
     onProgress(count, skipped, errors) {

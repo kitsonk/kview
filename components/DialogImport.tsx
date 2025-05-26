@@ -19,7 +19,9 @@ export function DialogImport(
     href?: string;
   },
 ) {
-  const target = useComputed(() => `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}`);
+  const target = useComputed(() =>
+    prefix.value.length ? `/api/kv/${databaseId}/_bulk/${keyJsonToPath(prefix.value)}` : `/api/kv/${databaseId}/_bulk`
+  );
   const form = useRef<HTMLFormElement>(null);
   const alert = useSignal<ComponentChildren>(undefined);
   const uploading = useSignal(false);

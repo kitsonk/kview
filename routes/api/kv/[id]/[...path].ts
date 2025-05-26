@@ -5,6 +5,9 @@ import { matches } from "@oak/commons/media_types";
 import { assert } from "@std/assert/assert";
 import { isBlobJSON, keyCountToResponse, parseQuery, pathToKey, treeToResponse } from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
+import { getLogger } from "$utils/logs.ts";
+
+const logger = getLogger(["kview", "api", "kv"]);
 
 interface PutBody {
   value: KvValueJSON | BlobJSON;
@@ -24,6 +27,7 @@ function notFound() {
 
 export const handler: Handlers = {
   async GET(req, { params: { id, path = "" } }) {
+    logger.debug("GET: {id}:{path}", { id, path });
     const prefix = path === "" ? [] : pathToKey(path);
     const kv = await getKv(id);
     const url = new URL(req.url, import.meta.url);
@@ -32,6 +36,7 @@ export const handler: Handlers = {
       if (maybeEntry.versionstamp !== null) {
         return Response.json(entryToJSON(maybeEntry));
       } else {
+        logger.info("Not Found: {id}:{path}", { id, path });
         return notFound();
       }
     } else if (url.searchParams.has("blob")) {
@@ -42,6 +47,7 @@ export const handler: Handlers = {
           key: keyToJSON(prefix),
         });
       } else {
+        logger.info("Not Found: {id}:{path}", { id, path });
         return notFound();
       }
     } else if (url.searchParams.has("meta")) {
@@ -53,6 +59,7 @@ export const handler: Handlers = {
           key: keyToJSON(prefix),
         });
       } else {
+        logger.info("Not Found: {id}:{path}", { id, path });
         return notFound();
       }
     } else if (url.searchParams.has("tree")) {
@@ -135,6 +142,7 @@ export const handler: Handlers = {
     }
   },
   async DELETE(req, { params: { id, path = "" } }) {
+    logger.debug("DELETE: {id}:{path}", { id, path });
     try {
       const kv = await getKv(id);
       const key = pathToKey(path);

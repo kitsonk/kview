@@ -76,7 +76,7 @@ export function DialogDeleteEntries(
         onSubmit={(evt) => {
           alert.value = undefined;
           deleting.value = true;
-          const target = `/api/kv/${databaseId}/${prefix?.value ? keyJsonToPath(prefix.value) : ""}`;
+          const target = `/api/kv/${databaseId}${prefix?.value?.length ? `/${keyJsonToPath(prefix.value)}` : ""}`;
           const body = JSON.stringify(state.selected.value);
           fetch(new URL(target, import.meta.url), {
             body,

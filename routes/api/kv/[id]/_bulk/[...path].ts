@@ -4,12 +4,17 @@ import { pathToKey } from "$utils/kv.ts";
 import { importNdJson } from "$utils/kv_bulk.ts";
 import { getKvPath } from "$utils/kv_state.ts";
 import { setAccessToken } from "$utils/dash.ts";
+import { getLogger } from "$utils/logs.ts";
+
+const logger = getLogger(["kview", "api", "kv", "_bulk"]);
 
 export const handler: Handlers = {
   async GET(_req, { params: { id, path = "" } }) {
+    logger.debug("GET: {id}:{path}", { id, path });
     const prefix = path === "" ? [] : pathToKey(path);
     const info = getKvPath(id);
     if (!info) {
+      logger.info("Not Found: {id}:{path}", { id, path });
       return Response.json({ status: 404, statusText: "Not Found" }, {
         status: 404,
         statusText: "Not Found",
@@ -27,8 +32,10 @@ export const handler: Handlers = {
     });
   },
   async POST(req, { params: { id, path = "" } }) {
+    logger.debug("POST: {id}:{path}", { id, path });
     const prefix = path === "" ? [] : pathToKey(path);
     if (!req.body) {
+      logger.info("Bad Request: {id}:{path}", { id, path });
       return Response.json({ status: 400, statusText: "Bad Request" }, {
         status: 400,
         statusText: "Bad Request",
@@ -37,18 +44,16 @@ export const handler: Handlers = {
     const overwrite = req.headers.has("kview-overwrite");
     const name = req.headers.get("kview-name");
     const href = req.headers.get("kview-href");
-    const blob = await req.blob();
-    const job = await importNdJson(id, prefix, blob, {
-      overwrite,
-      name,
-      href,
-    });
+    const data = await req.bytes();
+    logger.debug("Importing: {id}:{path}", { id, path });
+    const job = await importNdJson(id, prefix, data, { overwrite, name, href });
     if (!job) {
       return Response.json({ status: 404, statusText: "Not Found" }, {
         status: 404,
         statusText: "Not Found",
       });
     }
+    logger.info("Created job: {id}", { id: job.id });
     return Response.json({ status: 201, statusText: "Created", id: job.id }, {
       status: 201,
       statusText: "Created",

@@ -45,7 +45,6 @@ function JobItem(
       state,
       duration,
       count,
-      total,
       skipped,
       error,
       name,
@@ -77,16 +76,6 @@ function JobItem(
         : undefined}
       <h2 class="font-bold my-2">State</h2>
       <JobState state={state} />
-      {state === "processing" && total
-        ? (
-          <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 my-2">
-            <div
-              class="bg-primary-600 h-2.5 rounded-full"
-              style={`width: ${Math.floor(count / total * 100)}%`}
-            />
-          </div>
-        )
-        : undefined}
       {duration
         ? (
           <>
