@@ -1,5 +1,9 @@
 # kview change log
 
+## Version 0.17.3
+
+- fix: install manifest (ffb4615)
+
 ## Version 0.17.2
 
 - fix: handle bulk import of large files and deletes of many entries (8435021)
