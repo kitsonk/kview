@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(deno eval:*)",
+      "Bash(deno test:*)"
+    ]
+  }
+}

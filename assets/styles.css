@@ -1,0 +1,22 @@
+/* Root Styling */
+@import "./typography.css";
+@import "./tailwind.css";
+@import "./daisyui.css";
+
+/* Custom Declarations */
+@import "./core/animation.css";
+@import "./core/components.css";
+@import "./core/highlight.css";
+@import "./core/layout.css";
+@import "./core/markdown.css";
+
+/****  Plugins  ****/
+/* Animations */
+@plugin "tailwindcss-motion";
+
+/* Iconify (Lucide icons) */
+@plugin "@iconify/tailwind4" {
+  prefixes: lucide;
+}
+
+@source inline("lucide--{arrow-down-to-dot,house,user,building-2,router,cable,view,list-checks,book-text}");

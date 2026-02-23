@@ -1,0 +1,133 @@
+/* -Code- */
+
+.markdown {
+  :not(pre) > code {
+    @apply mockup-code w-full;
+  }
+
+  pre {
+    @apply mockup-code w-full;
+  }
+}
+
+/* -General- */
+
+.markdown {
+  a {
+    @apply underline;
+  }
+
+  h1 {
+    @apply font-bold text-xl md:text-2xl lg:text-3xl pb-2 mb-3 text-primary scroll-mt-16;
+  }
+
+  h2 {
+    @apply font-bold text-lg md:text-xl lg:text-2xl pb-2 mb-3 text-primary scroll-mt-16;
+  }
+
+  h3 {
+    @apply font-bold md:text-lg md:font-normal lg:text-xl lg:font-normal mb-3 mt-4 scroll-mt-16;
+  }
+
+  h4 {
+    @apply font-semibold md:font-bold lg:text-lg lg:font-normal mb-2 mt-3 scroll-mt-16;
+  }
+
+  h5 {
+    @apply font-bold italic md:font-semibold lg:font-bold mb-2 mt-3 scroll-mt-16;
+  }
+
+  h6 {
+    @apply font-semibold md:italic mb-1 mt-2 scroll-mt-16;
+  }
+
+  hr {
+    @apply m-2 border-neutral;
+  }
+
+  ol {
+    @apply list-decimal lg:list-inside;
+  }
+
+  ul {
+    @apply list-disc list-inside lg:list-outside lg:mx-6;
+  }
+
+  p {
+    @apply my-2;
+  }
+
+  kbd {
+    @apply kbd;
+  }
+
+  table {
+    @apply table table-sm;
+  }
+}
+
+/* -Links- */
+
+.markdown {
+  .anchor {
+    @apply float-left -ml-6 pr-1 leading-4;
+  }
+
+  svg.octicon {
+    @apply fill-current;
+  }
+
+  h1 .octicon-link,
+  h2 .octicon-link,
+  h3 .octicon-link,
+  h4 .octicon-link,
+  h5 .octicon-link,
+  h6 .octicon-link {
+    @apply invisible mt-2;
+  }
+
+  h1:hover .octicon-link,
+  h2:hover .octicon-link,
+  h3:hover .octicon-link,
+  h4:hover .octicon-link,
+  h5:hover .octicon-link,
+  h6:hover .octicon-link {
+    @apply visible;
+  }
+}
+
+/* -Syntax Highlighting- */
+
+.markdown .highlight {
+  .token {
+    @apply text-secondary;
+  }
+
+  .token.class-name {
+    @apply text-secondary;
+  }
+
+  .token.comment {
+    @apply text-neutral;
+  }
+
+  .token.keyword {
+    @apply text-info;
+  }
+
+  .token.number {
+    @apply text-accent;
+  }
+
+  .token.operator {
+    @apply text-error;
+  }
+
+  .token.punctuation {
+    @apply text-base-content;
+  }
+
+  .token.string {
+    @apply text-warning;
+  }
+}

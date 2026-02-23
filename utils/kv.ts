@@ -1,0 +1,218 @@
+import { keyPartToJSON, keyToJSON, type KvKeyJSON, KvKeyPartJSON, valueToJSON } from "@deno/kv-utils/json";
+import { KvToolbox } from "@kitsonk/kv-toolbox";
+import type { KeyTree } from "@kitsonk/kv-toolbox/keys";
+import { Query } from "@kitsonk/kv-toolbox/query";
+import { decodeBase64Url } from "@std/encoding/base64url";
+import { join } from "@std/path/join";
+
+export interface KvLocalStoreInfo {
+  id: string;
+  name?: string;
+  path: string;
+  size: number;
+}
+
+interface KeyTreeNode {
+  part: Deno.KvKeyPart;
+  hasValue?: true;
+  children?: KeyTreeNode[];
+}
+
+export interface KvKeyTreeNodeJSON {
+  part: KvKeyPartJSON;
+  hasValue?: true;
+  children?: KvKeyTreeNodeJSON[];
+}
+
+export interface KvKeyTreeJSON {
+  prefix?: KvKeyJSON;
+  children?: KvKeyTreeNodeJSON[];
+}
+
+const LOCAL_STORES = "kview_local_store_info";
+const LOCAL_STORE_NAMES = "kview_local_store_names";
+
+const decoder = new TextDecoder();
+
+export function pathToKey(path: string): Deno.KvKey {
+  const key: Deno.KvKeyPart[] = [];
+  if (path === "") {
+    return key;
+  }
+  for (const part of path.split("/")) {
+    if (part === "__empty_string__") {
+      key.push("");
+    } else if (part === "__true__") {
+      key.push(true);
+    } else if (part === "__false__") {
+      key.push(false);
+    } else if (part.startsWith("__u8__")) {
+      key.push(decodeBase64Url(part.slice(6)));
+    } else if (/^__n__[0-9]+$/.test(part)) {
+      key.push(parseInt(part.slice(5), 10));
+    } else if (part === "__n__Infinity") {
+      key.push(Infinity);
+    } else if (part === "__n__-Infinity") {
+      key.push(-Infinity);
+    } else if (part === "__n__NaN") {
+      key.push(NaN);
+    } else if (/^__b__[0-9]+$/.test(part)) {
+      key.push(BigInt(part.slice(5)));
+    } else {
+      key.push(decodeURIComponent(part));
+    }
+  }
+  return key;
+}
+
+export function keyJsonToPath(key: KvKeyJSON): string {
+  return key.map((keyPart) => {
+    switch (keyPart.type) {
+      case "Uint8Array":
+        return `__u8__${keyPart.value}`;
+      case "bigint":
+        return `__b__${keyPart.value}`;
+      case "boolean":
+        return keyPart.value ? "__true__" : "__false__";
+      case "number":
+        return `__n__${keyPart.value}`;
+      case "string":
+        if (keyPart.value === "") {
+          return "__empty_string__";
+        }
+        return encodeURIComponent(keyPart.value);
+    }
+  }).join("/");
+}
+
+export function parseQuery(toolbox: KvToolbox, prefix: Deno.KvKey, filtersString: string): Query {
+  return Query.parse(toolbox.db, {
+    selector: { prefix: keyToJSON(prefix) },
+    filters: JSON.parse(decoder.decode(decodeBase64Url(filtersString))),
+  });
+}
+
+function nodeToJSON(
+  { part, hasValue, children }: KeyTreeNode,
+): KvKeyTreeNodeJSON {
+  const result: KvKeyTreeNodeJSON = { part: keyPartToJSON(part) };
+  if (hasValue) {
+    result.hasValue = hasValue;
+  }
+  if (children) {
+    result.children = children.map(nodeToJSON);
+  }
+  return result;
+}
+
+export function treeToResponse({ prefix, children }: KeyTree): Response {
+  const body: KvKeyTreeJSON = {};
+  if (prefix) {
+    body.prefix = prefix.map(keyPartToJSON);
+  }
+  if (children) {
+    body.children = children.map(nodeToJSON);
+  }
+  return Response.json(body);
+}
+
+export function keyCountToResponse(data: { key: Deno.KvKey; count: number; isBlob?: boolean }[]): Response {
+  const body = data.map(({ key, ...rest }) => ({
+    key: key.map(valueToJSON),
+    ...rest,
+  }));
+  return Response.json(body);
+}
+
+function homeDir(): string | undefined {
+  if (Deno.build.os === "windows") {
+    Deno.permissions.request({ name: "env", variable: "USERPROFILE" });
+    return Deno.env.get("USERPROFILE");
+  } else {
+    Deno.permissions.request({ name: "env", variable: "HOME" });
+    return Deno.env.get("HOME");
+  }
+}
+
+function cacheDir(): string | undefined {
+  if (Deno.build.os === "darwin") {
+    const home = homeDir();
+    if (home) {
+      return join(home, "Library/Caches");
+    }
+  } else if (Deno.build.os === "windows") {
+    return Deno.env.get("LOCALAPPDATA");
+  } else {
+    const cacheHome = Deno.env.get("XDG_CACHE_HOME");
+    if (cacheHome) {
+      return cacheHome;
+    } else {
+      const home = homeDir();
+      if (home) {
+        return join(home, ".cache");
+      }
+    }
+  }
+}
+
+export async function getLocalStores(): Promise<KvLocalStoreInfo[]> {
+  const stores: KvLocalStoreInfo[] = [];
+  const storeNames: Record<string, string> = JSON.parse(localStorage.getItem(LOCAL_STORE_NAMES) ?? "{}");
+  const cache = cacheDir();
+  if (cache) {
+    const locationData = join(cache, "deno", "location_data");
+    try {
+      for await (
+        const { name: id, isDirectory } of Deno.readDir(locationData)
+      ) {
+        if (isDirectory) {
+          try {
+            const path = join(locationData, id, "kv.sqlite3");
+            const { isFile, size } = await Deno.stat(
+              join(locationData, id, "kv.sqlite3"),
+            );
+            if (isFile) {
+              stores.push({ id, path, size, name: storeNames[id] });
+            }
+          } catch {
+            // just swallow here
+          }
+        }
+      }
+    } catch {
+      // just swallow here
+    }
+  }
+  const localStoresString = localStorage.getItem(LOCAL_STORES);
+  if (localStoresString) {
+    const localStores: string[] = JSON.parse(localStoresString);
+    const validStores: string[] = [];
+    for (const path of localStores) {
+      const { isFile, size } = await Deno.stat(path);
+      if (isFile) {
+        stores.push({ id: path, path, size, name: storeNames[path] });
+        validStores.push(path);
+      }
+    }
+    localStorage.setItem(LOCAL_STORES, JSON.stringify(validStores));
+  }
+  return stores;
+}
+
+export function addLocalStore(path: string, previousPath?: string): void {
+  const localStoresString = localStorage.getItem(LOCAL_STORES) ?? "[]";
+  let stores: string[] = JSON.parse(localStoresString);
+  if (previousPath && previousPath !== path) {
+    stores = stores.filter((p) => p !== previousPath);
+  }
+  if (!stores.some((p) => p === path)) {
+    stores.push(path);
+    localStorage.setItem(LOCAL_STORES, JSON.stringify(stores));
+  }
+}
+
+export function setLocalStoreName(id: string, name: string): void {
+  const storeNames: Record<string, string> = JSON.parse(localStorage.getItem(LOCAL_STORE_NAMES) ?? "{}");
+  storeNames[id] = name;
+  localStorage.setItem(LOCAL_STORE_NAMES, JSON.stringify(storeNames));
+}

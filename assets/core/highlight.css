@@ -1,0 +1,21 @@
+.json {
+  .string {
+    @apply text-primary;
+  }
+
+  .number {
+    @apply text-secondary;
+  }
+
+  .boolean {
+    @apply text-warning;
+  }
+
+  .null {
+    @apply text-neutral;
+  }
+
+  .key {
+    @apply text-info;
+  }
+}
