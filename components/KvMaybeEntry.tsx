@@ -49,7 +49,7 @@ export function KvMaybeEntry({ maybeEntry }: { maybeEntry: KvEntryMaybeJSON }) {
             </div>
             <KvValueType type={maybeEntry.value.type} />
           </div>
-          <div class="space-y-2">
+          <div class="space-y-2 min-w-0">
             <div class="fieldset-label">Value</div>
             <KvValue value={maybeEntry.value} />
           </div>
