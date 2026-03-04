@@ -49,13 +49,9 @@ export default function KVExplorer() {
                 value: 2008,
               }],
               value: {
-                type: "Set",
-                value: [
-                  { type: "string", value: "C" },
-                  { type: "string", value: "C++" },
-                  { type: "string", value: "Rust" },
-                  { type: "string", value: "TypeScript" },
-                ],
+                type: "ArrayBuffer",
+                value: "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA=",
+                byteLength: 28,
               },
               versionstamp: "00000000000000810000",
             }}

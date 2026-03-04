@@ -16,7 +16,7 @@ export function ValueSet({ value }: { value: KvSetJSON }) {
           {value.value.map((item) => (
             <tr>
               <td>
-                <pre class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(item) }} />
+                <pre><code class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(item) }} /></pre>
               </td>
             </tr>
           ))}

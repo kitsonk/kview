@@ -17,10 +17,10 @@ export function ValueMap({ value }: { value: KvMapJSON }) {
           {value.value.map(([key, value]) => (
             <tr>
               <td>
-                <pre class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(key) }} />
+                <pre><code class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(key) }} /></pre>
               </td>
               <td>
-                <pre class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(value) }} />
+                <pre><code class="overflow-hidden text-ellipsis" dangerouslySetInnerHTML={{ __html: highlightJSON(value) }} /></pre>
               </td>
             </tr>
           ))}

@@ -3,8 +3,10 @@ import type { BlobMeta } from "@kitsonk/kv-toolbox/blob";
 
 import { ValueArray } from "./values/Array.tsx";
 import { ValueBigInt } from "./values/BigInt.tsx";
+import { ValueBinary } from "./values/Binary.tsx";
 import { ValueKvU64 } from "./values/KvU64.tsx";
 import { ValueMap } from "./values/Map.tsx";
+import { ValueRegExp } from "./values/RegExp.tsx";
 import { ValueSet } from "./values/Set.tsx";
 
 type KvValueProps = {
@@ -24,12 +26,28 @@ export function KvValue({ value, meta, currentKey, storeId }: KvValueProps) {
     switch (value.type) {
       case "Array":
         return <ValueArray value={value} />;
+      case "ArrayBuffer":
+      case "Int8Array":
+      case "Uint8Array":
+      case "Uint8ClampedArray":
+      case "Int16Array":
+      case "Uint16Array":
+      case "Int32Array":
+      case "Uint32Array":
+      case "Float32Array":
+      case "Float64Array":
+      case "BigInt64Array":
+      case "BigUint64Array":
+      case "DataView":
+        return <ValueBinary value={value} />;
       case "bigint":
         return <ValueBigInt value={value} />;
       case "KvU64":
         return <ValueKvU64 value={value} />;
       case "Map":
         return <ValueMap value={value} />;
+      case "RegExp":
+        return <ValueRegExp value={value} />;
       case "Set":
         return <ValueSet value={value} />;
       default:

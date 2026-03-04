@@ -55,10 +55,7 @@ export function stringify(json: KvValueJSON): string {
     case "KvU64":
       return `"Deno.KvU64(${json.value}n)"`;
     case "RegExp": {
-      const parts = json.value.split("/");
-      const flags = parts.pop();
-      const [, ...pattern] = parts;
-      return `"RegExp(${pattern.join("/")}/${flags})"`;
+      return `"RegExp(${json.value})"`;
     }
     case "bigint":
       return `"BigInt {${json.value.toString()}}"`;
