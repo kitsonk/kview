@@ -49,9 +49,9 @@
     "npm:@iconify/tailwind4@^1.2.1": "1.2.3_tailwindcss@4.2.1",
     "npm:@mjackson/node-fetch-server@0.7": "0.7.0",
     "npm:@opentelemetry/api@^1.9.0": "1.9.0",
-    "npm:@preact/signals@^2.2.1": "2.8.2_preact@10.28.4",
-    "npm:@preact/signals@^2.8.1": "2.8.2_preact@10.28.4",
-    "npm:@prefresh/vite@^2.4.8": "2.4.12_preact@10.28.4_vite@7.3.1__@types+node@25.4.0",
+    "npm:@preact/signals@^2.2.1": "2.8.2_preact@10.29.0",
+    "npm:@preact/signals@^2.8.1": "2.8.2_preact@10.29.0",
+    "npm:@prefresh/vite@^2.4.8": "2.4.12_preact@10.29.0_vite@7.3.1__@types+node@25.4.0",
     "npm:@tailwindcss/vite@^4.2.1": "4.2.1_vite@7.3.1__@types+node@25.4.0_@types+node@25.4.0",
     "npm:@types/node@^25.4.0": "25.4.0",
     "npm:daisyui@^5.5.19": "5.5.19",
@@ -65,11 +65,11 @@
     "npm:marked-footnote@^1.4.0": "1.4.0_marked@17.0.4",
     "npm:marked-gfm-heading-id@^4.1.3": "4.1.3_marked@17.0.4",
     "npm:marked@^17.0.1": "17.0.4",
-    "npm:preact-render-to-string@^6.6.3": "6.6.6_preact@10.28.4",
-    "npm:preact-render-to-string@^6.6.6": "6.6.6_preact@10.28.4",
-    "npm:preact@^10.27.0": "10.28.4",
-    "npm:preact@^10.27.2": "10.28.4",
-    "npm:preact@^10.28.4": "10.28.4",
+    "npm:preact-render-to-string@^6.6.3": "6.6.6_preact@10.29.0",
+    "npm:preact-render-to-string@^6.6.6": "6.6.6_preact@10.29.0",
+    "npm:preact@^10.27.0": "10.29.0",
+    "npm:preact@^10.27.2": "10.29.0",
+    "npm:preact@^10.29.0": "10.29.0",
     "npm:prismjs@^1.30.0": "1.30.0",
     "npm:rollup@^4.50.0": "4.59.0",
     "npm:sanitize-html@^2.17.0": "2.17.1",
@@ -921,7 +921,7 @@
     "@preact/signals-core@1.14.0": {
       "integrity": "sha512-AowtCcCU/33lFlh1zRFf/u+12rfrhtNakj7UpaGEsmMwUKpKWMVvcktOGcwBBNiB4lWrZWc01LhiyyzVklJyaQ=="
     },
-    "@preact/signals@2.8.2_preact@10.28.4": {
+    "@preact/signals@2.8.2_preact@10.29.0": {
       "integrity": "sha512-gym5yoa64c+0w2kL7zRAAjY548qzWXbbuOfjsK9F1nWrEqooDwyWnih5SNdonjhQSp27zUqYh7UrxIRnkCyFCA==",
       "dependencies": [
         "@preact/signals-core",
@@ -931,7 +931,7 @@
     "@prefresh/babel-plugin@0.5.3": {
       "integrity": "sha512-57LX2SHs4BX2s1IwCjNzTE2OJeEepRCNf1VTEpbNcUyHfMO68eeOWGDIt4ob9aYlW6PEWZ1SuwNikuoIXANDtQ=="
     },
-    "@prefresh/core@1.5.9_preact@10.28.4": {
+    "@prefresh/core@1.5.9_preact@10.29.0": {
       "integrity": "sha512-IKBKCPaz34OFVC+adiQ2qaTF5qdztO2/4ZPf4KsRTgjKosWqxVXmEbxCiUydYZRY8GVie+DQlKzQr9gt6HQ+EQ==",
       "dependencies": [
         "preact"
@@ -940,7 +940,7 @@
     "@prefresh/utils@1.2.1": {
       "integrity": "sha512-vq/sIuN5nYfYzvyayXI4C2QkprfNaHUQ9ZX+3xLD8nL3rWyzpxOm1+K7RtMbhd+66QcaISViK7amjnheQ/4WZw=="
     },
-    "@prefresh/vite@2.4.12_preact@10.28.4_vite@7.3.1__@types+node@25.4.0": {
+    "@prefresh/vite@2.4.12_preact@10.29.0_vite@7.3.1__@types+node@25.4.0": {
       "integrity": "sha512-FY1fzXpUjiuosznMV0YM7XAOPZjB5FIdWS0W24+XnlxYkt9hNAwwsiKYn+cuTEoMtD/ZVazS5QVssBr9YhpCQA==",
       "dependencies": [
         "@babel/core",
@@ -1666,14 +1666,14 @@
         "source-map-js"
       ]
     },
-    "preact-render-to-string@6.6.6_preact@10.28.4": {
+    "preact-render-to-string@6.6.6_preact@10.29.0": {
       "integrity": "sha512-EfqZJytnjJldV+YaaqhthU2oXsEf5e+6rDv957p+zxAvNfFLQOPfvBOTncscQ+akzu6Wrl7s3Pa0LjUQmWJsGQ==",
       "dependencies": [
         "preact"
       ]
     },
-    "preact@10.28.4": {
-      "integrity": "sha512-uKFfOHWuSNpRFVTnljsCluEFq57OKT+0QdOiQo8XWnQ/pSvg7OpX5eNOejELXJMWy+BwM2nobz0FkvzmnpCNsQ=="
+    "preact@10.29.0": {
+      "integrity": "sha512-wSAGyk2bYR1c7t3SZ3jHcM6xy0lcBcDel6lODcs9ME6Th++Dx2KU+6D3HD8wMMKGA8Wpw7OMd3/4RGzYRpzwRg=="
     },
     "prismjs@1.30.0": {
       "integrity": "sha512-DEvV2ZF2r2/63V+tK8hQvrR2ZGn10srHbXviTlcv7Kpzw8jWiNTqbVgjO3IY8RxrrOUF8VPMQQFysYYYv0YZxw=="
@@ -1829,7 +1829,7 @@
       "npm:@types/node@^25.4.0",
       "npm:daisyui@^5.5.19",
       "npm:preact-render-to-string@^6.6.6",
-      "npm:preact@^10.28.4",
+      "npm:preact@^10.29.0",
       "npm:prismjs@^1.30.0",
       "npm:tailwindcss-motion@^1.1.1",
       "npm:tailwindcss@^4.2.1",

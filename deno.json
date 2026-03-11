@@ -36,7 +36,7 @@
     "@types/node": "npm:@types/node@^25.4.0",
     "daisyui": "npm:daisyui@^5.5.19",
     "fresh": "jsr:@fresh/core@^2.2.0",
-    "preact": "npm:preact@^10.28.4",
+    "preact": "npm:preact@^10.29.0",
     "preact-render-to-string": "npm:preact-render-to-string@^6.6.6",
     "prismjs": "npm:prismjs@^1.30.0",
     "tailwindcss": "npm:tailwindcss@^4.2.1",
