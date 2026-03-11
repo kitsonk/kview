@@ -49,9 +49,9 @@ export default function KVExplorer() {
                 value: 2008,
               }],
               value: {
-                type: "ArrayBuffer",
-                value: "AQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyA=",
-                byteLength: 28,
+                type: "string",
+                value:
+                  "Something something WebAssembly something AssemblyScript... I forget. It's a long string that should be truncated in the UI.",
               },
               versionstamp: "00000000000000810000",
             }}
