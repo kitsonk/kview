@@ -15,7 +15,7 @@ export const handler = define.handlers({
     const toolbox = await getToolbox(id, ctx);
     const maybeMeta = await toolbox.getMeta(prefix);
     if (maybeMeta.value) {
-      return Response.json({ meta: maybeMeta.value, versionStamp: maybeMeta.versionstamp, key: keyToJSON(prefix) });
+      return Response.json({ meta: maybeMeta.value, versionstamp: maybeMeta.versionstamp, key: keyToJSON(prefix) });
     }
     throw new HttpError(404, "Blob meta not found");
   },

@@ -1,1 +1,23 @@
+/* == Viewer: collapsible details == */
 
+details.viewer-details {
+  .viewer-chevron {
+    @apply transition-transform;
+  }
+
+  &[open] > summary .viewer-chevron {
+    @apply rotate-90;
+  }
+
+  > summary.viewer-summary {
+    @apply cursor-pointer list-none flex items-center gap-2 select-none;
+  }
+
+  > summary.viewer-summary::-webkit-details-marker {
+    @apply hidden;
+  }
+
+  > :not(summary) {
+    @apply ms-0;
+  }
+}

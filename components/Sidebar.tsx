@@ -1,8 +1,16 @@
 import type { ComponentChildren } from "preact";
 
-function MenuItem({ icon, label, href }: { icon: string; label: string; href: string }) {
+function MenuItem(
+  { icon, label, href, partial, fullLoad }: {
+    icon: string;
+    label: string;
+    href: string;
+    partial?: string;
+    fullLoad?: boolean;
+  },
+) {
   return (
-    <a class="menu-item" href={href}>
+    <a class="menu-item" href={href} f-partial={partial} f-client-nav={fullLoad ? false : undefined}>
       <span class={`iconify lucide--${icon} size-4`}></span>
       <span class="grow">{label}</span>
     </a>
@@ -48,26 +56,31 @@ export function Sidebar() {
         </label>
         <p class="menu-label mt-2 px-2.5">Navigation</p>
         <div class="mt-2">
-          <MenuItem icon="house" label="Home" href="/" />
+          <MenuItem icon="house" label="Home" href="/" partial="/partials/" />
         </div>
         <p class="menu-label mt-2 px-2.5">Stores</p>
         <div class="mt-2 space-y-0.5">
-          <MenuItem icon="arrow-down-to-dot" label="Local" href="/local" />
-          <MenuItem icon="user" label="User" href="/org/kitsonk" />
+          <MenuItem icon="arrow-down-to-dot" label="Local" href="/local" partial="/partials/local" />
+          <MenuItem icon="user" label="User" href="/org/kitsonk" partial="/partials/org/kitsonk" />
           <CollapseMenuItem icon="building-2" label="Organizations">
-            <MenuItem icon="building-2" label="higher-order-testing" href="/org/higher-order-testing" />
-            <MenuItem icon="building-2" label="ctolabs" href="/org/ctolabs" />
-            <MenuItem icon="building-2" label="tswhy" href="/org/tswhy" />
-            <MenuItem icon="building-2" label="oak" href="/org/oak" />
+            <MenuItem
+              icon="building-2"
+              label="higher-order-testing"
+              href="/org/higher-order-testing"
+              partial="/partials/org/higher-order-testing"
+            />
+            <MenuItem icon="building-2" label="ctolabs" href="/org/ctolabs" partial="/partials/org/ctolabs" />
+            <MenuItem icon="building-2" label="tswhy" href="/org/tswhy" partial="/partials/org/tswhy" />
+            <MenuItem icon="building-2" label="oak" href="/org/oak" partial="/partials/org/oak" />
           </CollapseMenuItem>
-          <MenuItem icon="router" label="Remote" href="/remote" />
+          <MenuItem icon="router" label="Remote" href="/remote" partial="/partials/remote" />
         </div>
         <p class="menu-label mt-2 px-2.5">Manage</p>
         <div class="mt-2 space-y-0.5">
-          <MenuItem icon="cable" label="Connect to Deploy" href="/connect" />
-          <MenuItem icon="view" label="Watches" href="/watches" />
-          <MenuItem icon="list-checks" label="Jobs" href="/jobs" />
-          <MenuItem icon="book-text" label="Documentation" href="/docs" />
+          <MenuItem icon="cable" label="Connect to Deploy" href="/connect" fullLoad />
+          <MenuItem icon="view" label="Watches" href="/watches" partial="/partials/watches" />
+          <MenuItem icon="list-checks" label="Jobs" href="/jobs" partial="/partials/jobs" />
+          <MenuItem icon="book-text" label="Documentation" href="/docs" partial="/partials/docs" />
         </div>
       </div>
     </div>

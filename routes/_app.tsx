@@ -1,4 +1,5 @@
 import { define } from "@/utils/fresh.ts";
+import NotificationCenter from "@/islands/NotificationCenter.tsx";
 
 export default define.page(function App({ Component }) {
   return (
@@ -10,6 +11,7 @@ export default define.page(function App({ Component }) {
       </head>
       <body>
         <Component />
+        <NotificationCenter />
       </body>
     </html>
   );

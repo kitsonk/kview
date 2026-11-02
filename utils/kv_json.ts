@@ -1,8 +1,13 @@
-import type { KvEntryJSON, KvEntryMaybeJSON, KvValueJSON } from "@deno/kv-utils";
-
-export function isEntryJSON(value: KvEntryMaybeJSON): value is KvEntryJSON {
-  return value.versionstamp !== null;
-}
+import type {
+  KvBigIntJSON,
+  KvBooleanJSON,
+  KvDateJSON,
+  KvKvU64JSON,
+  KvNumberJSON,
+  KvRegExpJSON,
+  KvStringJSON,
+  KvValueJSON,
+} from "@deno/kv-utils/json";
 
 function decodeObject(json: { [key: string]: KvValueJSON }): string {
   let result = "{";
@@ -70,4 +75,96 @@ export function stringify(json: KvValueJSON): string {
       // deno-lint-ignore no-explicit-any
       throw new TypeError(`Unexpected value type: "${(json as any).type}"`);
   }
+}
+
+export function toFormString(value?: KvValueJSON): string {
+  if (value) {
+    switch (value.type) {
+      case "string":
+      case "bigint":
+      case "Date":
+      case "KvU64":
+      case "RegExp":
+        return value.value;
+      case "number":
+        return String(value.value);
+      case "boolean":
+        return value.value ? "true" : "false";
+    }
+  }
+  return "";
+}
+
+export function toErrorParts(
+  value?: KvValueJSON,
+): { message: string; stack?: string | undefined; cause?: KvValueJSON | undefined } {
+  if (
+    value &&
+    (value.type === "Error" || value.type === "EvalError" || value.type === "RangeError" ||
+      value.type === "ReferenceError" || value.type === "SyntaxError" || value.type === "TypeError" ||
+      value.type === "URIError")
+  ) {
+    return {
+      message: value.value.message,
+      stack: value.value.stack,
+      cause: value.value.cause,
+    };
+  }
+  return {
+    message: "",
+  };
+}
+
+export function toKvBigIntJSON(value: string): KvBigIntJSON {
+  try {
+    return { type: "bigint", value: String(BigInt(value)) };
+  } catch {
+    return { type: "bigint", value: "0" };
+  }
+}
+
+export function toKvBooleanJSON(value: boolean): KvBooleanJSON {
+  return { type: "boolean", value };
+}
+
+export function toKvDateJSON(value: string): KvDateJSON {
+  const timestamp = Date.parse(value);
+  if (isNaN(timestamp)) {
+    return { type: "Date", value: new Date().toISOString() };
+  }
+  return { type: "Date", value: new Date(timestamp).toISOString() };
+}
+
+export function toKvKvU64JSON(value: string): KvKvU64JSON {
+  try {
+    const bigintValue = BigInt(value);
+    if (bigintValue < 0n) {
+      return { type: "KvU64", value: "0" };
+    }
+    return { type: "KvU64", value: String(bigintValue) };
+  } catch {
+    return { type: "KvU64", value: "0" };
+  }
+}
+
+export function toKvNumberJSON(value: string): KvNumberJSON {
+  const parsed = Number(value);
+  return {
+    type: "number",
+    value: Number.isNaN(parsed)
+      ? value === "NaN" ? "NaN" : 0
+      : parsed === Infinity
+      ? "Infinity"
+      : parsed === -Infinity
+      ? "-Infinity"
+      : parsed,
+  };
+}
+
+export function toKvRegExpJSON(value: string): KvRegExpJSON {
+  return { type: "RegExp", value };
+}
+
+export function toKvStringJSON(value: string): KvStringJSON {
+  return { type: "string", value };
 }

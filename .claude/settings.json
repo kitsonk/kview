@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "deno-skills@denoland-skills": true
+  }
+}

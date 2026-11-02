@@ -65,26 +65,6 @@ export function pathToKey(path: string): Deno.KvKey {
   return key;
 }
 
-export function keyJsonToPath(key: KvKeyJSON): string {
-  return key.map((keyPart) => {
-    switch (keyPart.type) {
-      case "Uint8Array":
-        return `__u8__${keyPart.value}`;
-      case "bigint":
-        return `__b__${keyPart.value}`;
-      case "boolean":
-        return keyPart.value ? "__true__" : "__false__";
-      case "number":
-        return `__n__${keyPart.value}`;
-      case "string":
-        if (keyPart.value === "") {
-          return "__empty_string__";
-        }
-        return encodeURIComponent(keyPart.value);
-    }
-  }).join("/");
-}
-
 export function parseQuery(toolbox: KvToolbox, prefix: Deno.KvKey, filtersString: string): Query {
   return Query.parse(toolbox.db, {
     selector: { prefix: keyToJSON(prefix) },
@@ -213,6 +193,11 @@ export function addLocalStore(path: string, previousPath?: string): void {
 
 export function setLocalStoreName(id: string, name: string): void {
   const storeNames: Record<string, string> = JSON.parse(localStorage.getItem(LOCAL_STORE_NAMES) ?? "{}");
-  storeNames[id] = name;
+  const trimmed = name.trim();
+  if (trimmed) {
+    storeNames[id] = trimmed;
+  } else {
+    delete storeNames[id];
+  }
   localStorage.setItem(LOCAL_STORE_NAMES, JSON.stringify(storeNames));
 }

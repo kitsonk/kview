@@ -1,9 +1,8 @@
-import type { KvValueJSON } from "@deno/kv-utils/json";
-import type { BlobMeta } from "@kitsonk/kv-toolbox/blob";
+import type { BlobOrValueEntryJSON } from "@/utils/blobs.ts";
 
-export function KvValueType({ type, meta }: { type: KvValueJSON["type"]; meta?: BlobMeta }) {
-  if (meta) {
-    switch (meta.kind) {
+export function KvValueType({ entry }: { entry: BlobOrValueEntryJSON }) {
+  if (entry.meta) {
+    switch (entry.meta.kind) {
       case "blob":
         return <span class="badge badge-neutral">Blob</span>;
       case "file":
@@ -12,7 +11,7 @@ export function KvValueType({ type, meta }: { type: KvValueJSON["type"]; meta?: 
         return <span class="badge badge-neutral">Binary Data</span>;
     }
   }
-  switch (type) {
+  switch (entry.value.type) {
     case "KvU64":
       return <span class="badge badge-info">Deno.KvU64</span>;
     case "Map":
@@ -36,7 +35,7 @@ export function KvValueType({ type, meta }: { type: KvValueJSON["type"]; meta?: 
     case "BigInt64Array":
     case "BigUint64Array":
     case "DataView":
-      return <span class="badge badge-accent">{type}</span>;
+      return <span class="badge badge-accent">{entry.value.type}</span>;
     case "Error":
     case "EvalError":
     case "RangeError":
@@ -44,7 +43,7 @@ export function KvValueType({ type, meta }: { type: KvValueJSON["type"]; meta?: 
     case "SyntaxError":
     case "TypeError":
     case "URIError":
-      return <span class="badge badge-error">{type}</span>;
+      return <span class="badge badge-error">{entry.value.type}</span>;
     case "Array":
       return <span class="badge badge-secondary">Array</span>;
     case "object":
@@ -62,6 +61,6 @@ export function KvValueType({ type, meta }: { type: KvValueJSON["type"]; meta?: 
     case "undefined":
       return <span class="badge badge-neutral">Undefined</span>;
     default:
-      return <span class="badge badge-neutral italic">{type}</span>;
+      return <span class="badge badge-ghost italic">Unknown</span>;
   }
 }

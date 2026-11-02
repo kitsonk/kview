@@ -1,7 +1,6 @@
-import { keyToJSON } from "@deno/kv-utils/json";
 import { assertEquals } from "@std/assert/equals";
 
-import { keyJsonToPath, pathToKey } from "./kv.ts";
+import { pathToKey, setLocalStoreName } from "./kv.ts";
 
 Deno.test({
   name: "pathToKey - single string",
@@ -82,31 +81,55 @@ Deno.test({
 });
 
 Deno.test({
-  name: "keyJsonToPath - Uint8Array",
+  name: "setLocalStoreName - stores non-empty name",
   fn() {
-    assertEquals(
-      keyJsonToPath(keyToJSON([new Uint8Array([1, 2, 3])])),
-      "__u8__AQID",
-    );
+    localStorage.clear();
+    setLocalStoreName("store-a", "My Store");
+    const raw = localStorage.getItem("kview_local_store_names");
+    assertEquals(raw, JSON.stringify({ "store-a": "My Store" }));
   },
 });
 
 Deno.test({
-  name: "keyJsonToPath - string with slashes",
+  name: "setLocalStoreName - trims surrounding whitespace",
   fn() {
-    assertEquals(
-      keyJsonToPath(keyToJSON(["foo", "/bar"])),
-      "foo/%2Fbar",
-    );
+    localStorage.clear();
+    setLocalStoreName("store-a", "  Padded  ");
+    const raw = localStorage.getItem("kview_local_store_names");
+    assertEquals(raw, JSON.stringify({ "store-a": "Padded" }));
   },
 });
 
 Deno.test({
-  name: "keyJsonToPath - single digit strings",
+  name: "setLocalStoreName - empty string deletes the key",
   fn() {
-    assertEquals(
-      keyJsonToPath(keyToJSON(["index", "2023", "1", 4])),
-      "index/2023/1/__n__4",
-    );
+    localStorage.clear();
+    setLocalStoreName("store-a", "Initial");
+    setLocalStoreName("store-a", "");
+    const raw = localStorage.getItem("kview_local_store_names");
+    assertEquals(raw, "{}");
+  },
+});
+
+Deno.test({
+  name: "setLocalStoreName - whitespace-only string deletes the key",
+  fn() {
+    localStorage.clear();
+    setLocalStoreName("store-a", "Initial");
+    setLocalStoreName("store-a", "   \t  ");
+    const raw = localStorage.getItem("kview_local_store_names");
+    assertEquals(raw, "{}");
+  },
+});
+
+Deno.test({
+  name: "setLocalStoreName - delete only affects the targeted id",
+  fn() {
+    localStorage.clear();
+    setLocalStoreName("store-a", "A");
+    setLocalStoreName("store-b", "B");
+    setLocalStoreName("store-a", "");
+    const raw = localStorage.getItem("kview_local_store_names");
+    assertEquals(raw, JSON.stringify({ "store-b": "B" }));
   },
 });

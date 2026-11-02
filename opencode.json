@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    [
+      "@vectorize-io/opencode-hindsight",
+      {
+        "bankId": "kivew",
+        "autoRetain": true,
+        "autoRecall": true
+      }
+    ]
+  ]
+}

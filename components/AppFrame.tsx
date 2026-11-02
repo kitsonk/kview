@@ -1,4 +1,5 @@
 import type { ComponentChildren } from "preact";
+import { Partial } from "fresh/runtime";
 
 import { Footer } from "./Footer.tsx";
 import { Sidebar } from "./Sidebar.tsx";
@@ -6,7 +7,7 @@ import { Topbar } from "./Topbar.tsx";
 
 export function AppFrame({ children }: { children: ComponentChildren }) {
   return (
-    <div class="size-full">
+    <div class="size-full" f-client-nav f-view-transition>
       <div class="flex">
         <input
           aria-label="Toggle layout sidebar"
@@ -32,7 +33,9 @@ export function AppFrame({ children }: { children: ComponentChildren }) {
               <Topbar />
             </div>
           </div>
-          <div id="layout-content">{children}</div>
+          <div id="layout-content">
+            <Partial name="main">{children}</Partial>
+          </div>
           <div class="px-4 py-1">
             <div class="h-full">
               <Footer />
