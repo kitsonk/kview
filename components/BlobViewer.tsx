@@ -1,6 +1,6 @@
 import { type BlobMeta } from "@kitsonk/kv-toolbox/blob";
 import { type KvKeyJSON } from "@deno/kv-utils/json";
-import { matches } from "@oak/commons/media_types";
+import { matches } from "@/vendor/oak_commons/media_types.ts";
 import { format } from "@std/fmt/bytes";
 import { keyJsonToPath } from "$utils/kv.ts";
 
