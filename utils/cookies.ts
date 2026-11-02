@@ -1,5 +1,5 @@
-import { KeyStack } from "@oak/commons/keystack";
-export { mergeHeaders, SecureCookieMap } from "@oak/commons/cookie_map";
+import { KeyStack } from "@/vendor/oak_commons/keystack.ts";
+export { mergeHeaders, SecureCookieMap } from "@/vendor/oak_commons/cookie_map.ts";
 
 export const ACCESS_TOKEN = "access_token";
 export const STORE_NAMES = "store_names";

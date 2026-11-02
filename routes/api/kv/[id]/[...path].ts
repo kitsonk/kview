@@ -1,7 +1,7 @@
 import { type Handlers } from "$fresh/server.ts";
 import { type BlobJSON, toValue as toBlob } from "@kitsonk/kv-toolbox/blob";
 import { entryToJSON, keyToJSON, type KvKeyJSON, type KvValueJSON, toKey, toValue } from "@deno/kv-utils/json";
-import { matches } from "@oak/commons/media_types";
+import { matches } from "@/vendor/oak_commons/media_types.ts";
 import { assert } from "@std/assert/assert";
 import { isBlobJSON, keyCountToResponse, parseQuery, pathToKey, treeToResponse } from "$utils/kv.ts";
 import { getKv } from "$utils/kv_state.ts";
